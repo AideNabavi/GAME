@@ -6,7 +6,7 @@ from modules.language import get_font, display_text
 size = 200
 
 
-
+#  برای داخل بازی است 
 def in_game_button(
     screen,
     exit_button_rect,
