@@ -1,0 +1,118 @@
+import pygame
+#این تابع فقط برای رسم صفحه انتخاب عملیات و مدیریت نمایش/ آیکون‌های + - * / است.
+
+
+
+
+operator_size = {
+    "+":230,
+    "-":230,
+    "*":230,
+    "/":230
+}
+def draw_operation_screen(
+    screen,
+    fonts,
+    operator_images,
+    operator_rects,
+    current_width,
+    current_height
+):
+    
+
+    mouse_pos = pygame.mouse.get_pos()
+
+    # # ---------------- Operation Box ----------------
+
+    operator_box = pygame.Rect(
+        current_width // 2 - 700 // 2,
+        current_height // 2 - 400 // 2,
+        650,
+        350
+    )
+
+
+    # ---------------- Operators ----------------
+
+    x_positions = [
+        operator_box.centerx - 323,
+        operator_box.centerx - 110,
+        operator_box.centerx + 110,
+        operator_box.centerx + 330
+    ]
+
+    operators = ["+", "-", "*", "/"]
+
+    for i, op in enumerate(operators):
+
+        image = operator_images[op]
+
+        rect = image.get_rect(
+            center=(
+                x_positions[i],
+                current_height // 1.5
+            )
+        )
+
+        image, image_rect, operator_size[op] = hover_image(
+            image,
+            rect,
+            mouse_pos,
+            operator_size[op]
+        )
+        
+        screen.blit(
+            image,
+            image_rect
+        )
+        
+
+        # محل کلیک
+        operator_rects[op] = image_rect
+        
+        
+        
+        
+        
+        
+        
+import pygame
+def hover_image(
+    image,
+    rect,
+    mouse_pos,
+    current_size
+):
+
+    NORMAL_SIZE = 200
+    HOVER_SIZE = 230
+    SPEED = 2
+
+
+    if rect.collidepoint(mouse_pos):
+
+        if current_size < HOVER_SIZE:
+            current_size += SPEED
+
+    else:
+
+        if current_size > NORMAL_SIZE:
+            current_size -= SPEED
+
+
+    new_image = pygame.transform.smoothscale(
+        image,
+        (
+            current_size,
+            current_size
+        )
+    )
+
+
+    new_rect = new_image.get_rect(
+        center=rect.center
+    )
+
+
+    return new_image, new_rect, current_size
+
