@@ -1,19 +1,267 @@
 import pygame
+import importlib
+
 pygame.init()
 
 
-# from modules.player_profile import load_profile_images,draw_profile_circle,draw_profiles,load_default_profile,draw_hue_bar1
-# from modules.class_1 import *
+# ==================================================
+# Loading Window
+# ==================================================
+
+screen = pygame.display.set_mode(
+    (960, 540)
+)
+
+pygame.display.set_caption(
+    "Mental Math Challenge"
+)
+
+
+# ==================================================
+# Icon
+# ==================================================
+
+icon = pygame.image.load(
+    "asset/image/icon.png"
+).convert_alpha()
+
+pygame.display.set_icon(icon)
+
+
+# ==================================================
+# Loading Manager
+# ==================================================
+
+from modules.loading import LoadingManager
+
+loader = LoadingManager(
+    screen
+)
+
+
+# ==================================================
+# Add Modules
+# ==================================================
+
+loader.add(
+    lambda: importlib.import_module(
+        "event_handler"
+    )
+)
+
+loader.add(
+    lambda: importlib.import_module(
+        "modules.time_screen"
+    )
+)
+
+loader.add(
+    lambda: importlib.import_module(
+        "modules.game_engine"
+    )
+)
+
+loader.add(
+    lambda: importlib.import_module(
+        "modules.timer"
+    )
+)
+
+loader.add(
+    lambda: importlib.import_module(
+        "modules.window"
+    )
+)
+
+loader.add(
+    lambda: importlib.import_module(
+        "modules.gif"
+    )
+)
+
+loader.add(
+    lambda: importlib.import_module(
+        "modules.button"
+    )
+)
+
+loader.add(
+    lambda: importlib.import_module(
+        "modules.ab"
+    )
+)
+
+loader.add(
+    lambda: importlib.import_module(
+        "modules.design"
+    )
+)
+
+loader.add(
+    lambda: importlib.import_module(
+        "modules.language"
+    )
+)
+
+loader.add(
+    lambda: importlib.import_module(
+        "modules.sound"
+    )
+)
+
+loader.add(
+    lambda: importlib.import_module(
+        "modules.font"
+    )
+)
+
+loader.add(
+    lambda: importlib.import_module(
+        "modules.player_profile"
+    )
+)
+
+loader.add(
+    lambda: importlib.import_module(
+        "modules.screen"
+    )
+)
+
+loader.add(
+    lambda: importlib.import_module(
+        "modules.theme"
+    )
+)
+
+loader.add(
+    lambda: importlib.import_module(
+        "modules.about"
+    )
+)
+
+loader.add(
+    lambda: importlib.import_module(
+        "modules.LEVELS.LEVELS"
+    )
+)
+
+loader.add(
+    lambda: importlib.import_module(
+        "modules.STATES"
+    )
+)
+
+loader.add(
+    lambda: importlib.import_module(
+        "modules.DATA"
+    )
+)
+
+loader.add(
+    lambda: importlib.import_module(
+        "modules.ceill_screen"
+    )
+)
+
+loader.add(
+    lambda: importlib.import_module(
+        "modules.profile_"
+    )
+)
+
+loader.add(
+    lambda: importlib.import_module(
+        "modules.mode"
+    )
+)
+
+loader.add(
+    lambda: importlib.import_module(
+        "modules.support"
+    )
+)
+
+loader.add(
+    lambda: importlib.import_module(
+        "modules.more"
+    )
+)
+
+loader.add(
+    lambda: importlib.import_module(
+        "modules.MODE.FIND_NUMBER"
+    )
+)
+
+loader.add(
+    lambda: importlib.import_module(
+        "modules.MODE.MEMORY"
+    )
+)
+
+loader.add(
+    lambda: importlib.import_module(
+        "modules.MODE.REPEAT_AFTER_ME"
+    )
+)
+
+loader.add(
+    lambda: importlib.import_module(
+        "modules.MODE.MORE_LESS_EQUAL"
+    )
+)
+
+
+# ==================================================
+# Start Loading
+# ==================================================
+
+pygame.mixer.music.play()
+
+loader.run()
+
+pygame.mixer.music.stop()
+
+
+# ==================================================
+# Loading Finished
+# ==================================================
+
+screen = pygame.display.set_mode(
+    (1920, 1080),
+    pygame.FULLSCREEN
+)
+
+
+pygame.display.set_caption(
+    "Mental Math Challenge"
+)
+
+pygame.display.set_icon(
+    icon
+)
+
+
+# ==================================================
+# Get Screen Size
+# ==================================================
+
+current_width, current_height = screen.get_size()
+
+print(
+    current_width,
+    current_height
+)
+
+
+
+
 
 import sys
 from event_handler import handle_events
 from modules.time_screen import draw_time_screen
 from modules.game_engine import run_game
 from modules.timer import draw_timer_bar,draw_timer_circle
-# from modules.background import set_background,draw_background,update_background
-# from modules.loading_screen import loading_screen1
-# from modules.background_moving import draw_background
-# from modules.TrueFalseMode.ImageLoader import draw_images
 from modules.window import _window
 from modules.gif import *
 from modules.button import *
@@ -25,21 +273,21 @@ from modules.font import *
 from modules.player_profile import *
 from modules.screen import *
 from modules.theme import *
-
+from modules.about import draw_about
 from modules.design import *
-
 from modules.LEVELS.LEVELS import *
 from modules.STATES import *
 from modules.DATA import *
+from modules.ceill_screen import *
+from modules.profile_ import draw_profile_live_circle
+from modules.mode  import *
+from modules.support  import *
+from modules.more  import *
+from modules.MODE.FIND_NUMBER  import *
+from modules.MODE.MEMORY  import *
+from modules.MODE.REPEAT_AFTER_ME  import *
+from modules.MODE.MORE_LESS_EQUAL  import *
 
-from modules.profile import draw_profile_live_circle
-
-
-
-
-
-
-from modules.MODE.find_numbers  import *
 # ---------------------------------------------------------- FPS 
 # برای کنترل سرعت اجرای بازی
 clock = pygame.time.Clock()
@@ -49,21 +297,25 @@ clock = pygame.time.Clock()
 
 
 
+# این برای موزیک است عوض کردن موزیک
+
+profile_image = pygame.image.load(
+    "./asset/image/music/music.png"
+).convert_alpha()
 
 
 
+background_music = pygame.image.load(
+    "./asset/image/music/music111.png"
+).convert_alpha()
 
-# ----------------------------------------------------------- Background # ساخت پنجره برای بازی  تنطیمات  اولیه بازی 
-screen = pygame.display.set_mode(
-    (1920,1080),
-    pygame.FULLSCREEN
+
+
+background_music = pygame.transform.smoothscale(
+    background_music,
+    (1450,950)
 )
-
-pygame.display.set_caption("F")
-current_width, current_height = screen.get_size()
-
-
-
+back_image=back_image.convert_alpha()
 #--------------------------------------------------------------
 # def load_background(path, size):
 #     bg = pygame.image.load(path).convert()
@@ -73,7 +325,7 @@ current_width, current_height = screen.get_size()
 
 
 
-init_theme(screen)
+# init_theme(screen)
 
 
 
@@ -144,6 +396,7 @@ time_entered = False
 time_button_rects = {}# for select time
 
 #------------------------------------------------------------- Question
+
 question_started = False
 
 x = 0
@@ -344,52 +597,6 @@ share_button_rect = pygame.Rect(
 
 
 
-##############################################  for Ceil tab
-
-ceill = 0
-ceill_entered = False
-ceill_text = ""
-
-
-ceill_button_rects = {}
-
-hover_level_image = None
-
-
-level_images = {
-
-    10: pygame.image.load(
-        "./asset/image/levels/1.png"
-    ).convert_alpha(),
-
-    100: pygame.image.load(
-        "./asset/image/levels/2.png"
-    ).convert_alpha(),
-
-    1000: pygame.image.load(
-        "./asset/image/levels/3.png"
-    ).convert_alpha(),
-
-    10000: pygame.image.load(
-        "./asset/image/levels/4.png"
-    ).convert_alpha(),
-
-    100000: pygame.image.load(
-        "./asset/image/levels/4.png"
-    ).convert_alpha()
-}
-
-
-# کوچک کردن عکس‌ها
-
-for key in level_images:
-
-    level_images[key] = pygame.transform.smoothscale(
-        level_images[key],
-        (120,120)
-    )
-    
-    
     
     
     
@@ -456,12 +663,12 @@ lan6= pygame.Rect(
 #----------------------------- button for support_call for background this button 
 
 
-support_call_button_rect= pygame.Rect(
-    current_width - 130,  # فاصله از راست
-    current_height // 2 ,                   # فاصله از بالا
-    90,
-    90
-)
+# support_call_button_rect= pygame.Rect(
+#     current_width - 130,  # فاصله از راست
+#     current_height // 2 ,                   # فاصله از بالا
+#     90,
+#     90
+# )
 
 
 #----------------------------- bug
@@ -669,6 +876,13 @@ enter_button = pygame.Rect(
 
 
 
+
+
+
+
+# ###################################### برای مود بازی مموری است 
+# create_cards(current_width,current_height)
+create_cards(current_width,current_height)
 #---------------------------------------------------------------- این برای تم است که در فایل دیتا است که از آن جا برای داخل تم صدا زده میشود 
 
     
@@ -896,338 +1110,338 @@ current_question = generate_missing_number_question(
 
 
 
-#-------------------------back ground
+# #-------------------------back ground
 
-SCREEN_WIDTH_ = info.current_w
-SCREEN_HEIGHT_ = info.current_h
+# SCREEN_WIDTH_ = info.current_w
+# SCREEN_HEIGHT_ = info.current_h
 
-WORLD_WIDTH_ = 9000
-WORLD_HEIGHT_ = SCREEN_HEIGHT_
+# WORLD_WIDTH_ = 9000
+# WORLD_HEIGHT_ = SCREEN_HEIGHT_
 
-level_world_ = pygame.Surface(
-    (WORLD_WIDTH_, WORLD_HEIGHT_),
-    pygame.SRCALPHA
-)
+# level_world_ = pygame.Surface(
+#     (WORLD_WIDTH_, WORLD_HEIGHT_),
+#     pygame.SRCALPHA
+# )
 
 
-# ============================================================
-# ORIGINAL IMAGES
-# ============================================================
+# # ============================================================
+# # ORIGINAL IMAGES
+# # ============================================================
 
-level_images_theme = [
+# level_images_theme = [
 
-    pygame.image.load(
-        "./asset/image/background/1.png"
-    ).convert_alpha(),
+#     pygame.image.load(
+#         "./asset/image/background/1.png"
+#     ).convert_alpha(),
 
-    pygame.image.load(
-        "./asset/image/background/2.png"
-    ).convert_alpha(),
+#     pygame.image.load(
+#         "./asset/image/background/2.png"
+#     ).convert_alpha(),
 
-    pygame.image.load(
-        "./asset/image/background/3.png"
-    ).convert_alpha(),
+#     pygame.image.load(
+#         "./asset/image/background/3.png"
+#     ).convert_alpha(),
 
-    pygame.image.load(
-        "./asset/image/background/4.png"
-    ).convert_alpha(),
+#     pygame.image.load(
+#         "./asset/image/background/4.png"
+#     ).convert_alpha(),
 
-    pygame.image.load(
-        "./asset/image/background/5.png"
-    ).convert_alpha(),
+#     pygame.image.load(
+#         "./asset/image/background/5.png"
+#     ).convert_alpha(),
 
-    pygame.image.load(
-        "./asset/image/background/6.png"
-    ).convert_alpha(),
+#     pygame.image.load(
+#         "./asset/image/background/6.png"
+#     ).convert_alpha(),
 
-    pygame.image.load(
-        "./asset/image/background/7.png"
-    ).convert_alpha(),
+#     pygame.image.load(
+#         "./asset/image/background/7.png"
+#     ).convert_alpha(),
 
-    pygame.image.load(
-        "./asset/image/background/8.png"
-    ).convert_alpha(),
+#     pygame.image.load(
+#         "./asset/image/background/8.png"
+#     ).convert_alpha(),
 
-    pygame.image.load(
-        "./asset/image/background/9.png"
-    ).convert_alpha(),
+#     pygame.image.load(
+#         "./asset/image/background/9.png"
+#     ).convert_alpha(),
 
-    pygame.image.load(
-        "./asset/image/background/10.png"
-    ).convert_alpha(),
+#     pygame.image.load(
+#         "./asset/image/background/10.png"
+#     ).convert_alpha(),
 
-    pygame.image.load(
-        "./asset/image/background/11.png"
-    ).convert_alpha(),
+#     pygame.image.load(
+#         "./asset/image/background/11.png"
+#     ).convert_alpha(),
 
-]
+# ]
 
 
-# ============================================================
-# THEME POSITIONS
-# ============================================================
-yy=420
-level_positions_theme = [
+# # ============================================================
+# # THEME POSITIONS
+# # ============================================================
+# yy=420
+# level_positions_theme = [
 
-    (0, yy),
-    (1500, yy),
-    (3000, yy),
-    (3000, yy),
-    (4000, yy),
-    (5000, yy),
-    (6000, yy),
-    (7000, yy),
-    (8000, yy),
-    (10000, yy),
-    (110000, yy),
+#     (0, yy),
+#     (1500, yy),
+#     (3000, yy),
+#     (3000, yy),
+#     (4000, yy),
+#     (5000, yy),
+#     (6000, yy),
+#     (7000, yy),
+#     (8000, yy),
+#     (10000, yy),
+#     (110000, yy),
 
-]
+# ]
 
 
-# ============================================================
-# SMALL THEME IMAGES
-# عکس‌های کوچک فقط برای صفحه انتخاب Theme
-# ============================================================
+# # ============================================================
+# # SMALL THEME IMAGES
+# # عکس‌های کوچک فقط برای صفحه انتخاب Theme
+# # ============================================================
 
-little_theme = []
+# little_theme = []
 
 
-for img in level_images_theme:
+# for img in level_images_theme:
 
-    small_img = pygame.transform.smoothscale(
-        img,
-        (1000, 600)
-    )
+#     small_img = pygame.transform.smoothscale(
+#         img,
+#         (1000, 600)
+#     )
 
-    little_theme.append(
-        small_img
-    )
+#     little_theme.append(
+#         small_img
+#     )
 
 
-# ============================================================
-# PUT SMALL IMAGES INSIDE WORLD
-# ============================================================
+# # ============================================================
+# # PUT SMALL IMAGES INSIDE WORLD
+# # ============================================================
 
-for img, pos in zip(
-    little_theme,
-    level_positions_theme
-):
+# for img, pos in zip(
+#     little_theme,
+#     level_positions_theme
+# ):
 
-    level_world_.blit(
-        img,
-        pos
-    )
+#     level_world_.blit(
+#         img,
+#         pos
+#     )
 
 
-# ============================================================
-# CAMERA
-# ============================================================
+# # ============================================================
+# # CAMERA
+# # ============================================================
 
-camera_x = 0
-camera_y = 0
+# camera_x = 0
+# camera_y = 0
 
 
-# ============================================================
-# DRAGGING
-# ============================================================
+# # ============================================================
+# # DRAGGING
+# # ============================================================
 
-dragging = False
+# dragging = False
 
-mouse_start_x = 0
-mouse_start_y = 0
+# mouse_start_x = 0
+# mouse_start_y = 0
 
 
-# ============================================================
-# THEME RECTANGLES
-# ============================================================
+# # ============================================================
+# # THEME RECTANGLES
+# # ============================================================
 
-level_rects_for_theme = []
+# level_rects_for_theme = []
 
 
-for index, (img, pos) in enumerate(
-    zip(
-        little_theme,
-        level_positions_theme
-    )
-):
+# for index, (img, pos) in enumerate(
+#     zip(
+#         little_theme,
+#         level_positions_theme
+#     )
+# ):
 
-    rect = img.get_rect(
-        topleft=pos
-    )
+#     rect = img.get_rect(
+#         topleft=pos
+#     )
 
-    level_rects_for_theme.append(
-        (index, rect)
-    )
+#     level_rects_for_theme.append(
+#         (index, rect)
+#     )
 
 
 
-# ============================================================
-# SELECTED BACKGROUND
-# اینجا عکس اصلی است، نه little_theme
-# ============================================================
+# # ============================================================
+# # SELECTED BACKGROUND
+# # اینجا عکس اصلی است، نه little_theme
+# # ============================================================
 
-selected_background = level_images_theme[0]
+# selected_background = level_images_theme[0]
 
 
-# ============================================================
-# THEME DRAW
-# ============================================================
+# # ============================================================
+# # THEME DRAW
+# # ============================================================
 
-def THEME_DRAW(
-    screen,
-    WORLD_WIDTH_,
-    SCREEN_WIDTH_,
-    WORLD_HEIGHT_,
-    SCREEN_HEIGHT_,
-    level_world_
-):
+# def THEME_DRAW(
+#     screen,
+#     WORLD_WIDTH_,
+#     SCREEN_WIDTH_,
+#     WORLD_HEIGHT_,
+#     SCREEN_HEIGHT_,
+#     level_world_
+# ):
 
-    global camera_x
-    global camera_y
+#     global camera_x
+#     global camera_y
 
 
-    keys = pygame.key.get_pressed()
+#     keys = pygame.key.get_pressed()
 
 
-    if keys[pygame.K_RIGHT]:
+#     if keys[pygame.K_RIGHT]:
 
-        camera_x += 10
+#         camera_x += 10
 
 
-    if keys[pygame.K_LEFT]:
+#     if keys[pygame.K_LEFT]:
 
-        camera_x -= 10
+#         camera_x -= 10
 
 
-    if keys[pygame.K_DOWN]:
+#     if keys[pygame.K_DOWN]:
 
-        camera_y += 10
+#         camera_y += 10
 
 
-    if keys[pygame.K_UP]:
+#     if keys[pygame.K_UP]:
 
-        camera_y -= 10
+#         camera_y -= 10
 
 
-    # ========================================================
-    # CAMERA LIMIT X
-    # ========================================================
+#     # ========================================================
+#     # CAMERA LIMIT X
+#     # ========================================================
 
-    camera_x = max(
-        0,
-        min(
-            camera_x,
-            WORLD_WIDTH_ - SCREEN_WIDTH_
-        )
-    )
+#     camera_x = max(
+#         0,
+#         min(
+#             camera_x,
+#             WORLD_WIDTH_ - SCREEN_WIDTH_
+#         )
+#     )
 
 
-    # ========================================================
-    # CAMERA LIMIT Y
-    # ========================================================
+#     # ========================================================
+#     # CAMERA LIMIT Y
+#     # ========================================================
 
-    camera_y = max(
-        0,
-        min(
-            camera_y,
-            WORLD_HEIGHT_ - SCREEN_HEIGHT_
-        )
-    )
+#     camera_y = max(
+#         0,
+#         min(
+#             camera_y,
+#             WORLD_HEIGHT_ - SCREEN_HEIGHT_
+#         )
+#     )
 
 
-    # ========================================================
-    # DRAW WORLD
-    # ========================================================
+#     # ========================================================
+#     # DRAW WORLD
+#     # ========================================================
 
-    screen.blit(
-        level_world_,
-        (0, 0),
-        (
-            camera_x,
-            camera_y,
-            SCREEN_WIDTH_,
-            SCREEN_HEIGHT_
-        )
-    )
+#     screen.blit(
+#         level_world_,
+#         (0, 0),
+#         (
+#             camera_x,
+#             camera_y,
+#             SCREEN_WIDTH_,
+#             SCREEN_HEIGHT_
+#         )
+#     )
 
 
-# ============================================================
-# DRAW SELECTED BACKGROUND
-# ============================================================
+# # ============================================================
+# # DRAW SELECTED BACKGROUND
+# # ============================================================
 
-def draw__background(screen):
+# def draw__background(screen):
 
-    global selected_background
+#     global selected_background
 
 
-    # ========================================================
-    # ORIGINAL IMAGE SIZE
-    # ========================================================
+#     # ========================================================
+#     # ORIGINAL IMAGE SIZE
+#     # ========================================================
 
-    image_width = selected_background.get_width()
-    image_height = selected_background.get_height()
+#     image_width = selected_background.get_width()
+#     image_height = selected_background.get_height()
 
 
-    # ========================================================
-    # SCALE
-    # نسبت تصویر حفظ می‌شود
-    # ========================================================
+#     # ========================================================
+#     # SCALE
+#     # نسبت تصویر حفظ می‌شود
+#     # ========================================================
 
-    scale_x = SCREEN_WIDTH_ / image_width
-    scale_y = SCREEN_HEIGHT_ / image_height
+#     scale_x = SCREEN_WIDTH_ / image_width
+#     scale_y = SCREEN_HEIGHT_ / image_height
 
-    scale = max(
-        scale_x,
-        scale_y
-    )
+#     scale = max(
+#         scale_x,
+#         scale_y
+#     )
 
 
-    new_width = int(
-        image_width * scale
-    )
+#     new_width = int(
+#         image_width * scale
+#     )
 
-    new_height = int(
-        image_height * scale
-    )
+#     new_height = int(
+#         image_height * scale
+#     )
 
 
-    # ========================================================
-    # SCALE ORIGINAL IMAGE
-    # ========================================================
+#     # ========================================================
+#     # SCALE ORIGINAL IMAGE
+#     # ========================================================
 
-    background = pygame.transform.smoothscale(
-        selected_background,
-        (
-            new_width,
-            new_height
-        )
-    )
+#     background = pygame.transform.smoothscale(
+#         selected_background,
+#         (
+#             new_width,
+#             new_height
+#         )
+#     )
 
 
-    # ========================================================
-    # CENTER
-    # ========================================================
+#     # ========================================================
+#     # CENTER
+#     # ========================================================
 
-    x = (
-        SCREEN_WIDTH_ - new_width
-    ) // 2
+#     x = (
+#         SCREEN_WIDTH_ - new_width
+#     ) // 2
 
-    y = (
-        SCREEN_HEIGHT_ - new_height
-    ) // 2 
+#     y = (
+#         SCREEN_HEIGHT_ - new_height
+#     ) // 2 
 
 
-    # ========================================================
-    # DRAW
-    # ========================================================
+#     # ========================================================
+#     # DRAW
+#     # ========================================================
 
-    screen.blit(
-        background,
-        (
-            x,
-            y
-        )
-    )
+#     screen.blit(
+#         background,
+#         (
+#             x,
+#             y
+#         )
+#     )
     
     
     
@@ -1251,7 +1465,7 @@ fps_font = pygame.font.Font(None, 35)
 
 # این برای فلگ است 
 show_flag = True
-#----------------------------------
+#---------------------------------
 
 
 
@@ -1259,7 +1473,7 @@ show_flag = True
 
 
 
-imm=pygame.image.load("./asset/image/background/1.png")
+imm=pygame.image.load("./asset/image/background/FIND_OPERATOR_BACKGROUND.png")
 imm = pygame.transform.scale(
     imm,
     screen.get_size()
@@ -1285,9 +1499,206 @@ image_back_quastion = pygame.transform.smoothscale(
     (1200, 650)
 )
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#---------------------------- برای قسمت مود که چند تا صفحه داره 
+drag_start_x_GAME_MODE = None
+dragging_GAME_MODE = False
+
+current_page_GAME_MODE = 0
+
+page_offset_GAME_MODE = 0
+
+target_offset_GAME_MODE = 0
+
+
+
+from modules.slide import *
+
+game_mode_slide = PageSlide(
+    screen.get_width(),
+    pages=3
+)
+
+
+
+
+
+#این ها باید حذف بشن 
+#-------------------------------- SHAPE_COLOR_NAME ببرای ای  قسمت است 
+from modules.MODE.SHAPE_COLOR_NAME import * 
+# new_question_SHAPE_COLOR_NAME()
+
+one____(screen,current_width,current_height)
+
+
+
+#---------------------------------------------REPEAT_AFTER_ME
+from modules.MODE.REPEAT_AFTER_ME import *
+new_round()
+
+
+#---------------------------------------------DIRECTION_
+from modules.MODE.DIRECTION import *
+new_round_DIRECTION()
+
+#---------------------------------------------DIRECTION_
+from modules.MODE.ACTION import *
+reset_game_ACTION()
+
+#---------------------------------------------DIRECTION_
+from modules.MODE.MIRROR import *
+new_round_MIRROR()
+
+
+
+
+
+
+
+#-------------------------------- country
+
+from modules.profile import country as  CON
+country = CON.load_flags()
+
+
+
+#-------------------------------- save mecanizem
+from modules.save.save import load_player
+
+# قبل از while اصلی
+player = load_player()
+
+
+# if player is None:
+#     game_state = "NAME"
+# else:
+#     game_state = "MENU"
+
+
+
+
+
+
+
+
+
+
+
+
+#---------------------------------- برای گرفتن عکس از کامپیتور 
+# import modules.profile.image_picker as PICK
+
+
+
+
+
+
+from modules.policy import draw_privacy_policy
+
+privacy_box = pygame.Rect(
+    current_width // 2 - 550 + 180,
+    current_height // 2 - 500 + 230,
+    740,
+    550
+)
+
+
+from modules.INFO import *
+info_box = pygame.Rect(
+    current_width // 2 - 370,
+    current_height // 2 - 100,
+    740,
+    550
+)
+
+
+
+
+from modules.MODE.DETECT import *
+from modules.MODE.FAST import *
+from modules.MODE.MORE_LESS_EQUAL import *
+from modules.MODE.SIX_60S import *
+from modules.MODE.TRUE_FLASE import *
+from modules.MODE.FIND_OPERATOR import *
+from modules.background_moving import *
+
+
+
+WIDTH, HEIGHT = screen.get_size()
+
+dt = clock.tick(60) / 1000
+
+
+
+
+
+
+
+
+
+
+
+from modules.transition import *
+from modules.droping import *
+from modules.punch_custom_play import *
+
+from modules.zh import *   
+icon_start_time = pygame.time.get_ticks()
+icon_image__ = pygame.transform.smoothscale(pygame.image.load(
+    "asset/image/droping/qq.png"
+).convert_alpha(),(100,100))
+
+
+
+
+
+
+
+
+
+
+
+
+
+#-----------------------------این برای بک گراند های مود های بازی است که باید بک گراند متحرک غیر فعال شود در آن زمان 
+ON_BACKGROUND=None
+DETECT_BACKGROUND=pygame.image.load("./asset/image/background/DETECT_BACKGROUND.png").convert_alpha()
+FAST_BACKGROUND=pygame.image.load("./asset/image/background/FAST_BACKGROUND.png").convert_alpha()
+SHAPE_COLOR_NAME_BACKGROUND=pygame.image.load("./asset/image/background/SHAPE_COLOR_NAME.png").convert_alpha()
+ACTION_BACKGROUND=pygame.image.load("./asset/image/background/ACTION_BACKGROUND.png").convert_alpha()
+DIRECTION_BACKGROUND=pygame.image.load("./asset/image/background/DIRECTION_BACKGROUND.png").convert_alpha()
+MIRROR_BACKGROUND=pygame.image.load("./asset/image/background/MIRROR_BACKGROUND.png").convert_alpha()
+REPEAT_AFTER_ME_BACKGROUND=pygame.image.load("./asset/image/background/REPEAT_AFTER_ME_BACKGROUND.png").convert_alpha()
+MEMORY_BACKGROUND=pygame.image.load("./asset/image/background/MEMORY_BACKGROUND.png").convert_alpha()
+FIND_NUMBER_BACKGROUND=pygame.image.load("./asset/image/background/FIND_NUMBER_BACKGROUND.png").convert_alpha()
+MORE_LESS_EQUAL_BACKGROUND=pygame.image.load("./asset/image/background/MORE_LESS_EQUAL_BACKGROUND.png").convert_alpha()
+_60S_BACKGROUND=pygame.image.load("./asset/image/background/_60S_BACKGROUND.png").convert_alpha()
+TRUE_FALSE_BACKGROUND=pygame.image.load("./asset/image/background/TRUE_FALSE_BACKGROUND.png").convert_alpha()
+FIND_OPERATOR_BACKGROUND=pygame.image.load("./asset/image/background/FIND_OPERATOR_BACKGROUND.png").convert_alpha()
+CUSTOM__GAME=pygame.image.load("./asset/image/background/CUSTOM__GAME.png").convert_alpha()
+
 #############################################################################################################
 #############################################################################################################
-game_state = "?+?"
+game_state = "MENU" # این در شروع بازی باید نان باشد  که بالایی  مکانیزم سیو درست ش میکنه 
+support_face = None
+#aiden
 # ############################################################################################################
 #############################################################################################################
 # Game loop ------------------------------------------------------------------------------------------------------------------------------------
@@ -1297,9 +1708,19 @@ while running:
 
 
     # ---------------------------------------------background
-    screen.blit(imm,(0,0))
-
-    # draw__background(screen)
+    # screen.blit(imm,(0,0))
+    # ON_BACKGROUND=True
+    # if ON_BACKGROUND:
+        # draw_moving_map(
+        #     screen,
+        #     WIDTH,
+        #     HEIGHT,
+        #     dt    )
+        # draw_flying_birds(
+        #     screen,
+        #     current_width,
+        #     current_height
+        # )   
     #---------------------------------------------------------------------Event_handler
 
     (
@@ -1336,7 +1757,7 @@ while running:
         camera_x,
         camera_y,
         level_rects,
-        level_rects_for_theme,
+        # level_rects_for_theme,
         
         
         rect_for_music,
@@ -1358,8 +1779,26 @@ while running:
         
         
         ,
-        selected_background
+        # selected_background,
+        dragging_GAME_MODE,
+        drag_start_x_GAME_MODE,
+        current_page_GAME_MODE,
+        target_offset_GAME_MODE,
+        
+        
+        
+        support_face
+        
         ) = handle_events(
+            
+            
+            
+            
+            
+            
+            
+            
+            
         screen,
         player_name,
         name_entered,
@@ -1405,8 +1844,8 @@ while running:
         camera_x,
         camera_y,
         level_rects,
-        level_rects_for_theme,
-        level_images_theme,
+        # level_rects_for_theme,
+        # level_images_theme,
         
         
         
@@ -1443,7 +1882,20 @@ while running:
         
         
         ,
-        selected_background
+        # selected_background,
+    
+        dragging_GAME_MODE,
+        drag_start_x_GAME_MODE,
+        current_page_GAME_MODE,
+        target_offset_GAME_MODE,
+        game_mode_slide,
+        image_game_mode_page2,
+        image_game_mode_page3,
+        image_game_mode_page1,
+        
+        
+        
+        support_face
         )
     
     
@@ -1461,66 +1913,101 @@ while running:
     
     
     
+        # آپدیت حرکت اسلاید
+    game_mode_slide.update()
+
+
+    # گرفتن مقدار حرکت
+    offset = game_mode_slide.get_offset()
+
     
     
     
     
     
     
-    
-    
+    #--------------------------------------------------------------------------------- first page that every one goes in 
     #---------------------------------------------------------------------------------NAME
     if game_state == "NAME":    
-            
+          
+           
         if defult_language == True:
             load_language("en")
             defult_language=False
             
             
-        if selected_profile is None:
-            draw_profile_circle(
-                screen,
-                default_profile,
-                (current_width//2, 200),
-                250
-            )
-        else:
-            draw_profile_circle(
-                screen,
-                selected_image,
-                (current_width//2, 200),
-                250
-            )    
+        # if selected_profile is None:
+        #     draw_profile_circle(
+        #         screen,
+        #         default_profile,
+        #         (current_width//2, 200),
+        #         250
+        #     )
+        # else:
+        #     draw_profile_circle(
+        #         screen,
+        #         selected_image,
+        #         (current_width//2, 200),
+        #         250
+        #     )    
             
             
             
-        draw_name_screen(
-            screen,
-            fonts,
-            player_name,
-            input_box,
-            enter_button
-        )
+                    
+        # draw_name_screen(
+        #     screen,
+        #     fonts,
+        #     player_name,
+        #     input_box,
+        #     enter_button
+        # )
         
 
-        draw_profiles(
-            screen,
-            profile_images,
-            profile_rects,
-            profile_area
-        )
+        # draw_profiles(
+        #     screen,
+        #     profile_images,
+        #     profile_rects,
+        #     profile_area
+        # )
         
-        draw_profile_circle(
-            screen,
-            selected_image,
-            (
-                current_width // 2,
-                100
-            ),
-        )
+        # draw_profile_circle(
+        #     screen,
+        #     selected_image,
+        #     (
+        #         current_width // 2,
+        #         100
+        #     ),
+        # )
         
         
 
+
+
+
+            
+        #-------------------------------------- flag 
+        # CON.draw_country_button(
+        #     screen,
+        #     CON.country_button,
+        #     CON.selected_country
+        # )
+
+
+        # if CON.country_window:
+
+        #     CON.draw_country_window(
+        #         screen,
+        #         country,
+        #         CON.country_rects
+        #     )
+           
+           
+        # CON.draw_selected_flag(
+        #     screen,
+        #     country,
+        #     CON.selected_country
+        # ) 
+    #--------------------------------------
 
 
     STATE(screen,game_state,current_width,current_height)
@@ -1529,7 +2016,7 @@ while running:
 
 
            
-
+        
     #---------------------------------------------------------------------------------LANGUAGE
     if game_state == "LANGUAGE":
         image_setter(screen,background_Lan,current_width // 2 - 720 ,current_height // 2 -360 )
@@ -1539,9 +2026,11 @@ while running:
             current_width,
             current_height
         )
+        menu_cache.clear()
+
                         # عکس دایره. برای پروفایل هر صفحه
-        image_setter(screen,pathth,current_width//2 - 220,current_height//2 - 666)
-        gif_setting(screen,gif_frames_lan,current_width // 2 - 246 // 2,current_height // 2 - 1068     // 2)
+        image_setter(screen,pathth,xyz_for_profile_logo,current_height//2 - 666)
+        gif_setting(screen,gif_frames_lan,width_for_profile_logo,current_height // 2 - 570)
         
 
         draw_back_button(
@@ -1552,54 +2041,17 @@ while running:
             support_button_rect
         )      
         
+    #---------------------------------------------------------------------------------SUPPORT
 
-    #---------------------------------------------------------------------------------THEME
 
-    # #---------------------------------------------------------------------------------THEME
-    # if game_state == "SUPPORT":
-    #                     # عکس دایره. برای پروفایل هر صفحه
-    #     image_setter(screen,pathth,400,400,current_width//2 - 220,current_height//2 - 666)
-    #     gif_setting(screen,gif_frames_support,current_width // 2 - 246 // 2,current_height // 2 - 1068     // 2)
-    #     draw_back_button(
-    #         screen,
-    #         back_button_rect)
-    #     support_button(
-    #         screen,
-    #         support_button_rect
-    #     )   
-    #---------------------------------------------------------------------------------about
-    if game_state == "ABOUT":
+    # #---------------------------------------------------------------------------------about
+    # if game_state == "ABOUT":
         
-        draw_about(
-            screen,
-            current_width,
-            current_height,
-            about,
-            fonts["answer"],
-            fonts["about"]
-        )
+    #     draw_about(
+    #         screen
+    #     )
 
 
-        draw_back_button(
-            screen,
-            back_button_rect)
-        support_button(
-            screen,
-            support_button_rect
-        )
-        
-        # bug_button(
-        #     screen,
-        #     bug_button_rect
-        # )     
-        call_support(
-            screen,
-            call_button_rect
-        )
-        
-        # عکس دایره. برای پروفایل هر صفحه
-        image_setter(screen,pathth,current_width//2 - 220,current_height//2 - 666)
-        gif_setting(screen,gif_frames_about,current_width // 2 - 246 // 2,current_height // 2 - 1068     // 2)
 
     #---------------------------------------------------------------------------------sound
     if game_state == "SOUND":
@@ -1629,8 +2081,8 @@ while running:
         )
         
                 # عکس دایره. برای پروفایل هر صفحه
-        image_setter(screen,pathth,current_width//2 - 220,current_height//2 - 666)
-        gif_setting(screen,gif_frames_sound,current_width // 2 - 246 // 2,current_height // 2 - 1068     // 2)
+        image_setter(screen,pathth,xyz_for_profile_logo,current_height//2 - 666)
+        gif_setting(screen,gif_frames_sound,width_for_profile_logo,current_height // 2 - 570)
 
 
 
@@ -1666,25 +2118,25 @@ while running:
                 rect_for_sound
             )
     #---------------------------------------------------------------------------------theme
-    if game_state == "THEME":
+    # if game_state == "THEME":
         
 
-                        # عکس دایره. برای پروفایل هر صفحه
-        image_setter(screen,pathth,current_width//2 - 220,current_height//2 - 666)
+    #                     # عکس دایره. برای پروفایل هر صفحه
+    #     image_setter(screen,pathth,current_width//2 - 220,current_height//2 - 666)
 
-        gif_setting(screen,gif_frames_theme,current_width // 2 - 246 // 2,current_height // 2 - 1068     // 2)
+    #     gif_setting(screen,gif_frames_theme,current_width // 2 - 246 // 2,current_height // 2 - 1068     // 2)
 
-        draw_back_button(
-            screen,
-            back_button_rect)
-        support_button(
-            screen,
-            support_button_rect
-        )      
-        # draw_theme(screen)
+    #     draw_back_button(
+    #         screen,
+    #         back_button_rect)
+    #     support_button(
+    #         screen,
+    #         support_button_rect
+    #     )      
+    #     # draw_theme(screen)
 
-        # draw_theme(screen, 450, 300)
-        THEME_DRAW(screen,WORLD_WIDTH_,SCREEN_WIDTH_,WORLD_HEIGHT_,SCREEN_HEIGHT_,level_world_)
+    #     # draw_theme(screen, 450, 300)
+    #     THEME_DRAW(screen,WORLD_WIDTH_,SCREEN_WIDTH_,WORLD_HEIGHT_,SCREEN_HEIGHT_,level_world_)
         
         
         
@@ -1708,13 +2160,11 @@ while running:
 
 
 
-        draw_ceill_screen(
+        draw_ceil_screen(
             screen,
             fonts,
-            ceill_button_rects,
             current_width,
-            current_height,
-            level_images
+            current_height
         )
             
                  
@@ -1730,8 +2180,8 @@ while running:
         )
         
 
-
-        gif_setting(screen,gif_frames_credit,current_width // 2 - 250 // 2,current_height // 2 - 1085     // 2)
+        image_setter(screen,pathth,xyz_for_profile_logo,current_height//2 - 666)
+        gif_setting(screen,gif_frames_credit,width_for_profile_logo,current_height // 2 - 570)
         draw_profile_live_circle(
             screen,
             selected_profile_image,
@@ -1755,8 +2205,89 @@ while running:
         
         
         
+    #--------------------------------------------------------------------------------------------------
+
+
+    if game_state == "SUPPORT":
+        #----------------- background_and_brids
+        draw_moving_map(
+            screen,
+            WIDTH,
+            HEIGHT,
+            dt    )
+        draw_flying_birds(
+            screen,
+            current_width,
+            current_height
+        )   
+    
+        
+        draw_4_images_SUPPORT(screen)        
+
+                        # عکس دایره. برای پروفایل هر صفحه
+        image_setter(screen,pathth,xyz_for_profile_logo,current_height//2 - 666)
+        gif_setting(screen,gif_frames_support,width_for_profile_logo,current_height // 2 - 570)
+
+        draw_back_button(
+            screen,
+            back_button_rect)
+
+        if support_face == "Report Bug":
+             draw_support_face(screen,current_width,current_height)
+        if support_face == "Feed Back":
+             draw_support_face(screen,current_width,current_height)
+        if support_face == "Contact Us":
+             draw_support_face(screen,current_width,current_height)
+        if support_face == "Donate":
+             draw_support_face(screen,current_width,current_height)
+
         
         
+        
+    #--------------------------------------------------------------------------------------------------
+
+
+    if game_state == "MORE":
+        
+        draw_4_images_MORE(screen)        
+
+
+        draw_back_button(
+            screen,
+            back_button_rect)
+        
+        support_button(
+            screen,
+            support_button_rect
+        )
+        
+
+        
+        # عکس دایره. برای پروفایل هر صفحه
+        image_setter(screen,pathth,xyz_for_profile_logo,current_height//2 - 666)
+        gif_setting(screen,gif_frames_about,width_for_profile_logo,current_height // 2 - 570)
+
+        if support_face == "How to Play":
+             draw_support_face(screen,current_width,current_height)
+        if support_face == "FAQ":
+             draw_support_face(screen,current_width,current_height)
+        if support_face == "INFO":
+             draw_support_face(screen,current_width,current_height)
+            #  draw_info_profile(
+            #     screen,
+            #     current_width,
+            #     current_height
+            #     )
+             draw_info(
+                screen,
+                info_box
+                )
+        if support_face == "Privacy Policy":
+             draw_support_face(screen,current_width,current_height)
+             draw_privacy_policy(screen,privacy_box)
+             
+
+             
         
         
         
@@ -1766,7 +2297,26 @@ while running:
     if game_state == "PROFILE":
         
 
-        
+        #----------------- background_and_brids
+        draw_moving_map(
+            screen,
+            WIDTH,
+            HEIGHT,
+            dt    )
+        draw_flying_birds(
+            screen,
+            current_width,
+            current_height
+        )   
+    
+    
+    
+    
+    
+    
+    
+    
+    
         draw_back_button(
             screen,
             back_button_rect
@@ -1794,8 +2344,8 @@ while running:
         )
 
                                 # عکس دایره. برای پروفایل هر صفحه
-        image_setter(screen,pathth,current_width//2 - 220,current_height//2 - 666)
-        gif_setting(screen,gif_frames_profile,current_width // 2 - 246 // 2,current_height // 2 - 1068     // 2)
+        image_setter(screen,pathth,xyz_for_profile_logo,current_height//2 - 666)
+        gif_setting(screen,gif_frames_profile,width_for_profile_logo,current_height // 2 - 570)
 
 
 
@@ -1819,10 +2369,31 @@ while running:
 
 
     if game_state == "MUSIC":
-        draw_music(
+        #----------------- background_and_brids
+        draw_moving_map(
+            screen,
+            WIDTH,
+            HEIGHT,
+            dt    )
+        draw_flying_birds(
             screen,
             current_width,
             current_height
+        )   
+    
+    
+    
+    
+    
+    
+    
+    
+        draw_music(
+            screen,
+            current_width,
+            current_height,
+            background_music,
+            profile_image
         )
         
         draw_back_button(
@@ -1841,15 +2412,162 @@ while running:
             screen,
             call_button_rect
         )
-        image_setter(screen,pathth,current_width//2 - 220,current_height//2 - 666)
-        gif_setting(screen,gif_frames_music,current_width // 2 - 246 // 2,current_height // 2 - 1068     // 2)
+        image_setter(screen,pathth,xyz_for_profile_logo,current_height//2 - 666)
+        gif_setting(screen,gif_frames_music,width_for_profile_logo,current_height//2 - 570)
+
+
+
+
+#---------------------------------- game mode   
+
+    if game_state == "GAME MODE":
+        
+        #----------------- background_and_brids
+        draw_moving_map(
+            screen,
+            WIDTH,
+            HEIGHT,
+            dt    )
+        draw_flying_birds(
+            screen,
+            current_width,
+            current_height
+        )   
+    
+
+        
+        
+        
+        
+        draw_burst_icon(
+            screen,
+            icon_image__,
+            current_width // 2,
+            current_height // 2
+        )
+        
+        # آپدیت اسلاید
+        game_mode_slide.update()
+
+        offset = game_mode_slide.get_offset()
+
+        if offset == 0:
+            current_page_GAME_MODE = 0
+
+        elif offset == -screen.get_width():
+            current_page_GAME_MODE = 1
+
+        elif offset == -screen.get_width() * 2:
+            current_page_GAME_MODE = 2
+
+
+
+        # رسم صفحه‌ها
+        draw_image_MODE_page_1(
+            screen,
+            500,
+            500,
+            offset
+        )
+
+        draw_image_MODE_page_2(
+            screen,
+            500,
+            500,
+            offset + screen.get_width()
+        )
+        
+        draw_image_MODE_page_3(
+            screen,
+            500,
+            500,
+            offset + screen.get_width() * 2,
+            icons
+            
+        )
+        
+        
+        
+        draw_page_indicator(
+            screen,
+            current_page_GAME_MODE,
+            3,
+            screen.get_height() - 80
+        )
+    # if game_state == "GAME MODE":
+    #     if current_page_GAME_MODE == 0:
+    #         # draw_image_MODE_page_1(screen,500,500)        
+
+    #         draw_image_MODE_page_1(
+    #             screen,
+    #             400,
+    #             300,
+    #             current_page_GAME_MODE,
+    #             page_offset_GAME_MODE
+    #         )
+
+
+    #     elif current_page_GAME_MODE == 1:
+    #         draw_image_MODE_page_2(screen,500,500)        
+
+
+    #         draw_image_MODE_page_2(
+    #             screen,
+    #             400,
+    #             300,
+    #             current_page_GAME_MODE,
+    #             page_offset_GAME_MODE
+    #         )
+            
+        
+        # draw_card(screen,square_rect)
+
+            
+    # gallery_button(
+        #     screen,
+        #     gallery_button_rect
+        # )
+        _window(screen,small_window)
+
+
+        draw_back_button(
+        screen,
+        back_button_rect
+        )
+        support_button(
+            screen,
+            support_button_rect
+        )
+        # bug_button(
+        #     screen,
+        #     bug_button_rect
+        # )     
+        call_support(
+            screen,
+            call_button_rect
+        )
+        
+        draw_profile_live_circle(
+            screen,
+            selected_profile_image,
+            p99,
+            current_width
+        )
+        # عکس دایره. برای پروفایل هر صفحه
+        image_setter(screen,pathth,xyz_for_profile_logo,current_height//2 - 666)
+        gif_setting(screen,gif_frames_mode,width_for_profile_logo,current_height // 2 - 570)
 
 
 
 
 
-
-
+    if game_state == "MEMORY":
+        memory_(
+            screen,
+            current_width,
+            current_height
+        )
+        
     #---------------------------------------------------------------------------------STEP5
 
     # if ceill_entered and not time_entered:        
@@ -1903,8 +2621,8 @@ while running:
             call_button_rect
         )
         #-------------------------gif for time
-
-        gif_setting(screen,gif_frames,current_width // 2 - 250 // 2,current_height // 2 - 1085 // 2)
+        image_setter(screen,pathth,xyz_for_profile_logo,current_height//2 - 666)
+        gif_setting(screen,gif_frames,width_for_profile_logo,current_height // 2 - 570)
         
         draw_profile_live_circle(
             screen,
@@ -1931,54 +2649,109 @@ while running:
         
         
         
+    # if game_state == "PLAY ONLINE":
+    #     print("online on the way...")
         
         
         
         
-    #---------------------------------------------------------------------------------TrueFalse
-    if game_state == "?+?":
+
+
+        
+        
         
 
 
 
 
+    # page 1
+   #----------------------------------------------------------------------------------------------------------------
+   #----------------------------------------------------------------------------------------------------------------
+   #----------------------------------------------------------------------------------------------------------------
+    if game_state == "MEMORY":
+        back_setter(screen,MEMORY_BACKGROUND)
+
+        memory_(
+            screen,
+            current_width,
+            current_height
+        )
+        
+        draw_back_button(
+            screen,
+            back_button_rect
+        )
+    #--------------------------------------------------------------------------------
+    if game_state == "SHAPE_COLOR_NAME":
+                
+        back_setter(screen,SHAPE_COLOR_NAME_BACKGROUND)
+        SHAPE_COLOR_NAME(screen,current_width)
+        
+        draw_back_button(
+            screen,
+            back_button_rect
+        )
+    #--------------------------------------------------------------------------------
+    if game_state == "REPEAT_AFTER_ME":
+        back_setter(screen,REPEAT_AFTER_ME_BACKGROUND)
+        REPEAT_AFTER_ME_(screen)
+        
+        
+        draw_back_button(
+            screen,
+            back_button_rect
+        )
+    #--------------------------------------------------------------------------------
+    if game_state == "DIRECTION":
+        back_setter(screen,DIRECTION_BACKGROUND)
+
+        DIRECTION_(screen)
+        
+        
+        draw_back_button(
+            screen,
+            back_button_rect
+        )
+    # #--------------------------------------------------------------------------------
+    if  game_state == "MIRROR":
+        back_setter(screen,MIRROR_BACKGROUND)
+
+        MIRROR_(screen)
+
+        draw_back_button(
+            screen,
+            back_button_rect
+        )
+    #--------------------------------------------------------------------------------
+    if game_state =="ACTION":
+        back_setter(screen,ACTION_BACKGROUND)
+
+        ACTION_(screen)
+        draw_back_button(
+            screen,
+            back_button_rect
+        )
+
+    
+    # page 2
+   #----------------------------------------------------------------------------------------------------------------
+   #----------------------------------------------------------------------------------------------------------------
+   #----------------------------------------------------------------------------------------------------------------
+    if game_state == "FIND_NUMBER":
+        back_setter(screen,FIND_NUMBER_BACKGROUND)
 
 
-
-
-
-
-
-
-        # ---------------- Timer ----------------
+        # ---------------- Timer Calculation ----------------
 
         elapsed = (
             pygame.time.get_ticks() - start_time
         ) / 1000
-
-
-        # ---------------- Timer Circle ----------------
 
         progress = 1 - (
             elapsed / current_question["time"]
         )
 
         progress = max(0, min(1, progress))
-
-
-        draw_timer_circle(
-            screen,
-            # (current_width //2 , current_height //2 + 260),   # مرکز دایره
-            (current_width //2 , current_height //2 + 365),   # مرکز دایره
-            90,                            # شعاع ثابت
-            progress
-        )
-
-
-
-
-
-
 
 
         # ---------------- Question Background ----------------
@@ -1989,24 +2762,6 @@ while running:
             current_width // 2 - 600,
             current_height // 2 - 550
         )
-
-        # print(image_back_quastion.get_size())
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         # ---------------- Hint ----------------
@@ -2021,7 +2776,7 @@ while running:
 
         # ---------------- Question ----------------
 
-        option_rects = draw_question(
+        option_rects = draw_question_find_number(
             screen,
             fonts,
             current_question,
@@ -2030,140 +2785,118 @@ while running:
         )
 
 
-        # # ---------------- Remaining Time ---------------- عدد تایم
+        # ---------------- Timer Circle ----------------
 
-        # remaining_time = max(
-        #     0,
-        #     current_question["time"] - int(elapsed)
-        # )
-
-
-        # timer_text = fonts["heart"].render(
-        #     f"{remaining_time}",
-        #     True,
-        #     (255, 255, 0)
-        # )
+        draw_timer_circle(
+            screen,
+            (160, 160),
+            80,
+            progress
+        )
 
 
-        # screen.blit(
-        #     timer_text,
-        #     (current_width // 2 - 10 ,current_height // 2+ 430)
-        # )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        # ---------------- Timeout ----------------
 
         if elapsed >= current_question["time"]:
 
             wrong_count += 1
 
-
             question_number += 1
-
 
             current_question = generate_missing_number_question(
                 question_number
             )
 
-
             start_time = pygame.time.get_ticks()
 
 
+        # ---------------- Score ----------------
 
         correct_text = fonts["name"].render(
             f"Correct: {correct_count}",
             True,
-            (0,255,0)
+            (0, 255, 0)
         )
 
-
-        
         wrong_text = fonts["name"].render(
             f"Wrong: {wrong_count}",
             True,
-            (255,0,0)
+            (255, 0, 0)
         )
-        
-
 
 
         screen.blit(
             correct_text,
-            (50,50)
+            (50, 50)
         )
-
 
         screen.blit(
             wrong_text,
-            (300,50)
+            (300, 50)
         )
 
-        
-        
-        
+
+        # ---------------- Player ----------------
+
         draw_profile_live_circle(
             screen,
             selected_profile_image,
             p99,
             current_width
         )
-        
-        in_game_button(
+
+
+        # ---------------- UI ----------------
+
+        in_game_alarm(screen)
+
+        move_flage(
             screen,
-            home_button_rect,
-            menu
-        )
-        in_game_button(
-            screen,
-            askus_button_rect,
-            askus
-        )
-        in_game_button(
-            screen,
-            share_button_rect,
-            share
+            current_width // 2 - 154,
+            show_flag
         )
 
+        menuu(screen)
+
+        restart(screen)
+
+        tomar(screen)
+
+        draw_back_button(
+            screen,
+            back_button_rect
+        )
+            # # ---------------- Remaining Time ---------------- عدد تایم
+
+            # remaining_time = max(
+            #     0,
+            #     current_question["time"] - int(elapsed)
+            # )
 
 
+            # timer_text = fonts["heart"].render(
+            #     f"{remaining_time}",
+            #     True,
+            #     (255, 255, 0)
+            # )
 
 
+            # screen.blit(
+            #     timer_text,
+            #     (current_width // 2 - 10 ,current_height // 2+ 430)
+            # )
 
 
-
-
-
-        in_game_alarm(screen)   
-
-        move_flage(screen,current_width//2- 154,show_flag) 
     #---------------------------------------------------------------------------------x?y
-    if game_state == "60s":
+    if game_state == "60S":
+        back_setter(screen,_60S_BACKGROUND)
+
+        
+        SIX_60S(screen,current_width)
+        
+        
+        
+        
         
         draw_profile_live_circle(
             screen,
@@ -2176,23 +2909,16 @@ while running:
             home_button_rect,
             menu
         )
-    #---------------------------------------------------------------------------------60s
-    if game_state == "fast":
+        draw_back_button(
+            screen,
+            back_button_rect
+        )
 
-        draw_profile_live_circle(
-            screen,
-            selected_profile_image,
-            p99,
-            current_width
-        )
-        in_game_button(
-            screen,
-            home_button_rect,
-            menu
-        )
     #---------------------------------------------------------------------------------x(+-/*)y
-    if game_state == "more_less_equal":
+    if game_state == "MORE_LESS_EQUAL":
+        back_setter(screen,MORE_LESS_EQUAL_BACKGROUND)
 
+        MORE_LESS_EQUAL_(screen)
         draw_profile_live_circle(
             screen,
             selected_profile_image,
@@ -2204,9 +2930,16 @@ while running:
             home_button_rect,
             menu
         )
-    #--------------------------------------------------------------------------------->=<
-    if game_state == "TrueFalse":
+        draw_back_button(
+            screen,
+            back_button_rect
+        )
 
+    #--------------------------------------------------------------------------------->=<
+    if game_state == "TRUE_FALSE":
+        back_setter(screen,TRUE_FALSE_BACKGROUND)
+
+        TRUE_FALSE_(screen)
         draw_profile_live_circle(
             screen,
             selected_profile_image,
@@ -2218,9 +2951,17 @@ while running:
             home_button_rect,
             menu
         )
-    #--------------------------------------------------------------------------------->=<
-    if game_state == "y?x":
+        draw_back_button(
+            screen,
+            back_button_rect
+        )
+        
 
+    #--------------------------------------------------------------------------------->=<
+    if game_state == "FIND_OPERATOR":
+        back_setter(screen,FIND_OPERATOR_BACKGROUND)
+
+        FIND_OPERATOR_(screen)
         draw_profile_live_circle(
             screen,
             selected_profile_image,
@@ -2232,55 +2973,48 @@ while running:
             home_button_rect,
             menu
         )
-    #--------------------------------------------------------------------------------->=<
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    #--------------------------------------------------------------------------------->=<
-
-    if game_state == "SHARE":
-
-        draw_profile_live_circle(
+        draw_back_button(
             screen,
-            selected_profile_image,
-            p99,
-            current_width
+            back_button_rect
+        )
+        
+    #--------------------------------------------------------------------------------
+    if game_state =="DETECT":
+        back_setter(screen,DETECT_BACKGROUND)
+
+        print("this is detect")
+        # این منطقش اشتباه است  زمانی که غلط میزنی در بازی 
+        DETECT_(screen,current_width,current_height)
+
+
+        draw_back_button(
+            screen,
+            back_button_rect
         )
 
-        _window(screen,small_window)
+    # page 3
+   #----------------------------------------------------------------------------------------------------------------
+   #----------------------------------------------------------------------------------------------------------------
+   #----------------------------------------------------------------------------------------------------------------
 
 
-    if game_state == "ASK US":
+    
+    if game_state =="FAST":
+        back_setter(screen,FAST_BACKGROUND)
 
-        draw_profile_live_circle(
+        FAST_(screen,current_width)
+        draw_back_button(
             screen,
-            selected_profile_image,
-            p99,
-            current_width
+            back_button_rect
         )
-        _window(screen,small_window)
+
+
+        draw_back_button(
+            screen,
+            back_button_rect
+        )
+
+
 
 
 
@@ -2378,8 +3112,8 @@ while running:
             call_button_rect
         )
                 # عکس دایره. برای پروفایل هر صفحه
-        image_setter(screen,pathth_,current_width//2 - 220,current_height//2 - 666)
-        gif_setting(screen,gif_frames_levels,current_width // 2 - 210 // 2,current_height // 2 - 1000     // 2)
+        image_setter(screen,pathth,xyz_for_profile_logo,current_height//2 - 666)
+        gif_setting(screen,gif_frames_levels,width_for_profile_logo,current_height // 2 - 570)
 
         draw_profile_live_circle(
             screen,
@@ -2388,8 +3122,11 @@ while running:
             current_width
         )
     #---------------------------------------------------------------------------------GAME ---> PLAY
+    # if game_state == "PUNCH":
+
     if  game_state == "CUSTOM GAME":
 
+        back_setter(screen,CUSTOM__GAME)
 
 
 
