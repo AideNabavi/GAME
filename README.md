@@ -1,3 +1,44 @@
-# FAST-MATHTER
-brain game
-comming soon
+# Mental Math Game
+
+Mental Math Game is a mental math challenge project designed to improve calculation speed, accuracy, and concentration through fun and interactive gameplay.
+
+The game is built around the four fundamental mathematical operations:
+
+* Addition
+* Subtraction
+* Multiplication
+* Division
+
+Players can experience different game modes and challenges designed to train their mental calculation skills, improve reaction speed, and make learning mathematics more engaging.
+
+
+## Screenshots
+
+### Main Menu
+![Main Menu](ScreenShots/2.png)
+
+### Setting
+![Game Mode](ScreenShots/1.png)
+
+
+
+## Platforms
+
+The game is planned to be developed for multiple platforms:
+
+* macOS
+* Windows
+* Android
+* iOS
+
+## Features
+
+* Different math challenges and game modes
+* Time-based mental calculations
+* Score and progress system
+* Custom difficulty settings
+* Interactive user interface
+* Multi-language support
+
+## 
+on the way ...
