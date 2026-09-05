@@ -1,83 +1,90 @@
 import pygame
 import random
 
-pygame.init()
+from modules.font import *
+
 
 # =========================================================
 # SETTINGS
 # =========================================================
 
-WIDTH = 1000
-HEIGHT = 700
-
-FPS = 60
-
-# مدت نمایش هر عدد / عملگر
 SHOW_TIME = 0.7
 
-# زمان انتخاب جواب
 ANSWER_TIME = 5.0
 
-# تعداد آیتم‌های عبارت
 ITEM_COUNT = 5
 
-# تعداد گزینه‌ها
 OPTION_COUNT = 4
 
-# تعداد جان
 MAX_LIVES = 3
 
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Quick Math Game")
-
-clock = pygame.time.Clock()
-
-# =========================================================
-# FONTS
-# =========================================================
-
-font_big = pygame.font.Font(None, 130)
-font_medium = pygame.font.Font(None, 70)
-font_small = pygame.font.Font(None, 45)
 
 # =========================================================
 # COLORS
 # =========================================================
 
 WHITE = (255, 255, 255)
+
 BLACK = (20, 20, 20)
+
 GREEN = (60, 220, 100)
+
 RED = (230, 60, 60)
+
 BLUE = (70, 130, 255)
+
+YELLOW = (245, 190, 70)
+
 GRAY = (100, 100, 100)
+
 DARK_GRAY = (40, 40, 40)
+
+HOVER_GRAY = (60, 65, 75)
+
 
 # =========================================================
 # GAME STATES
 # =========================================================
 
 SHOWING = "SHOWING"
+
 ANSWERING = "ANSWERING"
+
 GAME_OVER = "GAME_OVER"
 
-game_state = SHOWING
 
 # =========================================================
 # GAME VARIABLES
 # =========================================================
 
+game_state = SHOWING
+
+
 score = 0
+
 lives = MAX_LIVES
 
+
 items = []
+
 current_item = 0
 
+
+# زمان شروع نمایش آیتم
 show_timer = 0
 
+
+# جواب صحیح
 answer = 0
+
+
+# گزینه‌ها
 options = []
 
-answer_timer = ANSWER_TIME
+
+# زمان شروع انتخاب جواب
+answer_timer = 0
+
 
 # =========================================================
 # CREATE QUESTION
@@ -90,48 +97,96 @@ def create_question():
 
     while True:
 
-        # سه عدد بین 0 تا 100
+        # -------------------------------------------------
+        # Numbers
+        # -------------------------------------------------
+
         numbers = [
-            random.randint(0, 100),
-            random.randint(0, 100),
-            random.randint(0, 100)
+
+            random.randint(
+                0,
+                100
+            ),
+
+            random.randint(
+                0,
+                100
+            ),
+
+            random.randint(
+                0,
+                100
+            )
+
         ]
 
-        # فقط + و -
+        # -------------------------------------------------
+        # Operators
+        # -------------------------------------------------
+
         operators = [
-            random.choice(["+", "-"]),
-            random.choice(["+", "-"])
+
+            random.choice(
+                [
+                    "+",
+                    "-"
+                ]
+            ),
+
+            random.choice(
+                [
+                    "+",
+                    "-"
+                ]
+            )
+
         ]
 
-        # ---------------------------------------------
-        # محاسبه جواب
-        # ---------------------------------------------
+        # -------------------------------------------------
+        # Calculate
+        # -------------------------------------------------
 
         result = numbers[0]
 
-        result = (
-            result + numbers[1]
-            if operators[0] == "+"
-            else result - numbers[1]
-        )
 
-        result = (
-            result + numbers[2]
-            if operators[1] == "+"
-            else result - numbers[2]
-        )
+        if operators[0] == "+":
 
-        # جواب باید بین 0 تا 100 باشد
+            result += numbers[1]
+
+        else:
+
+            result -= numbers[1]
+
+
+        if operators[1] == "+":
+
+            result += numbers[2]
+
+        else:
+
+            result -= numbers[2]
+
+
+        # -------------------------------------------------
+        # Valid answer
+        # -------------------------------------------------
+
         if 0 <= result <= 100:
 
             answer = result
 
             items = [
+
                 str(numbers[0]),
+
                 operators[0],
+
                 str(numbers[1]),
+
                 operators[1],
+
                 str(numbers[2])
+
             ]
 
             return
@@ -145,52 +200,102 @@ def create_options():
 
     global options
 
-    options = [answer]
+    options = [
+
+        answer
+
+    ]
+
 
     while len(options) < OPTION_COUNT:
 
-        # گزینه‌های نزدیک به جواب
-        fake = answer + random.randint(-20, 20)
+        fake = (
+            answer
+            + random.randint(
+                -20,
+                20
+            )
+        )
 
-        # جواب باید بین 0 تا 100 باشد
-        if 0 <= fake <= 100 and fake not in options:
-            options.append(fake)
 
-    random.shuffle(options)
+        if (
+
+            0 <= fake <= 100
+
+            and fake not in options
+
+        ):
+
+            options.append(
+                fake
+            )
+
+
+    random.shuffle(
+        options
+    )
 
 
 # =========================================================
-# START NEW ROUND
+# START ROUND
 # =========================================================
 
 def start_round():
 
     global game_state
+
     global current_item
+
     global show_timer
+
     global answer_timer
+
+
+    # -------------------------------------------------
+    # New question
+    # -------------------------------------------------
 
     create_question()
 
-    current_item = 0
-    show_timer = 0
 
-    answer_timer = ANSWER_TIME
+    # -------------------------------------------------
+    # Reset showing
+    # -------------------------------------------------
+
+    current_item = 0
+
+
+    # زمان شروع نمایش
+    show_timer = pygame.time.get_ticks()
+
+
+    # تایمر جواب فعلاً شروع نشده
+    answer_timer = 0
+
 
     game_state = SHOWING
 
 
 # =========================================================
-# RESTART GAME
+# RESET GAME
 # =========================================================
 
-def restart_game():
+def reset_game():
 
     global score
+
     global lives
 
+    global game_state
+
+
     score = 0
+
     lives = MAX_LIVES
+
+
+    game_state = SHOWING
+
 
     start_round()
 
@@ -199,351 +304,895 @@ def restart_game():
 # DRAW CENTER TEXT
 # =========================================================
 
-def draw_center_text(text, font, color=WHITE, y=HEIGHT // 2):
+def draw_center_text(
+    screen,
+    WIDTH,
+    HEIGHT,
+    text,
+    font,
+    color=WHITE,
+    center_y=None
+):
 
-    surface = font.render(str(text), True, color)
-
-    rect = surface.get_rect(
-        center=(WIDTH // 2, y)
+    surface = font.render(
+        str(text),
+        True,
+        color
     )
 
-    screen.blit(surface, rect)
+
+    if center_y is None:
+
+        center_y = HEIGHT // 2
+
+
+    rect = surface.get_rect(
+
+        center=(
+
+            WIDTH // 2,
+
+            center_y
+
+        )
+
+    )
+
+
+    screen.blit(
+        surface,
+        rect
+    )
 
 
 # =========================================================
 # DRAW HEADER
 # =========================================================
 
-def draw_header():
+def draw_header(
+    screen,
+    WIDTH
+):
 
-    score_text = font_small.render(
+    # -----------------------------------------------------
+    # Score
+    # -----------------------------------------------------
+
+    score_text = fonts["heart"].render(
+
         f"Score: {score}",
+
         True,
+
         WHITE
+
     )
 
-    lives_text = font_small.render(
-        f"Lives: {lives}",
-        True,
-        WHITE
-    )
 
-    screen.blit(score_text, (30, 25))
     screen.blit(
+
+        score_text,
+
+        (
+            30,
+            25
+        )
+
+    )
+
+
+    # -----------------------------------------------------
+    # Lives
+    # -----------------------------------------------------
+
+    lives_text = fonts["heart"].render(
+
+        f"Lives: {lives}",
+
+        True,
+
+        WHITE
+
+    )
+
+
+    screen.blit(
+
         lives_text,
-        (WIDTH - lives_text.get_width() - 30, 25)
+
+        (
+            WIDTH
+            - lives_text.get_width()
+            - 30,
+
+            25
+        )
+
     )
 
 
 # =========================================================
-# DRAW SHOWING PHASE
+# DRAW SHOWING
 # =========================================================
 
-def draw_showing():
+def draw_showing(
+    screen,
+    WIDTH,
+    HEIGHT
+):
 
-    # فقط آیتم فعلی نمایش داده می‌شود
     if current_item < len(items):
 
         draw_center_text(
+
+            screen,
+
+            WIDTH,
+
+            HEIGHT,
+
             items[current_item],
-            font_big,
-            WHITE
+
+            fonts["heart"],
+
+            WHITE,
+
+            HEIGHT // 2
+
         )
 
-    # شماره آیتم
-    progress = font_small.render(
+
+    # -----------------------------------------------------
+    # Progress
+    # -----------------------------------------------------
+
+    progress = fonts["heart"].render(
+
         f"{current_item + 1} / {ITEM_COUNT}",
+
         True,
+
         GRAY
+
     )
 
-    rect = progress.get_rect(
-        center=(WIDTH // 2, HEIGHT - 80)
+
+    progress_rect = progress.get_rect(
+
+        center=(
+
+            WIDTH // 2,
+
+            HEIGHT - 70
+
+        )
+
     )
 
-    screen.blit(progress, rect)
+
+    screen.blit(
+
+        progress,
+
+        progress_rect
+
+    )
 
 
 # =========================================================
-# DRAW ANSWER PHASE
+# BUILD EXPRESSION
 # =========================================================
 
-def draw_answering():
+def get_expression():
 
-    # نکته مهم:
-    # عبارت کامل اینجا نمایش داده نمی‌شود.
+    expression = " ".join(
+        items
+    )
 
-    title = font_medium.render(
-        "Choose the Answer",
+
+    expression = (
+
+        expression
+
+        .replace(
+            "*",
+            "×"
+        )
+
+        .replace(
+            "/",
+            "÷"
+        )
+
+    )
+
+
+    return expression
+
+
+# =========================================================
+# DRAW QUESTION
+# =========================================================
+
+def draw_question(
+    screen,
+    WIDTH,
+    HEIGHT
+):
+
+    expression = get_expression()
+
+
+    draw_center_text(
+
+        screen,
+
+        WIDTH,
+
+        HEIGHT,
+
+        expression + " = ?",
+
+        fonts["heart"],
+
+        WHITE,
+
+        145
+
+    )
+
+
+# =========================================================
+# DRAW TIMER
+# =========================================================
+
+def draw_timer(
+    screen,
+    WIDTH,
+    HEIGHT,
+    remaining
+):
+
+    # -----------------------------------------------------
+    # Color
+    # -----------------------------------------------------
+
+    if remaining <= 1:
+
+        color = RED
+
+    elif remaining <= 2:
+
+        color = YELLOW
+
+    else:
+
+        color = BLUE
+
+
+    # -----------------------------------------------------
+    # Circle
+    # -----------------------------------------------------
+
+    center = (
+
+        WIDTH // 2,
+
+        220
+
+    )
+
+
+    radius = 35
+
+
+    pygame.draw.circle(
+
+        screen,
+
+        DARK_GRAY,
+
+        center,
+
+        radius
+
+    )
+
+
+    pygame.draw.circle(
+
+        screen,
+
+        color,
+
+        center,
+
+        radius,
+
+        4
+
+    )
+
+
+    # -----------------------------------------------------
+    # Number
+    # -----------------------------------------------------
+
+    timer_text = fonts["heart"].render(
+
+        f"{remaining:.1f}",
+
         True,
+
         WHITE
+
     )
 
-    title_rect = title.get_rect(
-        center=(WIDTH // 2, 130)
-    )
-
-    screen.blit(title, title_rect)
-
-    # ---------------------------------------------
-    # TIMER
-    # ---------------------------------------------
-
-    timer_text = font_small.render(
-        f"Time: {max(0, answer_timer):.1f}",
-        True,
-        WHITE
-    )
 
     timer_rect = timer_text.get_rect(
-        center=(WIDTH // 2, 200)
+
+        center=center
+
     )
 
-    screen.blit(timer_text, timer_rect)
 
-    # ---------------------------------------------
-    # OPTIONS
-    # ---------------------------------------------
+    screen.blit(
 
-    button_width = 250
-    button_height = 100
+        timer_text,
 
-    positions = [
-        (WIDTH // 2 - button_width - 30, 300),
-        (WIDTH // 2 + 30, 300),
-        (WIDTH // 2 - button_width - 30, 430),
-        (WIDTH // 2 + 30, 430)
-    ]
+        timer_rect
 
-    for i, value in enumerate(options):
-
-        rect = pygame.Rect(
-            positions[i][0],
-            positions[i][1],
-            button_width,
-            button_height
-        )
-
-        pygame.draw.rect(
-            screen,
-            DARK_GRAY,
-            rect,
-            border_radius=15
-        )
-
-        pygame.draw.rect(
-            screen,
-            BLUE,
-            rect,
-            width=3,
-            border_radius=15
-        )
-
-        text = font_medium.render(
-            str(value),
-            True,
-            WHITE
-        )
-
-        text_rect = text.get_rect(
-            center=rect.center
-        )
-
-        screen.blit(text, text_rect)
+    )
 
 
 # =========================================================
-# GET OPTION RECT
+# GET OPTION RECTS
 # =========================================================
 
-def get_option_rects():
+def get_option_rects(
+    WIDTH,
+    HEIGHT
+):
 
-    button_width = 250
+    button_width = 280
+
     button_height = 100
 
+
+    horizontal_gap = 30
+
+    vertical_gap = 25
+
+
+    # -----------------------------------------------------
+    # Total width of two buttons
+    # -----------------------------------------------------
+
+    total_width = (
+
+        button_width * 2
+
+        + horizontal_gap
+
+    )
+
+
+    start_x = (
+
+        WIDTH
+        - total_width
+
+    ) // 2
+
+
+    # پایین صفحه
+    start_y = HEIGHT - 310
+
+
     positions = [
-        (WIDTH // 2 - button_width - 30, 300),
-        (WIDTH // 2 + 30, 300),
-        (WIDTH // 2 - button_width - 30, 430),
-        (WIDTH // 2 + 30, 430)
+
+        (
+
+            start_x,
+
+            start_y
+
+        ),
+
+        (
+
+            start_x
+            + button_width
+            + horizontal_gap,
+
+            start_y
+
+        ),
+
+        (
+
+            start_x,
+
+            start_y
+            + button_height
+            + vertical_gap
+
+        ),
+
+        (
+
+            start_x
+            + button_width
+            + horizontal_gap,
+
+            start_y
+            + button_height
+            + vertical_gap
+
+        )
+
     ]
+
 
     rects = []
+
 
     for x, y in positions:
 
         rects.append(
+
             pygame.Rect(
+
                 x,
+
                 y,
+
                 button_width,
+
                 button_height
+
             )
+
         )
 
+
     return rects
+
+
+# =========================================================
+# DRAW ANSWERS
+# =========================================================
+
+def draw_answering(
+    screen,
+    WIDTH,
+    HEIGHT,
+    remaining
+):
+
+    # -----------------------------------------------------
+    # Question
+    # -----------------------------------------------------
+
+    draw_question(
+
+        screen,
+
+        WIDTH,
+
+        HEIGHT
+
+    )
+
+
+    # -----------------------------------------------------
+    # Timer
+    # -----------------------------------------------------
+
+    draw_timer(
+
+        screen,
+
+        WIDTH,
+
+        HEIGHT,
+
+        remaining
+
+    )
+
+
+    # -----------------------------------------------------
+    # Buttons
+    # -----------------------------------------------------
+
+    rects = get_option_rects(
+
+        WIDTH,
+
+        HEIGHT
+
+    )
+
+
+    mouse = pygame.mouse.get_pos()
+
+
+    for i, rect in enumerate(rects):
+
+        # -------------------------------------------------
+        # Hover
+        # -------------------------------------------------
+
+        if rect.collidepoint(mouse):
+
+            color = HOVER_GRAY
+
+        else:
+
+            color = DARK_GRAY
+
+
+        # -------------------------------------------------
+        # Background
+        # -------------------------------------------------
+
+        pygame.draw.rect(
+
+            screen,
+
+            color,
+
+            rect,
+
+            border_radius=18
+
+        )
+
+
+        # -------------------------------------------------
+        # Border
+        # -------------------------------------------------
+
+        pygame.draw.rect(
+
+            screen,
+
+            BLUE,
+
+            rect,
+
+            width=3,
+
+            border_radius=18
+
+        )
+
+
+        # -------------------------------------------------
+        # Answer
+        # -------------------------------------------------
+
+        text = fonts["heart"].render(
+
+            str(options[i]),
+
+            True,
+
+            WHITE
+
+        )
+
+
+        text_rect = text.get_rect(
+
+            center=rect.center
+
+        )
+
+
+        screen.blit(
+
+            text,
+
+            text_rect
+
+        )
+
+
+        # -------------------------------------------------
+        # Option number
+        # -------------------------------------------------
+
+        index_text = fonts["heart"].render(
+
+            str(i + 1),
+
+            True,
+
+            GRAY
+
+        )
+
+
+        index_rect = index_text.get_rect(
+
+            center=(
+
+                rect.x + 25,
+
+                rect.y + 25
+
+            )
+
+        )
+
+
+        screen.blit(
+
+            index_text,
+
+            index_rect
+
+        )
+
+
+# =========================================================
+# SELECT ANSWER
+# =========================================================
+
+def select_answer(
+    selected
+):
+
+    global score
+
+    global lives
+
+    global game_state
+
+
+    # -----------------------------------------------------
+    # Correct
+    # -----------------------------------------------------
+
+    if selected == answer:
+
+        score += 100
+
+        start_round()
+
+
+    # -----------------------------------------------------
+    # Wrong
+    # -----------------------------------------------------
+
+    else:
+
+        lives -= 1
+
+
+        if lives <= 0:
+
+            game_state = GAME_OVER
+
+        else:
+
+            start_round()
+
+
+# =========================================================
+# CLICK OPTION
+# =========================================================
+
+def click_option(
+    position,
+    WIDTH,
+    HEIGHT
+):
+
+    if game_state != ANSWERING:
+
+        return
+
+
+    rects = get_option_rects(
+
+        WIDTH,
+
+        HEIGHT
+
+    )
+
+
+    for i, rect in enumerate(rects):
+
+        if rect.collidepoint(position):
+
+            select_answer(
+
+                options[i]
+
+            )
+
+            return
 
 
 # =========================================================
 # DRAW GAME OVER
 # =========================================================
 
-def draw_game_over():
+def draw_game_over(
+    screen,
+    WIDTH,
+    HEIGHT
+):
 
     draw_center_text(
+
+        screen,
+
+        WIDTH,
+
+        HEIGHT,
+
         "GAME OVER",
-        font_big,
+
+        fonts["heart"],
+
         RED,
+
         HEIGHT // 2 - 80
+
     )
 
-    score_text = font_medium.render(
+
+    draw_center_text(
+
+        screen,
+
+        WIDTH,
+
+        HEIGHT,
+
         f"Final Score: {score}",
-        True,
-        WHITE
+
+        fonts["heart"],
+
+        WHITE,
+
+        HEIGHT // 2 + 20
+
     )
 
-    score_rect = score_text.get_rect(
-        center=(WIDTH // 2, HEIGHT // 2 + 30)
-    )
 
-    screen.blit(score_text, score_rect)
+    draw_center_text(
 
-    restart_text = font_small.render(
+        screen,
+
+        WIDTH,
+
+        HEIGHT,
+
         "Press R to Restart",
-        True,
-        GRAY
+
+        fonts["heart"],
+
+        GRAY,
+
+        HEIGHT // 2 + 100
+
     )
 
-    restart_rect = restart_text.get_rect(
-        center=(WIDTH // 2, HEIGHT // 2 + 110)
-    )
+def restart_game():
 
-    screen.blit(restart_text, restart_rect)
+    global score
+    global lives
+    global game_state
 
+    score = 0
+    lives = MAX_LIVES
+
+    game_state = SHOWING
+
+    start_round()
 
 # =========================================================
-# MAIN LOOP
+# MAIN GAME
 # =========================================================
 
-create_question()
+def QUICK_MATH(screen):
 
-running = True
+    global game_state
 
-while running:
+    global current_item
 
-    # dt بر حسب ثانیه
-    dt = clock.tick(FPS) / 1000.0
+    global show_timer
 
-    # =====================================================
-    # EVENTS
-    # =====================================================
+    global answer_timer
 
-    for event in pygame.event.get():
 
-        if event.type == pygame.QUIT:
-            running = False
+    WIDTH, HEIGHT = screen.get_size()
 
-        # ---------------------------------------------
-        # KEYBOARD
-        # ---------------------------------------------
-
-        if event.type == pygame.KEYDOWN:
-
-            # فقط در Game Over
-            if game_state == GAME_OVER:
-
-                if event.key == pygame.K_r:
-
-                    restart_game()
-
-        # ---------------------------------------------
-        # MOUSE
-        # ---------------------------------------------
-
-        if event.type == pygame.MOUSEBUTTONDOWN:
-
-            if game_state == ANSWERING:
-
-                mouse_pos = event.pos
-
-                rects = get_option_rects()
-
-                for i, rect in enumerate(rects):
-
-                    if rect.collidepoint(mouse_pos):
-
-                        selected = options[i]
-
-                        # ---------------------------------
-                        # CORRECT
-                        # ---------------------------------
-
-                        if selected == answer:
-
-                            score += 1
-
-                        # ---------------------------------
-                        # WRONG
-                        # ---------------------------------
-
-                        else:
-
-                            lives -= 1
-
-                        # ---------------------------------
-                        # GAME OVER
-                        # ---------------------------------
-
-                        if lives <= 0:
-
-                            game_state = GAME_OVER
-
-                        else:
-
-                            start_round()
-
-                        break
 
     # =====================================================
-    # GAME LOGIC
+    # CURRENT TIME
+    # =====================================================
+
+    now = pygame.time.get_ticks()
+
+
+    # =====================================================
+    # SHOWING
     # =====================================================
 
     if game_state == SHOWING:
 
-        show_timer += dt
+        # -----------------------------------------------
+        # How long current item has been visible
+        # -----------------------------------------------
 
-        # زمان نمایش آیتم تمام شد
-        if show_timer >= SHOW_TIME:
+        elapsed = (
 
-            show_timer = 0
+            now
+            - show_timer
+
+        )
+
+
+        if elapsed >= SHOW_TIME * 1000:
+
+            show_timer = now
 
             current_item += 1
 
-            # ---------------------------------------------
-            # 5 آیتم تمام شد
-            # ---------------------------------------------
+
+            # -------------------------------------------
+            # All items finished
+            # -------------------------------------------
 
             if current_item >= ITEM_COUNT:
 
                 create_options()
 
-                answer_timer = ANSWER_TIME
+
+                # زمان شروع انتخاب جواب
+                answer_timer = now
+
 
                 game_state = ANSWERING
 
+
     # =====================================================
-    # ANSWERING TIMER
+    # ANSWERING
     # =====================================================
 
     elif game_state == ANSWERING:
 
-        answer_timer -= dt
+        elapsed = (
 
-        # زمان تمام شد
-        if answer_timer <= 0:
+            now
+            - answer_timer
+
+        )
+
+
+        remaining = (
+
+            ANSWER_TIME
+            - elapsed / 1000
+
+        )
+
+
+        # -----------------------------------------------
+        # Time Up
+        # -----------------------------------------------
+
+        if remaining <= 0:
 
             lives -= 1
+
 
             if lives <= 0:
 
@@ -553,27 +1202,97 @@ while running:
 
                 start_round()
 
+
     # =====================================================
     # DRAW
     # =====================================================
 
-    screen.fill(BLACK)
+    screen.fill(
+        BLACK
+    )
 
-    draw_header()
+
+    draw_header(
+
+        screen,
+
+        WIDTH
+
+    )
+
+
+    # =====================================================
+    # SHOWING
+    # =====================================================
 
     if game_state == SHOWING:
 
-        draw_showing()
+        draw_showing(
+
+            screen,
+
+            WIDTH,
+
+            HEIGHT
+
+        )
+
+
+    # =====================================================
+    # ANSWERING
+    # =====================================================
 
     elif game_state == ANSWERING:
 
-        draw_answering()
+        elapsed = (
+
+            now
+            - answer_timer
+
+        )
+
+
+        remaining = max(
+
+            0,
+
+            ANSWER_TIME
+            - elapsed / 1000
+
+        )
+
+
+        draw_answering(
+
+            screen,
+
+            WIDTH,
+
+            HEIGHT,
+
+            remaining
+
+        )
+
+
+    # =====================================================
+    # GAME OVER
+    # =====================================================
 
     elif game_state == GAME_OVER:
 
-        draw_game_over()
+        draw_game_over(
 
-    pygame.display.flip()
+            screen,
+
+            WIDTH,
+
+            HEIGHT
+
+        )
 
 
-pygame.quit()
+# =========================================================
+# INITIAL START
+# =========================================================
+

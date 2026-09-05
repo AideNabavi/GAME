@@ -2,26 +2,7 @@ import pygame
 import random
 import sys
 
-
-pygame.init()
-
-
-# ============================================================
-# SCREEN
-# ============================================================
-
-WIDTH = 1200
-HEIGHT = 800
-
-screen = pygame.display.set_mode(
-    (WIDTH, HEIGHT)
-)
-
-pygame.display.set_caption(
-    "Mental Math Challenge"
-)
-
-clock = pygame.time.Clock()
+from modules.font import *
 
 
 # ============================================================
@@ -42,28 +23,15 @@ YELLOW = (245, 190, 70)
 
 
 # ============================================================
-# FONTS
-# ============================================================
-
-font_title = pygame.font.Font(None, 48)
-font_question = pygame.font.Font(None, 52)
-font_option = pygame.font.Font(None, 36)
-font_normal = pygame.font.Font(None, 28)
-font_small = pygame.font.Font(None, 22)
-font_result = pygame.font.Font(None, 70)
-
-
-# ============================================================
 # SETTINGS
 # ============================================================
 
 QUESTION_TIME = 10
-
 TOTAL_OPTIONS = 4
 
 
 # ============================================================
-# GAME
+# GAME VARIABLES
 # ============================================================
 
 question_number = 1
@@ -71,7 +39,6 @@ question_number = 1
 score = 0
 
 correct_answers = 0
-
 wrong_answers = 0
 
 time_left = QUESTION_TIME
@@ -79,7 +46,6 @@ time_left = QUESTION_TIME
 question_start_time = 0
 
 current_expression = ""
-
 current_answer = 0
 
 options = []
@@ -87,9 +53,7 @@ options = []
 state = "PLAY"
 
 result_text = ""
-
 result_color = WHITE
-
 result_start_time = 0
 
 
@@ -109,19 +73,10 @@ def get_max_number():
 # CALCULATE EXPRESSION
 # ============================================================
 
-def calculate_expression(
-    numbers,
-    operators
-):
-
-    # --------------------------------------------------------
-    # Work on copies
-    # --------------------------------------------------------
+def calculate_expression(numbers, operators):
 
     nums = numbers[:]
-
     ops = operators[:]
-
 
     # --------------------------------------------------------
     # Multiplication / Division first
@@ -134,23 +89,15 @@ def calculate_expression(
         if ops[i] in ("*", "/"):
 
             a = nums[i]
-
             b = nums[i + 1]
-
-
-            # Division must be integer
 
             if ops[i] == "/":
 
                 if b == 0:
-
                     return None
-
 
                 if a % b != 0:
-
                     return None
-
 
                 result = a // b
 
@@ -158,24 +105,20 @@ def calculate_expression(
 
                 result = a * b
 
-
             nums[i] = result
 
             del nums[i + 1]
-
             del ops[i]
 
         else:
 
             i += 1
 
-
     # --------------------------------------------------------
     # Addition / subtraction
     # --------------------------------------------------------
 
     result = nums[0]
-
 
     for i, op in enumerate(ops):
 
@@ -186,7 +129,6 @@ def calculate_expression(
         elif op == "-":
 
             result -= nums[i + 1]
-
 
     return result
 
@@ -199,82 +141,49 @@ def create_random_expression():
 
     max_number = get_max_number()
 
-
     # --------------------------------------------------------
     # Number of operations
-    #
-    # Early game:
-    # 2-4 operations
-    #
-    # Later:
-    # 3-6 operations
     # --------------------------------------------------------
 
     if question_number <= 10:
 
-        operation_count = random.randint(
-            2,
-            4
-        )
+        operation_count = random.randint(2, 4)
 
     elif question_number <= 30:
 
-        operation_count = random.randint(
-            3,
-            5
-        )
+        operation_count = random.randint(3, 5)
 
     else:
 
-        operation_count = random.randint(
-            3,
-            6
-        )
-
+        operation_count = random.randint(3, 6)
 
     # --------------------------------------------------------
-    # Generate many times until valid
+    # Try to create valid expression
     # --------------------------------------------------------
 
     for attempt in range(100):
 
         numbers = []
-
         operators = []
-
 
         # ----------------------------------------------------
         # Generate numbers
         # ----------------------------------------------------
 
-        for i in range(
-            operation_count + 1
-        ):
-
-            # Multiplication and division
-            # use smaller numbers so that
-            # answers don't explode.
+        for i in range(operation_count + 1):
 
             number = random.randint(
                 1,
-                min(
-                    max_number,
-                    30
-                )
+                min(max_number, 30)
             )
 
-            numbers.append(
-                number
-            )
-
+            numbers.append(number)
 
         # ----------------------------------------------------
         # Generate operators
         # ----------------------------------------------------
 
-        for i in range(
-            operation_count
-        ):
+        for i in range(operation_count):
 
             operator = random.choice(
                 [
@@ -285,41 +194,29 @@ def create_random_expression():
                 ]
             )
 
-            operators.append(
-                operator
-            )
-
+            operators.append(operator)
 
         # ----------------------------------------------------
         # Force valid divisions
         # ----------------------------------------------------
 
-        for i, op in enumerate(
-            operators
-        ):
+        for i, op in enumerate(operators):
 
             if op == "/":
 
                 divisor = numbers[i]
 
-                # Change next number so division
-                # becomes clean.
-
                 multiplier = random.randint(
                     1,
-                    min(
-                        20,
-                        max_number
-                    )
+                    min(20, max_number // max(1, divisor))
                 )
 
                 numbers[i + 1] = (
                     divisor * multiplier
                 )
 
-
         # ----------------------------------------------------
-        # Calculate
+        # Calculate normal expression
         # ----------------------------------------------------
 
         answer = calculate_expression(
@@ -327,36 +224,16 @@ def create_random_expression():
             operators
         )
 
-
         if answer is None:
-
             continue
-
-
-        # Avoid very large or negative answers.
-
-        if answer < 0:
-
-            continue
-
-
-        if answer > max_number:
-
-            continue
-
 
         # ----------------------------------------------------
-        # Build expression
+        # Parentheses
         # ----------------------------------------------------
 
-        expression = str(
-            numbers[0]
-        )
+        expression = str(numbers[0])
 
-
-        for i, operator in enumerate(
-            operators
-        ):
+        for i, operator in enumerate(operators):
 
             expression += (
                 " "
@@ -364,11 +241,6 @@ def create_random_expression():
                 + " "
                 + str(numbers[i + 1])
             )
-
-
-        # ----------------------------------------------------
-        # Random parentheses
-        # ----------------------------------------------------
 
         if (
             operation_count >= 3
@@ -382,57 +254,17 @@ def create_random_expression():
 
             end = start + 1
 
-
-            left = ""
-
-            for i in range(
-                start,
-                end + 2
-            ):
-
-                if i == start:
-
-                    left += "("
-
-                left += str(
-                    numbers[i]
-                )
-
-                if i < end + 1:
-
-                    left += (
-                        " "
-                        + operators[i]
-                        + " "
-                    )
-
-
-            left += ")"
-
-
-            # Build again with parentheses.
-
             expression = ""
 
-
-            for i in range(
-                operation_count + 1
-            ):
+            for i in range(operation_count + 1):
 
                 if i == start:
-
                     expression += "("
 
+                expression += str(numbers[i])
 
-                expression += str(
-                    numbers[i]
-                )
-
-
-                if i == end + 1:
-
+                if i == end:
                     expression += ")"
-
 
                 if i < operation_count:
 
@@ -442,53 +274,49 @@ def create_random_expression():
                         + " "
                     )
 
+            # ------------------------------------------------
+            # Evaluate expression
+            # ------------------------------------------------
 
-            # Evaluate parentheses correctly
             try:
 
                 answer = int(
                     eval(
-                        expression
+                        expression,
+                        {
+                            "__builtins__": {}
+                        }
                     )
                 )
 
-            except:
+            except Exception:
 
                 continue
-
-
-            if answer < 0:
-
-                continue
-
-
-            if answer > max_number:
-
-                continue
-
 
         # ----------------------------------------------------
-        # Convert symbols
+        # Validate answer
+        # ----------------------------------------------------
+
+        if answer < 0:
+            continue
+
+        if answer > max_number:
+            continue
+
+        # ----------------------------------------------------
+        # Convert symbols for display
         # ----------------------------------------------------
 
         display_expression = (
             expression
-            .replace(
-                "*",
-                "×"
-            )
-            .replace(
-                "/",
-                "÷"
-            )
+            .replace("*", "×")
+            .replace("/", "÷")
         )
-
 
         return (
             display_expression,
             answer
         )
-
 
     # --------------------------------------------------------
     # Fallback
@@ -513,21 +341,18 @@ def create_question():
     global question_start_time
     global state
 
-
     (
         current_expression,
         current_answer
     ) = create_random_expression()
 
-
     # --------------------------------------------------------
-    # Options
+    # Create answer options
     # --------------------------------------------------------
 
     options = [
         current_answer
     ]
-
 
     while len(options) < TOTAL_OPTIONS:
 
@@ -539,7 +364,6 @@ def create_question():
             )
         )
 
-
         wrong_answer = random.choice(
             [
                 current_answer + difference,
@@ -547,26 +371,17 @@ def create_question():
             ]
         )
 
-
         if wrong_answer < 0:
-
             continue
-
 
         if wrong_answer in options:
-
             continue
-
 
         options.append(
             wrong_answer
         )
 
-
-    random.shuffle(
-        options
-    )
-
+    random.shuffle(options)
 
     # --------------------------------------------------------
     # Timer
@@ -574,9 +389,7 @@ def create_question():
 
     time_left = QUESTION_TIME
 
-    question_start_time = (
-        pygame.time.get_ticks()
-    )
+    question_start_time = pygame.time.get_ticks()
 
     state = "PLAY"
 
@@ -586,6 +399,7 @@ def create_question():
 # ============================================================
 
 def draw_text(
+    screen,
     value,
     font,
     color,
@@ -612,11 +426,12 @@ def draw_text(
 # HEADER
 # ============================================================
 
-def draw_header():
+def draw_header(screen, WIDTH):
 
     draw_text(
+        screen,
         "MENTAL MATH",
-        font_title,
+        fonts["heart"],
         WHITE,
         (
             WIDTH // 2,
@@ -624,11 +439,10 @@ def draw_header():
         )
     )
 
-
     draw_text(
-        "Question "
-        + str(question_number),
-        font_normal,
+        screen,
+        "Question " + str(question_number),
+        fonts["heart"],
         WHITE,
         (
             110,
@@ -636,11 +450,10 @@ def draw_header():
         )
     )
 
-
     draw_text(
-        "Score: "
-        + str(score),
-        font_normal,
+        screen,
+        "Score: " + str(score),
+        fonts["heart"],
         WHITE,
         (
             WIDTH - 100,
@@ -648,12 +461,59 @@ def draw_header():
         )
     )
 
+def reset_game():
+
+    global question_number
+    global score
+    global correct_answers
+    global wrong_answers
+    global time_left
+    global question_start_time
+    global current_expression
+    global current_answer
+    global options
+    global state
+    global result_text
+    global result_color
+    global result_start_time
+
+    # --------------------------------------------------------
+    # RESET GAME
+    # --------------------------------------------------------
+
+    question_number = 1
+
+    score = 0
+
+    correct_answers = 0
+    wrong_answers = 0
+
+    time_left = QUESTION_TIME
+
+    question_start_time = 0
+
+    current_expression = ""
+    current_answer = 0
+
+    options = []
+
+    state = "PLAY"
+
+    result_text = ""
+    result_color = WHITE
+    result_start_time = 0
+
+    # --------------------------------------------------------
+    # CREATE FIRST QUESTION
+    # --------------------------------------------------------
+
+    create_question()
 
 # ============================================================
 # TIMER
 # ============================================================
 
-def draw_timer():
+def draw_timer(screen, WIDTH):
 
     center = (
         WIDTH // 2,
@@ -661,7 +521,6 @@ def draw_timer():
     )
 
     radius = 42
-
 
     if time_left <= 3:
 
@@ -675,14 +534,12 @@ def draw_timer():
 
         color = BLUE
 
-
     pygame.draw.circle(
         screen,
         CARD,
         center,
         radius
     )
-
 
     pygame.draw.circle(
         screen,
@@ -692,10 +549,10 @@ def draw_timer():
         5
     )
 
-
     draw_text(
+        screen,
         time_left,
-        font_normal,
+        fonts["heart"],
         WHITE,
         center
     )
@@ -705,20 +562,21 @@ def draw_timer():
 # DRAW QUESTION
 # ============================================================
 
-def draw_question():
+def draw_question(screen, WIDTH, HEIGHT):
 
     screen.fill(
         BACKGROUND
     )
 
-
-    draw_header()
-
+    draw_header(
+        screen,
+        WIDTH
+    )
 
     draw_text(
-        "Range: 1 - "
-        + str(get_max_number()),
-        font_small,
+        screen,
+        "Range: 1 - " + str(get_max_number()),
+        fonts["heart"],
         GRAY,
         (
             WIDTH // 2,
@@ -726,18 +584,19 @@ def draw_question():
         )
     )
 
-
-    draw_timer()
-
+    draw_timer(
+        screen,
+        WIDTH
+    )
 
     # --------------------------------------------------------
     # Expression
     # --------------------------------------------------------
 
     draw_text(
-        current_expression
-        + " = ?",
-        font_question,
+        screen,
+        current_expression + " = ?",
+        fonts["heart"],
         WHITE,
         (
             WIDTH // 2,
@@ -745,19 +604,16 @@ def draw_question():
         )
     )
 
-
     # --------------------------------------------------------
     # Options
     # --------------------------------------------------------
 
     option_width = 300
-
     option_height = 100
-
     gap = 25
 
-
     positions = [
+
         (
             WIDTH // 2
             - option_width
@@ -783,18 +639,14 @@ def draw_question():
             + gap // 2,
             475
         )
-    ]
 
+    ]
 
     mouse = pygame.mouse.get_pos()
 
-
-    for i, option in enumerate(
-        options
-    ):
+    for i, option in enumerate(options):
 
         x, y = positions[i]
-
 
         rect = pygame.Rect(
             x,
@@ -803,10 +655,7 @@ def draw_question():
             option_height
         )
 
-
-        if rect.collidepoint(
-            mouse
-        ):
+        if rect.collidepoint(mouse):
 
             color = HOVER
 
@@ -814,14 +663,12 @@ def draw_question():
 
             color = CARD
 
-
         pygame.draw.rect(
             screen,
             color,
             rect,
             border_radius=20
         )
-
 
         pygame.draw.rect(
             screen,
@@ -831,18 +678,18 @@ def draw_question():
             border_radius=20
         )
 
-
         draw_text(
+            screen,
             option,
-            font_option,
+            fonts["heart"],
             WHITE,
             rect.center
         )
 
-
         draw_text(
+            screen,
             i + 1,
-            font_small,
+            fonts["heart"],
             GRAY,
             (
                 rect.x + 25,
@@ -850,15 +697,14 @@ def draw_question():
             )
         )
 
-
     # --------------------------------------------------------
     # Statistics
     # --------------------------------------------------------
 
     draw_text(
-        "Correct: "
-        + str(correct_answers),
-        font_small,
+        screen,
+        "Correct: " + str(correct_answers),
+        fonts["heart"],
         GREEN,
         (
             WIDTH // 2 - 100,
@@ -866,11 +712,10 @@ def draw_question():
         )
     )
 
-
     draw_text(
-        "Wrong: "
-        + str(wrong_answers),
-        font_small,
+        screen,
+        "Wrong: " + str(wrong_answers),
+        fonts["heart"],
         RED,
         (
             WIDTH // 2 + 100,
@@ -880,22 +725,24 @@ def draw_question():
 
 
 # ============================================================
-# RESULT
+# DRAW RESULT
 # ============================================================
 
-def draw_result():
+def draw_result(screen, WIDTH, HEIGHT):
 
     screen.fill(
         BACKGROUND
     )
 
-
-    draw_header()
-
+    draw_header(
+        screen,
+        WIDTH
+    )
 
     draw_text(
+        screen,
         result_text,
-        font_result,
+        fonts["heart"],
         result_color,
         (
             WIDTH // 2,
@@ -908,9 +755,7 @@ def draw_result():
 # ANSWER
 # ============================================================
 
-def answer_question(
-    selected_answer
-):
+def answer_question(selected_answer):
 
     global question_number
     global score
@@ -920,7 +765,6 @@ def answer_question(
     global result_text
     global result_color
     global result_start_time
-
 
     if selected_answer == current_answer:
 
@@ -940,10 +784,7 @@ def answer_question(
 
         result_color = RED
 
-
-    result_start_time = (
-        pygame.time.get_ticks()
-    )
+    result_start_time = pygame.time.get_ticks()
 
     state = "RESULT"
 
@@ -961,21 +802,17 @@ def check_timer():
     global result_color
     global result_start_time
 
-
     now = pygame.time.get_ticks()
-
 
     elapsed = (
         now - question_start_time
     )
-
 
     time_left = max(
         0,
         QUESTION_TIME
         - elapsed // 1000
     )
-
 
     if time_left <= 0:
 
@@ -994,18 +831,14 @@ def check_timer():
 # CLICK OPTION
 # ============================================================
 
-def click_option(
-    position
-):
+def click_option(position, WIDTH):
 
     option_width = 300
-
     option_height = 100
-
     gap = 25
 
-
     positions = [
+
         (
             WIDTH // 2
             - option_width
@@ -1031,12 +864,10 @@ def click_option(
             + gap // 2,
             475
         )
+
     ]
 
-
-    for i, option in enumerate(
-        options
-    ):
+    for i, option in enumerate(options):
 
         rect = pygame.Rect(
             positions[i][0],
@@ -1045,10 +876,7 @@ def click_option(
             option_height
         )
 
-
-        if rect.collidepoint(
-            position
-        ):
+        if rect.collidepoint(position):
 
             answer_question(
                 option
@@ -1061,62 +889,27 @@ def click_option(
 # START
 # ============================================================
 
-create_question()
+
 
 
 # ============================================================
-# MAIN LOOP
+# MAIN GAME FUNCTION
 # ============================================================
 
-running = True
+def MATH_GO_(screen):
 
+    WIDTH, HEIGHT = screen.get_size()
 
-while running:
-
-    # ========================================================
+    # --------------------------------------------------------
     # EVENTS
-    # ========================================================
+    # --------------------------------------------------------
 
     for event in pygame.event.get():
 
         if event.type == pygame.QUIT:
 
-            running = False
-
-
-        if event.type == pygame.KEYDOWN:
-
-            if event.key == pygame.K_ESCAPE:
-
-                running = False
-
-
-            if state == "PLAY":
-
-                if event.key == pygame.K_1:
-
-                    answer_question(
-                        options[0]
-                    )
-
-                elif event.key == pygame.K_2:
-
-                    answer_question(
-                        options[1]
-                    )
-
-                elif event.key == pygame.K_3:
-
-                    answer_question(
-                        options[2]
-                    )
-
-                elif event.key == pygame.K_4:
-
-                    answer_question(
-                        options[3]
-                    )
-
+            pygame.quit()
+            sys.exit()
 
         if event.type == pygame.MOUSEBUTTONDOWN:
 
@@ -1125,56 +918,43 @@ while running:
                 if state == "PLAY":
 
                     click_option(
-                        event.pos
+                        event.pos,
+                        WIDTH
                     )
 
-
-    # ========================================================
+    # --------------------------------------------------------
     # PLAY
-    # ========================================================
+    # --------------------------------------------------------
 
     if state == "PLAY":
 
         check_timer()
 
-        draw_question()
+        draw_question(
+            screen,
+            WIDTH,
+            HEIGHT
+        )
 
-
-    # ========================================================
+    # --------------------------------------------------------
     # RESULT
-    # ========================================================
+    # --------------------------------------------------------
 
     elif state == "RESULT":
 
-        draw_result()
-
+        draw_result(
+            screen,
+            WIDTH,
+            HEIGHT
+        )
 
         now = pygame.time.get_ticks()
-
 
         if (
             now - result_start_time
             >= 700
         ):
 
-            question_number += 1
+            globals()["question_number"] += 1
 
             create_question()
-
-
-    # ========================================================
-    # DISPLAY
-    # ========================================================
-
-    pygame.display.flip()
-
-    clock.tick(60)
-
-
-# ============================================================
-# QUIT
-# ============================================================
-
-pygame.quit()
-
-sys.exit()

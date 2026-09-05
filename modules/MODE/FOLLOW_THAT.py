@@ -1,27 +1,7 @@
 import pygame
 import random
-import sys
 
-
-pygame.init()
-
-
-# ============================================================
-# SCREEN
-# ============================================================
-
-WIDTH = 1200
-HEIGHT = 800
-
-screen = pygame.display.set_mode(
-    (WIDTH, HEIGHT)
-)
-
-pygame.display.set_caption(
-    "Path Memory"
-)
-
-clock = pygame.time.Clock()
+from modules.font import *
 
 
 # ============================================================
@@ -31,45 +11,16 @@ clock = pygame.time.Clock()
 BACKGROUND = (20, 23, 32)
 
 POINT_COLOR = (80, 170, 255)
-
 POINT_ACTIVE = (90, 220, 140)
 
 LINE_COLOR = (80, 170, 255)
-
 PLAYER_LINE_COLOR = (255, 190, 70)
 
 WHITE = (245, 245, 245)
-
 GRAY = (150, 155, 165)
 
 RED = (230, 70, 80)
-
 GREEN = (70, 210, 120)
-
-
-# ============================================================
-# FONTS
-# ============================================================
-
-font_title = pygame.font.Font(
-    None,
-    48
-)
-
-font_normal = pygame.font.Font(
-    None,
-    30
-)
-
-font_small = pygame.font.Font(
-    None,
-    22
-)
-
-font_big = pygame.font.Font(
-    None,
-    64
-)
 
 
 # ============================================================
@@ -77,15 +28,12 @@ font_big = pygame.font.Font(
 # ============================================================
 
 POINT_RADIUS = 14
-
 CLICK_RADIUS = 32
 
 LINE_WIDTH = 6
-
 PLAYER_LINE_WIDTH = 7
 
 SHOW_TIME = 1200
-
 RESULT_TIME = 900
 
 
@@ -94,7 +42,6 @@ RESULT_TIME = 900
 # ============================================================
 
 level = 1
-
 score = 0
 
 state = "SHOW"
@@ -105,7 +52,6 @@ state = "SHOW"
 # ============================================================
 
 path = []
-
 player_path = []
 
 current_player_point = 0
@@ -116,12 +62,14 @@ current_player_point = 0
 # ============================================================
 
 show_start_time = 0
-
 result_start_time = 0
 
 
-result_text = ""
+# ============================================================
+# RESULT
+# ============================================================
 
+result_text = ""
 result_color = WHITE
 
 
@@ -130,6 +78,7 @@ result_color = WHITE
 # ============================================================
 
 def draw_text(
+    screen,
     value,
     font,
     color,
@@ -156,26 +105,19 @@ def draw_text(
 # DISTANCE
 # ============================================================
 
-def distance(
-    p1,
-    p2
-):
+def distance(p1, p2):
 
     dx = p1[0] - p2[0]
-
     dy = p1[1] - p2[1]
 
-    return (
-        dx * dx
-        + dy * dy
-    ) ** 0.5
+    return (dx * dx + dy * dy) ** 0.5
 
 
 # ============================================================
 # CREATE PATH
 # ============================================================
 
-def create_path():
+def create_path(WIDTH, HEIGHT):
 
     global path
     global player_path
@@ -187,23 +129,18 @@ def create_path():
 
     path = []
 
+    attempts = 0
 
     # --------------------------------------------------------
     # Create random points
     # --------------------------------------------------------
 
-    attempts = 0
-
-
     while len(path) < number_of_points:
 
         attempts += 1
 
-
         if attempts > 10000:
-
             break
-
 
         x = random.randint(
             100,
@@ -215,19 +152,13 @@ def create_path():
             HEIGHT - 100
         )
 
-
-        new_point = (
-            x,
-            y
-        )
-
+        new_point = (x, y)
 
         # ----------------------------------------------------
         # Keep points separated
         # ----------------------------------------------------
 
         valid = True
-
 
         for old_point in path:
 
@@ -237,16 +168,11 @@ def create_path():
             ) < 80:
 
                 valid = False
-
                 break
-
 
         if valid:
 
-            path.append(
-                new_point
-            )
-
+            path.append(new_point)
 
     # --------------------------------------------------------
     # Reset player
@@ -256,15 +182,38 @@ def create_path():
 
     current_player_point = 0
 
-
     # --------------------------------------------------------
-    # Show path
+    # Start SHOW
     # --------------------------------------------------------
 
     state = "SHOW"
 
-    show_start_time = (
-        pygame.time.get_ticks()
+    show_start_time = pygame.time.get_ticks()
+
+
+# ============================================================
+# RESET GAME
+# ============================================================
+
+def reset_game(WIDTH, HEIGHT):
+
+    global level
+    global score
+    global state
+    global result_text
+    global result_color
+
+    level = 1
+    score = 0
+
+    state = "SHOW"
+
+    result_text = ""
+    result_color = WHITE
+
+    create_path(
+        WIDTH,
+        HEIGHT
     )
 
 
@@ -272,11 +221,15 @@ def create_path():
 # DRAW HEADER
 # ============================================================
 
-def draw_header():
+def draw_header(
+    screen,
+    WIDTH
+):
 
     draw_text(
+        screen,
         "PATH MEMORY",
-        font_title,
+        fonts["heart"],
         WHITE,
         (
             WIDTH // 2,
@@ -284,10 +237,10 @@ def draw_header():
         )
     )
 
-
     draw_text(
+        screen,
         "Level " + str(level),
-        font_normal,
+        fonts["heart"],
         WHITE,
         (
             80,
@@ -295,10 +248,10 @@ def draw_header():
         )
     )
 
-
     draw_text(
+        screen,
         "Score: " + str(score),
-        font_normal,
+        fonts["heart"],
         WHITE,
         (
             WIDTH - 100,
@@ -312,6 +265,7 @@ def draw_header():
 # ============================================================
 
 def draw_point(
+    screen,
     point,
     color
 ):
@@ -322,7 +276,6 @@ def draw_point(
         point,
         POINT_RADIUS
     )
-
 
     pygame.draw.circle(
         screen,
@@ -337,16 +290,12 @@ def draw_point(
 # DRAW ORIGINAL PATH
 # ============================================================
 
-def draw_original_path():
+def draw_original_path(screen):
 
     if len(path) < 2:
-
         return
 
-
-    for i in range(
-        len(path) - 1
-    ):
+    for i in range(len(path) - 1):
 
         pygame.draw.line(
             screen,
@@ -361,16 +310,12 @@ def draw_original_path():
 # DRAW PLAYER PATH
 # ============================================================
 
-def draw_player_path():
+def draw_player_path(screen):
 
     if len(player_path) < 2:
-
         return
 
-
-    for i in range(
-        len(player_path) - 1
-    ):
+    for i in range(len(player_path) - 1):
 
         pygame.draw.line(
             screen,
@@ -382,22 +327,26 @@ def draw_player_path():
 
 
 # ============================================================
-# DRAW SHOW SCREEN
+# DRAW SHOW
 # ============================================================
 
-def draw_show():
+def draw_show(
+    screen,
+    WIDTH,
+    HEIGHT
+):
 
-    screen.fill(
-        BACKGROUND
+    screen.fill(BACKGROUND)
+
+    draw_header(
+        screen,
+        WIDTH
     )
 
-
-    draw_header()
-
-
     draw_text(
+        screen,
         "MEMORIZE THE PATH",
-        font_normal,
+        fonts["heart"],
         LINE_COLOR,
         (
             WIDTH // 2,
@@ -405,13 +354,11 @@ def draw_show():
         )
     )
 
-
     # --------------------------------------------------------
     # Original path
     # --------------------------------------------------------
 
-    draw_original_path()
-
+    draw_original_path(screen)
 
     # --------------------------------------------------------
     # Points
@@ -420,16 +367,15 @@ def draw_show():
     for i, point in enumerate(path):
 
         draw_point(
+            screen,
             point,
             POINT_COLOR
         )
 
-
-        # Number
-
         draw_text(
-            str(i + 1),
-            font_small,
+            screen,
+            i + 1,
+            fonts["heart"],
             WHITE,
             (
                 point[0],
@@ -439,22 +385,26 @@ def draw_show():
 
 
 # ============================================================
-# DRAW PLAY SCREEN
+# DRAW PLAY
 # ============================================================
 
-def draw_play():
+def draw_play(
+    screen,
+    WIDTH,
+    HEIGHT
+):
 
-    screen.fill(
-        BACKGROUND
+    screen.fill(BACKGROUND)
+
+    draw_header(
+        screen,
+        WIDTH
     )
 
-
-    draw_header()
-
-
     draw_text(
+        screen,
         "REPEAT THE PATH",
-        font_normal,
+        fonts["heart"],
         PLAYER_LINE_COLOR,
         (
             WIDTH // 2,
@@ -462,13 +412,11 @@ def draw_play():
         )
     )
 
-
     # --------------------------------------------------------
     # Player path
     # --------------------------------------------------------
 
-    draw_player_path()
-
+    draw_player_path(screen)
 
     # --------------------------------------------------------
     # Points
@@ -488,20 +436,20 @@ def draw_play():
 
             color = GRAY
 
-
         draw_point(
+            screen,
             point,
             color
         )
-
 
     # --------------------------------------------------------
     # Progress
     # --------------------------------------------------------
 
     draw_text(
+        screen,
         f"{len(player_path)} / {len(path)}",
-        font_normal,
+        fonts["heart"],
         WHITE,
         (
             WIDTH // 2,
@@ -514,19 +462,23 @@ def draw_play():
 # DRAW RESULT
 # ============================================================
 
-def draw_result():
+def draw_result(
+    screen,
+    WIDTH,
+    HEIGHT
+):
 
-    screen.fill(
-        BACKGROUND
+    screen.fill(BACKGROUND)
+
+    draw_header(
+        screen,
+        WIDTH
     )
 
-
-    draw_header()
-
-
     draw_text(
+        screen,
         result_text,
-        font_big,
+        fonts["heart"],
         result_color,
         (
             WIDTH // 2,
@@ -539,9 +491,7 @@ def draw_result():
 # FIND POINT
 # ============================================================
 
-def find_point(
-    mouse_position
-):
+def find_point(mouse_position):
 
     for index, point in enumerate(path):
 
@@ -552,17 +502,14 @@ def find_point(
 
             return index
 
-
     return None
 
 
 # ============================================================
-# PLAYER SELECT POINT
+# SELECT POINT
 # ============================================================
 
-def select_point(
-    index
-):
+def select_point(index):
 
     global current_player_point
     global state
@@ -571,18 +518,15 @@ def select_point(
     global result_color
     global result_start_time
 
-
     # --------------------------------------------------------
     # Already selected
     # --------------------------------------------------------
 
     if index in player_path:
-
         return
 
-
     # --------------------------------------------------------
-    # Check correct point
+    # Correct
     # --------------------------------------------------------
 
     if index == current_player_point:
@@ -591,9 +535,7 @@ def select_point(
             path[index]
         )
 
-
         current_player_point += 1
-
 
         # ----------------------------------------------------
         # Complete
@@ -604,15 +546,11 @@ def select_point(
             score += level * 100
 
             result_text = "CORRECT!"
-
             result_color = GREEN
 
-            result_start_time = (
-                pygame.time.get_ticks()
-            )
+            result_start_time = pygame.time.get_ticks()
 
             state = "RESULT"
-
 
     # --------------------------------------------------------
     # Wrong
@@ -621,139 +559,75 @@ def select_point(
     else:
 
         result_text = "WRONG!"
-
         result_color = RED
 
-        result_start_time = (
-            pygame.time.get_ticks()
-        )
+        result_start_time = pygame.time.get_ticks()
 
         state = "RESULT"
 
 
 # ============================================================
-# MAIN
+# MAIN GAME FUNCTION
 # ============================================================
 
-create_path()
+def FOLLOW_THAT_(screen):
 
+    global state
+    global level
 
-running = True
+    WIDTH, HEIGHT = screen.get_size()
 
-
-while running:
-
-    # ========================================================
-    # EVENTS
-    # ========================================================
-
-    for event in pygame.event.get():
-
-        if event.type == pygame.QUIT:
-
-            running = False
-
-
-        # ----------------------------------------------------
-        # Keyboard
-        # ----------------------------------------------------
-
-        if event.type == pygame.KEYDOWN:
-
-            if event.key == pygame.K_ESCAPE:
-
-                running = False
-
-
-        # ----------------------------------------------------
-        # Mouse
-        # ----------------------------------------------------
-
-        if event.type == pygame.MOUSEBUTTONDOWN:
-
-            if event.button == 1:
-
-                if state == "PLAY":
-
-                    index = find_point(
-                        event.pos
-                    )
-
-
-                    if index is not None:
-
-                        select_point(
-                            index
-                        )
-
-
-    # ========================================================
+    # --------------------------------------------------------
     # SHOW
-    # ========================================================
+    # --------------------------------------------------------
 
     if state == "SHOW":
 
         now = pygame.time.get_ticks()
 
-
-        if (
-            now - show_start_time
-            >= SHOW_TIME
-        ):
+        if now - show_start_time >= SHOW_TIME:
 
             state = "PLAY"
 
+        draw_show(
+            screen,
+            WIDTH,
+            HEIGHT
+        )
 
-        draw_show()
-
-
-    # ========================================================
+    # --------------------------------------------------------
     # PLAY
-    # ========================================================
+    # --------------------------------------------------------
 
     elif state == "PLAY":
 
-        draw_play()
+        draw_play(
+            screen,
+            WIDTH,
+            HEIGHT
+        )
 
-
-    # ========================================================
+    # --------------------------------------------------------
     # RESULT
-    # ========================================================
+    # --------------------------------------------------------
 
     elif state == "RESULT":
 
-        draw_result()
-
+        draw_result(
+            screen,
+            WIDTH,
+            HEIGHT
+        )
 
         now = pygame.time.get_ticks()
 
-
-        if (
-            now - result_start_time
-            >= RESULT_TIME
-        ):
+        if now - result_start_time >= RESULT_TIME:
 
             if result_text == "CORRECT!":
 
                 level += 1
 
-
-            create_path()
-
-
-    # ========================================================
-    # UPDATE
-    # ========================================================
-
-    pygame.display.flip()
-
-    clock.tick(60)
-
-
-# ============================================================
-# QUIT
-# ============================================================
-
-pygame.quit()
-
-sys.exit()
+            create_path(
+                WIDTH,
+                HEIGHT
+            )

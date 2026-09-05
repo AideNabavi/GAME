@@ -392,7 +392,6 @@ def draw_question_find_number(
 
 
 
-    return option_rects
 
 
 

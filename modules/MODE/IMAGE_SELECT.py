@@ -1,30 +1,8 @@
 import pygame
 import random
 import os
-import sys
 
-
-pygame.init()
-
-
-# ============================================================
-# SETTINGS
-# ============================================================
-
-WIDTH = 1200
-HEIGHT = 800
-
-screen = pygame.display.set_mode(
-    (1920, 1080),
-    pygame.FULLSCREEN
-)
-
-
-pygame.display.set_caption(
-    "Memory Sequence"
-)
-
-clock = pygame.time.Clock()
+from modules.font import *
 
 
 # ============================================================
@@ -41,43 +19,14 @@ IMAGE_FOLDER = "asset/image/MODE/memory_detect"
 BG = (25, 28, 38)
 
 CARD = (45, 49, 63)
-
 HOVER = (65, 72, 90)
 
 WHITE = (245, 245, 245)
-
 GRAY = (160, 165, 175)
 
 BLUE = (70, 145, 240)
-
 GREEN = (70, 210, 120)
-
 RED = (230, 75, 80)
-
-
-# ============================================================
-# FONTS
-# ============================================================
-
-font_title = pygame.font.Font(
-    None,
-    48
-)
-
-font_normal = pygame.font.Font(
-    None,
-    30
-)
-
-font_small = pygame.font.Font(
-    None,
-    22
-)
-
-font_big = pygame.font.Font(
-    None,
-    60
-)
 
 
 # ============================================================
@@ -87,7 +36,6 @@ font_big = pygame.font.Font(
 GRID_SIZE = 5
 
 CELL_SIZE = 105
-
 CELL_GAP = 12
 
 GRID_WIDTH = (
@@ -95,11 +43,13 @@ GRID_WIDTH = (
     + (GRID_SIZE - 1) * CELL_GAP
 )
 
-GRID_X = (
-    WIDTH - GRID_WIDTH
-) // 2
 
-GRID_Y = 285
+# ============================================================
+# GAME SETTINGS
+# ============================================================
+
+SHOW_TIME = 900
+RESULT_TIME = 1000
 
 
 # ============================================================
@@ -107,13 +57,10 @@ GRID_Y = 285
 # ============================================================
 
 level = 1
-
 score = 0
 
 sequence = []
-
 selected = []
-
 grid = []
 
 sequence_index = 0
@@ -121,13 +68,9 @@ sequence_index = 0
 state = "SHOW"
 
 last_time = 0
-
-SHOW_TIME = 900
-
 result_time = 0
 
 result_text = ""
-
 result_color = WHITE
 
 
@@ -138,80 +81,67 @@ result_color = WHITE
 images = {}
 
 
-if not os.path.exists(IMAGE_FOLDER):
+if os.path.exists(IMAGE_FOLDER):
 
-    print(
-        "Image folder not found:"
-    )
+    files = os.listdir(IMAGE_FOLDER)
 
-    print(
-        IMAGE_FOLDER
-    )
+    for file in files:
 
-    pygame.quit()
-    sys.exit()
+        if not file.lower().endswith(
+            (
+                ".png",
+                ".jpg",
+                ".jpeg",
+                ".bmp",
+                ".webp"
+            )
+        ):
+            continue
 
-
-files = os.listdir(
-    IMAGE_FOLDER
-)
-
-
-for file in files:
-
-    if not file.lower().endswith(
-        (
-            ".png",
-            ".jpg",
-            ".jpeg",
-            ".bmp",
-            ".webp"
-        )
-    ):
-
-        continue
-
-
-    path = os.path.join(
-        IMAGE_FOLDER,
-        file
-    )
-
-
-    try:
-
-        image = pygame.image.load(
-            path
-        ).convert_alpha()
-
-    except pygame.error:
-
-        print(
-            "Could not load:",
+        path = os.path.join(
+            IMAGE_FOLDER,
             file
         )
 
-        continue
+        try:
 
+            image = pygame.image.load(
+                path
+            ).convert_alpha()
 
-    name = os.path.splitext(
-        file
-    )[0]
+        except pygame.error:
 
-    name = name.replace(
-        "_",
-        " "
+            print(
+                "Could not load:",
+                file
+            )
+
+            continue
+
+        name = os.path.splitext(
+            file
+        )[0]
+
+        name = name.replace(
+            "_",
+            " "
+        )
+
+        name = name.replace(
+            "-",
+            " "
+        )
+
+        name = name.title()
+
+        images[name] = image
+
+else:
+
+    print(
+        "Image folder not found:",
+        IMAGE_FOLDER
     )
-
-    name = name.replace(
-        "-",
-        " "
-    )
-
-    name = name.title()
-
-
-    images[name] = image
 
 
 # ============================================================
@@ -221,21 +151,6 @@ for file in files:
 image_names = list(
     images.keys()
 )
-
-
-if len(image_names) < 25:
-
-    print(
-        "You need at least 25 images."
-    )
-
-    print(
-        "Current images:",
-        len(image_names)
-    )
-
-    pygame.quit()
-    sys.exit()
 
 
 # ============================================================
@@ -264,21 +179,20 @@ def fit_image(
         image.get_size()
     )
 
-
     scale = min(
         width / image_width,
         height / image_height
     )
 
-
-    new_width = int(
-        image_width * scale
+    new_width = max(
+        1,
+        int(image_width * scale)
     )
 
-    new_height = int(
-        image_height * scale
+    new_height = max(
+        1,
+        int(image_height * scale)
     )
-
 
     return pygame.transform.smoothscale(
         image,
@@ -294,6 +208,7 @@ def fit_image(
 # ============================================================
 
 def draw_image(
+    screen,
     image,
     rect
 ):
@@ -304,11 +219,9 @@ def draw_image(
         rect.height - 12
     )
 
-
     image_rect = image.get_rect(
         center=rect.center
     )
-
 
     screen.blit(
         image,
@@ -320,12 +233,12 @@ def draw_image(
 # DRAW TEXT
 # ============================================================
 
-def text(
+def draw_text(
+    screen,
     value,
     font,
     color,
-    x,
-    y
+    center
 ):
 
     surface = font.render(
@@ -334,14 +247,9 @@ def text(
         color
     )
 
-
     rect = surface.get_rect(
-        center=(
-            x,
-            y
-        )
+        center=center
     )
-
 
     screen.blit(
         surface,
@@ -362,9 +270,19 @@ def create_level():
     global state
     global last_time
 
-
     count = get_image_count()
 
+    # --------------------------------------------------------
+    # Safety
+    # --------------------------------------------------------
+
+    if len(image_names) < 25:
+
+        print(
+            "You need at least 25 images."
+        )
+
+        return
 
     # --------------------------------------------------------
     # Sequence
@@ -375,7 +293,6 @@ def create_level():
         count
     )
 
-
     # --------------------------------------------------------
     # Grid
     # --------------------------------------------------------
@@ -385,9 +302,9 @@ def create_level():
         25
     )
 
-
     # --------------------------------------------------------
-    # Put sequence images inside grid
+    # Make sure sequence images
+    # are inside the grid
     # --------------------------------------------------------
 
     for name in sequence:
@@ -400,113 +317,213 @@ def create_level():
 
             grid[index] = name
 
-
     # --------------------------------------------------------
-    # Reset selected
+    # Reset
     # --------------------------------------------------------
 
     selected = []
 
-
-    # --------------------------------------------------------
-    # Reset sequence
-    # --------------------------------------------------------
-
     sequence_index = 0
 
-
-    # --------------------------------------------------------
-    # State
-    # --------------------------------------------------------
-
     state = "SHOW"
-
 
     last_time = pygame.time.get_ticks()
 
 
 # ============================================================
+# RESET GAME
+# ============================================================
+
+def reset_game():
+
+    global level
+    global score
+    global state
+    global sequence
+    global selected
+    global grid
+    global sequence_index
+    global last_time
+    global result_time
+    global result_text
+    global result_color
+
+    level = 1
+    score = 0
+
+    sequence = []
+    selected = []
+    grid = []
+
+    sequence_index = 0
+
+    state = "SHOW"
+
+    last_time = 0
+    result_time = 0
+
+    result_text = ""
+    result_color = WHITE
+
+    create_level()
+
+
+# ============================================================
+# GRID POSITION
+# ============================================================
+
+def get_grid_rects(
+    WIDTH,
+    HEIGHT
+):
+
+    grid_width = (
+        GRID_SIZE * CELL_SIZE
+        + (GRID_SIZE - 1) * CELL_GAP
+    )
+
+    grid_height = grid_width
+
+    grid_x = (
+        WIDTH - grid_width
+    ) // 2
+
+    # کل Grid وسط صفحه
+    grid_y = (
+        HEIGHT - grid_height
+    ) // 2 + 120
+    rects = []
+
+    for i in range(25):
+
+        row = i // GRID_SIZE
+        col = i % GRID_SIZE
+
+        x = (
+            grid_x
+            + col * (
+                CELL_SIZE
+                + CELL_GAP
+            )
+        )
+
+        y = (
+            grid_y
+            + row * (
+                CELL_SIZE
+                + CELL_GAP
+            )
+        )
+
+        rects.append(
+            pygame.Rect(
+                x,
+                y,
+                CELL_SIZE,
+                CELL_SIZE
+            )
+        )
+
+    return rects
+
+
+# ============================================================
 # DRAW HEADER
 # ============================================================
+def draw_header(
+    screen,
+    WIDTH
+):
 
-def draw_header():
-
-    text(
+    draw_text(
+        screen,
         "MEMORY SEQUENCE",
-        font_title,
+        fonts["heart"],
         WHITE,
-        WIDTH // 2,
-        40
+        (
+            WIDTH // 2,
+            40
+        )
     )
 
-
-    text(
-        "Level " + str(level),
-        font_normal,
+    draw_text(
+        screen,
+        f"Level {level}",
+        fonts["heart"],
         WHITE,
-        80,
-        40
+        (
+            100,
+            40
+        )
     )
 
-
-    text(
-        "Score: " + str(score),
-        font_normal,
+    draw_text(
+        screen,
+        f"Score: {score}",
+        fonts["heart"],
         WHITE,
-        WIDTH - 100,
-        40
+        (
+            WIDTH - 110,
+            40
+        )
     )
-
 
 # ============================================================
-# DRAW SHOW SCREEN
+# DRAW SHOW
 # ============================================================
 
-def draw_show():
+def draw_show(
+    screen,
+    WIDTH,
+    HEIGHT
+):
 
-    screen.fill(
-        BG
+    screen.fill(BG)
+
+    draw_header(
+        screen,
+        WIDTH
     )
 
-
-    draw_header()
-
-
-    text(
+    draw_text(
+        screen,
         "MEMORIZE THE ORDER",
-        font_normal,
+        fonts["heart"],
         BLUE,
-        WIDTH // 2,
-        100
+        (
+            WIDTH // 2,
+            105
+        )
     )
-
 
     if sequence_index >= len(sequence):
-
         return
-
 
     name = sequence[
         sequence_index
     ]
 
-
-    image = images[
-        name
-    ]
-
+    image = images[name]
 
     # --------------------------------------------------------
-    # BIG CARD
+    # Big card - CENTER
     # --------------------------------------------------------
+
+    card_width = 320
+    card_height = 330
 
     rect = pygame.Rect(
-        WIDTH // 2 - 160,
-        160,
-        320,
-        330
-    )
+        (
+            WIDTH - card_width
+        ) // 2,
 
+        (
+            HEIGHT - card_height
+        ) // 2,
+
+        card_width,
+        card_height
+    )
 
     pygame.draw.rect(
         screen,
@@ -514,7 +531,6 @@ def draw_show():
         rect,
         border_radius=25
     )
-
 
     pygame.draw.rect(
         screen,
@@ -524,9 +540,8 @@ def draw_show():
         border_radius=25
     )
 
-
     # --------------------------------------------------------
-    # IMAGE
+    # Image
     # --------------------------------------------------------
 
     image_rect = pygame.Rect(
@@ -536,99 +551,93 @@ def draw_show():
         250
     )
 
-
     draw_image(
+        screen,
         image,
         image_rect
     )
 
-
     # --------------------------------------------------------
-    # NAME
+    # Name
     # --------------------------------------------------------
 
-    text(
+    draw_text(
+        screen,
         name,
-        font_normal,
+        fonts["heart"],
         WHITE,
-        rect.centerx,
-        rect.bottom - 45
+        (
+            rect.centerx,
+            rect.bottom - 45
+        )
     )
 
-
     # --------------------------------------------------------
-    # NUMBER
+    # Number
     # --------------------------------------------------------
 
-    text(
-        str(sequence_index + 1)
-        + " / "
-        + str(len(sequence)),
-        font_small,
+    draw_text(
+        screen,
+        f"{sequence_index + 1} / {len(sequence)}",
+        fonts["heart"],
         GRAY,
-        WIDTH // 2,
-        540
+        (
+            WIDTH // 2,
+            rect.bottom + 35
+        )
     )
 
 
 # ============================================================
 # DRAW SELECTED
 # ============================================================
-
-def draw_selected():
+def draw_selected(
+    screen,
+    WIDTH
+):
 
     if not selected:
-
         return
 
-
-    text(
+    draw_text(
+        screen,
         "YOUR ORDER",
-        font_small,
+        fonts["heart"],
         GRAY,
-        WIDTH // 2,
-        135
+        (
+            WIDTH // 2,
+            145
+        )
     )
 
+    card_width = 100
+    card_height = 85
+    gap = 10
 
-    card_width = 120
-
-    card_height = 100
-
-    gap = 12
-
-
-    total = (
+    total_width = (
         len(selected) * card_width
         + (len(selected) - 1) * gap
     )
 
-
     start_x = (
-        WIDTH - total
+        WIDTH - total_width
     ) // 2
 
-
-    for i, name in enumerate(
-        selected
-    ):
+    for i, name in enumerate(selected):
 
         x = (
             start_x
             + i * (
-                card_width
-                + gap
+                card_width + gap
             )
         )
 
-
         rect = pygame.Rect(
             x,
-            160,
+            170,
             card_width,
             card_height
         )
-
 
         pygame.draw.rect(
             screen,
@@ -636,7 +645,6 @@ def draw_selected():
             rect,
             border_radius=14
         )
-
 
         pygame.draw.rect(
             screen,
@@ -646,101 +654,79 @@ def draw_selected():
             border_radius=14
         )
 
-
         image_rect = pygame.Rect(
             rect.x + 5,
             rect.y + 5,
             rect.width - 10,
-            65
+            55
         )
 
-
         draw_image(
+            screen,
             images[name],
             image_rect
         )
 
-
-        text(
-            str(i + 1),
-            font_small,
+        draw_text(
+            screen,
+            i + 1,
+            fonts["heart"],
             WHITE,
-            rect.centerx,
-            rect.bottom - 13
+            (
+                rect.centerx,
+                rect.bottom - 12
+            )
         )
-
 
 # ============================================================
 # DRAW GRID
 # ============================================================
 
-def draw_grid():
+def draw_grid(
+    screen,
+    WIDTH,
+    HEIGHT
+):
 
-    screen.fill(
-        BG
+    screen.fill(BG)
+
+    draw_header(
+        screen,
+        WIDTH
     )
 
-
-    draw_header()
-
-
-    text(
+    draw_text(
+        screen,
         "SELECT IN THE SAME ORDER",
-        font_normal,
+        fonts["heart"],
         BLUE,
-        WIDTH // 2,
-        100
+        (
+            WIDTH // 2,
+            100
+        )
     )
 
-
-    draw_selected()
-
+    draw_selected(
+        screen,
+        WIDTH
+    )
 
     mouse = pygame.mouse.get_pos()
 
+    rects = get_grid_rects(
+        WIDTH,
+        HEIGHT
+    )
 
-    for i, name in enumerate(
-        grid
-    ):
+    for i, name in enumerate(grid):
 
-        row = i // GRID_SIZE
-
-        col = i % GRID_SIZE
-
-
-        x = (
-            GRID_X
-            + col * (
-                CELL_SIZE
-                + CELL_GAP
-            )
-        )
-
-
-        y = (
-            GRID_Y
-            + row * (
-                CELL_SIZE
-                + CELL_GAP
-            )
-        )
-
-
-        rect = pygame.Rect(
-            x,
-            y,
-            CELL_SIZE,
-            CELL_SIZE
-        )
-
+        rect = rects[i]
 
         # ----------------------------------------------------
         # Hover
         # ----------------------------------------------------
 
-        if rect.collidepoint(
-            mouse
-        ):
+        if rect.collidepoint(mouse):
 
             color = HOVER
 
@@ -748,14 +734,12 @@ def draw_grid():
 
             color = CARD
 
-
         pygame.draw.rect(
             screen,
             color,
             rect,
             border_radius=14
         )
-
 
         # ----------------------------------------------------
         # Selected border
@@ -771,7 +755,6 @@ def draw_grid():
                 border_radius=14
             )
 
-
         # ----------------------------------------------------
         # Image
         # ----------------------------------------------------
@@ -783,66 +766,74 @@ def draw_grid():
             70
         )
 
-
         draw_image(
+            screen,
             images[name],
             image_rect
         )
 
-
         # ----------------------------------------------------
         # Name
-        # ----------------------------------------------------
+        # # ----------------------------------------------------
 
-        display_name = name
+        # display_name = name
 
+        # if len(display_name) > 13:
 
-        if len(display_name) > 13:
+        #     display_name = (
+        #         display_name[:12]
+        #         + "..."
+        #     )
 
-            display_name = (
-                display_name[:12]
-                + "..."
-            )
-
-
-        text(
-            display_name,
-            font_small,
-            WHITE,
-            rect.centerx,
-            rect.bottom - 16
-        )
+        # draw_text(
+        #     screen,
+        #     display_name,
+        #     fonts["heart"],
+        #     WHITE,
+        #     (
+        #         rect.centerx,
+        #         rect.bottom - 16
+        #     )
+        # )
 
 
 # ============================================================
 # DRAW RESULT
 # ============================================================
 
-def draw_result():
+def draw_result(
+    screen,
+    WIDTH,
+    HEIGHT
+):
 
-    screen.fill(
-        BG
+    screen.fill(BG)
+
+    draw_header(
+        screen,
+        WIDTH
     )
 
-
-    draw_header()
-
-
-    text(
+    draw_text(
+        screen,
         result_text,
-        font_big,
+        fonts["heart"],
         result_color,
-        WIDTH // 2,
-        HEIGHT // 2 - 30
+        (
+            WIDTH // 2,
+            HEIGHT // 2 - 30
+        )
     )
 
-
-    text(
+    draw_text(
+        screen,
         "Next...",
-        font_normal,
+        fonts["heart"],
         GRAY,
-        WIDTH // 2,
-        HEIGHT // 2 + 40
+        (
+            WIDTH // 2,
+            HEIGHT // 2 + 40
+        )
     )
 
 
@@ -850,7 +841,11 @@ def draw_result():
 # CLICK GRID
 # ============================================================
 
-def click_grid(position):
+def click_grid(
+    position,
+    WIDTH,
+    HEIGHT
+):
 
     global score
     global state
@@ -858,57 +853,27 @@ def click_grid(position):
     global result_color
     global result_time
 
+    if state != "PLAYING":
+        return
 
-    for i, name in enumerate(
-        grid
-    ):
+    rects = get_grid_rects(
+        WIDTH,
+        HEIGHT
+    )
 
-        row = i // GRID_SIZE
+    for i, name in enumerate(grid):
 
-        col = i % GRID_SIZE
+        rect = rects[i]
 
-
-        x = (
-            GRID_X
-            + col * (
-                CELL_SIZE
-                + CELL_GAP
-            )
-        )
-
-
-        y = (
-            GRID_Y
-            + row * (
-                CELL_SIZE
-                + CELL_GAP
-            )
-        )
-
-
-        rect = pygame.Rect(
-            x,
-            y,
-            CELL_SIZE,
-            CELL_SIZE
-        )
-
-
-        if not rect.collidepoint(
-            position
-        ):
-
+        if not rect.collidepoint(position):
             continue
-
 
         # ----------------------------------------------------
         # Already selected
         # ----------------------------------------------------
 
         if name in selected:
-
             return
-
 
         # ----------------------------------------------------
         # Expected image
@@ -918,50 +883,29 @@ def click_grid(position):
             len(selected)
         ]
 
-
         # ====================================================
         # CORRECT
         # ====================================================
 
         if name == expected:
 
-            selected.append(
-                name
-            )
+            selected.append(name)
 
-
-            # ------------------------------------------------
-            # Finished
-            # ------------------------------------------------
-
-            if (
-                len(selected)
-                == len(sequence)
-            ):
+            if len(selected) == len(sequence):
 
                 score += (
                     get_image_count()
                     * 100
                 )
 
-
-                result_text = (
-                    "CORRECT!"
-                )
-
-
-                result_color = (
-                    GREEN
-                )
-
+                result_text = "CORRECT!"
+                result_color = GREEN
 
                 result_time = (
                     pygame.time.get_ticks()
                 )
 
-
                 state = "RESULT"
-
 
         # ====================================================
         # WRONG
@@ -969,83 +913,30 @@ def click_grid(position):
 
         else:
 
-            result_text = (
-                "WRONG!"
-            )
-
-
-            result_color = (
-                RED
-            )
-
+            result_text = "WRONG!"
+            result_color = RED
 
             result_time = (
                 pygame.time.get_ticks()
             )
 
-
             state = "RESULT"
-
 
         return
 
 
 # ============================================================
-# START GAME
+# MAIN GAME
 # ============================================================
 
-create_level()
+def IMAGE_SELECT_(screen):
 
+    global state
+    global sequence_index
+    global last_time
+    global level
 
-# ============================================================
-# MAIN LOOP
-# ============================================================
-
-running = True
-
-
-while running:
-
-    # ========================================================
-    # EVENTS
-    # ========================================================
-
-    for event in pygame.event.get():
-
-        # ----------------------------------------------------
-        # QUIT
-        # ----------------------------------------------------
-
-        if event.type == pygame.QUIT:
-
-            running = False
-
-
-        # ----------------------------------------------------
-        # KEYBOARD
-        # ----------------------------------------------------
-
-        if event.type == pygame.KEYDOWN:
-
-            if event.key == pygame.K_ESCAPE:
-
-                running = False
-
-
-        # ----------------------------------------------------
-        # MOUSE
-        # ----------------------------------------------------
-
-        if event.type == pygame.MOUSEBUTTONDOWN:
-
-            if event.button == 1:
-
-                if state == "PLAYING":
-
-                    click_grid(
-                        event.pos
-                    )
-
+    WIDTH, HEIGHT = screen.get_size()
 
     # ========================================================
     # SHOW
@@ -1054,7 +945,6 @@ while running:
     if state == "SHOW":
 
         now = pygame.time.get_ticks()
-
 
         if (
             now - last_time
@@ -1065,7 +955,6 @@ while running:
 
             last_time = now
 
-
             if (
                 sequence_index
                 >= len(sequence)
@@ -1073,9 +962,11 @@ while running:
 
                 state = "PLAYING"
 
-
-        draw_show()
-
+        draw_show(
+            screen,
+            WIDTH,
+            HEIGHT
+        )
 
     # ========================================================
     # PLAYING
@@ -1083,8 +974,11 @@ while running:
 
     elif state == "PLAYING":
 
-        draw_grid()
-
+        draw_grid(
+            screen,
+            WIDTH,
+            HEIGHT
+        )
 
     # ========================================================
     # RESULT
@@ -1092,38 +986,21 @@ while running:
 
     elif state == "RESULT":
 
-        draw_result()
-
+        draw_result(
+            screen,
+            WIDTH,
+            HEIGHT
+        )
 
         now = pygame.time.get_ticks()
 
-
         if (
             now - result_time
-            >= 1000
+            >= RESULT_TIME
         ):
 
             if result_text == "CORRECT!":
 
                 level += 1
 
-
             create_level()
-
-
-    # ========================================================
-    # DISPLAY
-    # ========================================================
-
-    pygame.display.flip()
-
-    clock.tick(60)
-
-
-# ============================================================
-# QUIT
-# ============================================================
-
-pygame.quit()
-
-sys.exit()
