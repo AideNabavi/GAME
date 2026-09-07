@@ -93,6 +93,7 @@ from modules.save import save as SAVE
 from modules.save import popular_game as popular_game
 from modules.MODE import IMAGE_SELECT as IMSE
 from modules.MODE import FIND_NUMBER as FNUM
+from modules.save import recent_game as recent_game
 
 
 
@@ -925,6 +926,12 @@ store__button_rect= pygame.Rect(
     150,
     150
 )
+sms_button_rect= pygame.Rect(
+    1700,  # فاصله از راست
+    current_height  - 570,                   # فاصله از بالا
+    150,
+    150
+)
 
 
 
@@ -934,6 +941,13 @@ store__button_rect= pygame.Rect(
 back_button_rect = pygame.Rect(
     1850,
     20,
+    150,
+    150
+)
+
+back_button_rect_for_setting= pygame.Rect(
+    20,
+    current_height  - 177,
     150,
     150
 )
@@ -1105,14 +1119,23 @@ game_mode_slide = PageSlide(
 
 
 
+#-------------------------------- برای لود کردن پاپیولر گیم
+
+popular_game.load_popular_games()
 
 
 
+popular_game.load_popular_images(
+    "./asset/image/MODE"
+)
 
 
+#-------------------------------- برای لود کردن پاپیولر گیم   RECENT GAMES
+recent_game.load_recent_games()
 
-
-
+recent_game.load_recent_images(
+    "./asset/image/MODE"
+)
 
 
 
@@ -1251,7 +1274,6 @@ icon_image__ = pygame.transform.smoothscale(pygame.image.load(
 
 
 
-from modules.save import recent_game as recent_game
 
 
 #--------------- برای انتخاب عکس پاپیولر گیم است
@@ -1311,7 +1333,7 @@ from modules import menu__ as MENU__
 #flage  in the game 
 flag_in_game = pygame.image.load("./asset/image/in_game/flage.png").convert_alpha()
 #flage in menu
-flag_in_menu= pygame.transform.smoothscale(pygame.image.load("./asset/image/in_game/flaginthegame.png").convert_alpha(),(1600,1100))
+flag_in_menu= pygame.transform.smoothscale(pygame.image.load("./asset/image/in_game/flaginthegame.png").convert_alpha(),(800,400))
 
 
 #--------------------------------blur effect
@@ -1336,6 +1358,9 @@ is_guest = None
 control_every_button_in_setting_on_or_off= None
 
 restart_OFF_ON_game=None
+
+SUPPORT_IS=None
+# STOR_IS = None
 # ############################################################################################################
 #############################################################################################################
 # Game loop ------------------------------------------------------------------------------------------------------------------------------------
@@ -1349,12 +1374,14 @@ saved_player = SAVE.load_player()
 if saved_player is not None:
 
 
-    game_state = "MENU"#start
+    game_state = "START"#start
+    DASHBOARD=False
 
 else:
 
-    game_state = "MENU"#name
-    
+    game_state = "START"#name
+    DASHBOARD=False
+
 
 
 #-------------------------------- حلقه
@@ -1626,7 +1653,14 @@ while running:
         DASHBOARD,
         online_state,
         is_guest,
-        restart_OFF_ON_game
+        restart_OFF_ON_game,
+        store__button_rect,
+        call_button_rect,
+        support__button_rect,
+        sms_button_rect
+        # SUPPORT_IS,
+        # STOR_IS
+
     ) = handle_events(
 
         screen,
@@ -1708,7 +1742,13 @@ while running:
         DASHBOARD,
         online_state,
         is_guest,
-        restart_OFF_ON_game
+        restart_OFF_ON_game,
+        store__button_rect,
+        call_button_rect,
+        support__button_rect,
+        sms_button_rect
+        # SUPPORT_IS,
+        # STOR_IS
     )
     
     
@@ -1855,70 +1895,17 @@ while running:
             current_width,
             current_height
         )   
-    
+        
 
-            
-        # # این همون منوی عمودی است برای دکمه های منو 
-        # image_setter(screen,liner,-110,current_height//2 - 695)  
-        xxx=70
-        yyy=649
-        if DES.menu_slide_back:
-
-            finished =DES.menu_back_setters(
-                screen,
-                menu_bacccccck,
-                x=220,
-                y=current_height  //2 - 770,
-                gap=2,
-                first_x=220,
-                first_y=current_height  //2 - 720
-            )
-
-            if finished:
-
-                DES.menu_slide_back = False
-                DES.menu_slide_active = False
-                DES.menu_slide_x = None
-
-                game_state = "MENU"
-
-
-        # ========================================================
-        # ENTER SLIDE
-        # ========================================================
-
-        elif DES.menu_slide_active:
-
-            finished = DES.menu_back_setters(
-                screen,
-                menu_bacccccck,
-                x=220,
-                y=current_height  //2 - 770,
-                gap=2,
-                first_x=220,
-                first_y=current_height  //2 - 720
-            )
-
-            if finished:
-                DES.menu_slide_active = False
-
-
-        # ========================================================
-        # IMAGE STAYS
-        # ========================================================
-
-        else:
-
-
-            DES.menu_back_setters(
-                screen,
-                menu_bacccccck,
-                x=220,
-                y=current_height // 2 - 770,
-                gap=2,
-                first_x=220,
-                first_y=current_height // 2 - 720
-            )
+        DES.menu_back_setters(
+            screen,
+            menu_bacccccck,
+            x=220,
+            y=current_height // 2 - 770,
+            gap=2,
+            first_x=220,
+            first_y=current_height // 2 - 720
+        )
 
 
 
@@ -1932,20 +1919,15 @@ while running:
             select_buttons
         )     
             
-        donate_base(
-            screen,
-            call_button_rect
-        )
-        #-------------------------Button
-        # support_button(
+        # donate_base(
         #     screen,
-        #     support_button_rect
+        #     call_button_rect
         # )
         
-        donate_button(
-            screen,
-            call_button_rect
-        )
+        # donate_button(
+        #     screen,
+        #     call_button_rect
+        # )
 
     # draw_dashboard_date(
     #     screen,
@@ -1988,113 +1970,8 @@ while running:
 
 
 
-    #این برای داشتبورد است 
-    if game_state == "MENU" or game_state == "SETTING" and DASHBOARD: 
-        #-------------------
-
-        DA.draw_dashboard_date(
-            screen,
-            DA.day_image,
-            DA.month_images,
-            fonts["DAY"],
-            fonts["weekdays"],
-            fonts["month"],
-            fonts["date"]
-        )
-
-        draw_punch_image(
-            screen,
-            face__up,
-            (current_width//2 -200 + 250, current_height // 2  + 470),
-            (1250, 400),
-            "FACE"
-        )
-
+ 
         
-        draw_punch_image(
-            screen,
-            face__up,
-            (current_width//2 -200 + 250, current_height // 2 +150 ),
-            (1250, 400),
-            "FACE"
-        )
-        
-        draw_punch_image(
-            screen,
-            days__,
-            (current_width//2   + -70, current_height // 2 - 378 ),
-            (300, 500),
-            "days"
-        )
-        draw_punch_image(
-            screen,
-            level__,
-            (current_width//2 -370, current_height // 2 - 378 ),
-            (300, 500),
-            "level"
-        )
-        draw_punch_image(
-            screen,
-            rank__,
-            (current_width//2 +305, current_height // 2 - 378 ),
-            (600, 600),
-            "rank"
-        )
-        
-
-        
-        popular_game.image_rects =popular_game.draw_three_images(
-            screen,
-            popular_game.selected_images
-        )
-                
-                
-        recent_game.image_rects =recent_game.draw_three_images_recent_game(
-            screen,
-            recent_game.selected_images
-        )
-                
-                
-        
-        
-        
-        
-        
-        
-        # top_3 = popular_game.get_top_3_popular_games()
-        # print(top_3)
-        # popular_game.draw_popular_games(
-        #     screen,top_3,
-        #     "./asset/image/MODE/games"
-        # )
-
-        call_base(
-            screen,
-            support__button_rect
-        )
-        call_support(
-            screen,
-            support__button_rect
-        )
-
-
-
-
-        store_base(
-            screen,
-            store__button_rect
-        )
-        store_button(
-            screen,
-            store__button_rect
-        )
-
-
-
-
-
-
-
 
     if menu_state == "SUPPORT":
 
@@ -2143,6 +2020,7 @@ while running:
                 1200,
                 600
             )
+
             draw_back_button(
               screen,
               back_button_rect)
@@ -2511,15 +2389,15 @@ while running:
     #     support_button_rect
     # )
 
-        donate_base(
-            screen,
-            call_button_rect
-        )
-        donate_button
-        (
-            screen,
-            call_button_rect
-        )
+        # donate_base(
+        #     screen,
+        #     call_button_rect
+        # )
+        # donate_button
+        # (
+        #     screen,
+        #     call_button_rect
+        # )
 
                 # عکس دایره. برای پروفایل هر صفحه
         # image_setter(screen,pathth,xyz_for_profile_logo,current_height//2 - 666)
@@ -3349,45 +3227,15 @@ while running:
             
   
 
-        #     # ========================================================
-        #     # BACK SLIDE
-        #     # ========================================================
-
-        # if DES.menu_slide_back:
-
-        #     finished = DES.image_setter_menu_back(
-        #         screen,
-        #         liner,
-        #         -103,
-        #         current_height // 2 - 670,
-        #         50
-        #     )
-
-        #     if finished:
-
-        #         DES.menu_slide_back = False
-        #         DES.menu_slide_active = False
-        #         DES.menu_slide_x = None
-
-        #         game_state = "MENU"
-
-
-        # # ========================================================
-        # # ENTER SLIDE
-        # # ========================================================
-
-        # elif DES.menu_slide_active:
-
-        #     finished = DES.image_setter_menu(
-        #         screen,
-        #         liner,
-        #         -103,
-        #         current_height // 2 - 670,
-        #         50
-        #     )
-
-        #     if finished:
-        #         DES.menu_slide_active = False
+        DES.menu_back_setters(
+            screen,
+            menu_bacccccck1,
+            x=220,
+            y=current_height // 2 - 770,
+            gap=2,
+            first_x=220,
+            first_y=current_height // 2 - 720
+        )
 
 
         # # ========================================================
@@ -3415,7 +3263,7 @@ while running:
         )
         draw_back_button(
             screen,
-            back_button_rect
+            back_button_rect_for_setting
         )
         # support_button(
         #     screen,
@@ -3430,20 +3278,19 @@ while running:
 
         #----------------------------------این برای داشتبورد است 
         
-        if DASHBOARD :
+        # if DASHBOARD :
             
-            #     #-------------------
+        #     #     #-------------------
 
-            DA.draw_dashboard_date(
-                screen,
-                DA.day_image,
-                DA.month_images,
-                fonts["DAY"],
-                fonts["weekdays"],
-                fonts["month"],
-                fonts["date"]
-            )
-
+        #     DA.draw_dashboard_date(
+        #         screen,
+        #         DA.day_image,
+        #         DA.month_images,
+        #         fonts["DAY"],
+        #         fonts["weekdays"],
+        #         fonts["month"],
+        #         fonts["date"]
+        #     )
 
 
 
@@ -3513,10 +3360,86 @@ while running:
 
 
 
+    if game_state == "SUPPORT_CALL":
+                # for background  flying and image 
+        draw_moving_map(
+            screen,
+            WIDTH,
+            HEIGHT,
+            dt    )
+        draw_flying_birds(
+            screen,
+            current_width,
+            current_height
+        )   
+    
+        open_window_with_side_effect(
+            screen,
+            STOR__,
+            current_width// 2,
+            current_height//2 
+        )
+        draw_back_button(
+            screen,
+            back_button_rect
+        )
+    if game_state == "STORE":
+                # for background  flying and image 
+        draw_moving_map(
+            screen,
+            WIDTH,
+            HEIGHT,
+            dt    )
+        draw_flying_birds(
+            screen,
+            current_width,
+            current_height
+        )   
+    
+        open_window_with_side_effect(
+            screen,
+            STOR__,
+            current_width// 2,
+            current_height//2 
+        )
 
+        draw_back_button(
+            screen,
+            back_button_rect
+        )
+    if menu_state == "MESSAGE":
+                # for background  flying and image 
+        draw_punch_image(
+            screen,
+            IMG1,
+            (current_width//2 - 350 , current_height // 2 - 525 ),
+            (700, 1050),
+            "DAILY_GAME1"
+        )
+    if game_state == "DONATE":
+                # for background  flying and image 
+        draw_moving_map(
+            screen,
+            WIDTH,
+            HEIGHT,
+            dt    )
+        draw_flying_birds(
+            screen,
+            current_width,
+            current_height
+        )   
+    
+        open_window_with_side_effect(
+            screen,
+            STOR__,
+            current_width// 2,
+            current_height//2 
+        )
 
-
-
+        draw_back_button(
+            screen,
+            back_button_rect
+        )
 
 
     if game_state == "OPERATION":
@@ -4345,6 +4268,213 @@ while running:
         # MUS.reset_music_side_effect()
         reset_window_side_effect()
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   #این برای داشتبورد است 
+    if  DASHBOARD == True and is_guest == False: 
+        #-------------------
+
+        DA.draw_dashboard_date(
+            screen,
+            DA.month_images,
+            fonts["month"],
+            fonts["month"],
+            fonts["month_real"],
+            fonts["date"]
+        )
+        DA.clock(screen,fonts["date"],current_width)
+        sms_base(
+            screen,
+            sms_button_rect
+        )
+        
+        sms_button(
+            screen,
+            sms_button_rect
+        )
+        # draw_punch_image(
+        #     screen,
+        #     face__up,
+        #     (current_width//2 -200 + 250, current_height // 2  + 470),
+        #     (1250, 400),
+        #     "FACE"
+        # )
+
+
+        draw_punch_image(
+            screen,
+            rank__,
+            (current_width//2 +290, current_height // 2 - 335 ),
+            (550, 550),
+            "rank"
+        )
+        draw_punch_image(
+            screen,
+            rank__2,
+            (current_width//2 -300, current_height // 2 - 335 ),
+            (550, 550),
+            "rank2"
+        )
+        
+
+
+        
+        popular_game.image_rects =popular_game.draw_three_images(
+            screen,
+            popular_game.selected_images
+        )
+                
+                
+        recent_game.image_rects =recent_game.draw_three_images_recent_game(
+            screen,
+            recent_game.selected_images
+        )
+        
+        #------------------- برای پاپیلور گیم
+                
+        top_3___ = popular_game.get_top_3_popular_games()
+
+        selected_images_for_popular_game = popular_game.get_popular_game_images(top_3___)
+
+        popular_game.draw_three_images(
+            screen,
+            selected_images_for_popular_game
+        )
+
+
+        #--------------------- برای  ریسند گیم 
+
+        selected_recent_images = (
+            recent_game.get_recent_game_images()
+        )
+
+        recent_game.draw_three_images_recent_game(
+            screen,
+            selected_recent_images
+        )
+
+                
+        
+        
+        
+
+        
+        call_base(
+            screen,
+            support__button_rect
+        )
+        call_support(
+            screen,
+            support__button_rect
+        )
+
+
+
+
+        store_base(
+            screen,
+            store__button_rect
+        )
+        store_button(
+            screen,
+            store__button_rect
+        )
+
+
+
+        donate_base(
+            screen,
+            call_button_rect
+        )
+        donate_button(
+            screen,
+            call_button_rect
+        )
+        
+        
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     #--------------------------------------------------------------------------------------CUSTOM MATH
     if  game_state == "CUSTOM GAME":
 
@@ -4467,7 +4597,7 @@ while running:
 
     )
     
-    
+
     
         
         # این برای منو است در وسط بازی 
