@@ -1,4 +1,4 @@
-# 🧠 Mental Math Game 
+# 🧠 Mental Math Club
 
 <p align="center">
   <img src="icon.png" alt="Mental Math Game" width="700">
