@@ -89,6 +89,8 @@ from modules.music import *
 from modules.operation_screen import *
 from modules import design as DES
 from modules import account as ACC
+from modules import before_game
+from modules import game_list
 
 from modules import how_to_play as how_to_play
 # from modules.date import date
@@ -981,12 +983,50 @@ sms_button_rect= pygame.Rect(
 
 
 
+######################################### این برای FOUR_ICON_FOR_SCREEN
+
+sms_button_rect1= pygame.Rect(
+    1873,  # فاصله از راست
+    current_height //2  - 616,                   # فاصله از بالا
+    150,
+    150
+)
+
+
+#donate
+call_button_rect1= pygame.Rect(
+    29,  # فاصله از راست
+    current_height // 2  - 616,                   # فاصله از بالا
+    150,
+    150
+)
+
+
+#support
+support__button_rect1= pygame.Rect(
+    1930,  # فاصله از راست
+    current_height // 2  + 315,                   # فاصله از بالا
+    100,
+    100
+)
+
+store__button_rect1= pygame.Rect(
+    1873,  # فاصله از راست
+    current_height  // 2 + 465,                   # فاصله از بالا
+    150,
+    150
+)
+
+#########################################
+
+
+
 
 #----------------------------- دکمه برگشت
 
 back_button_rect = pygame.Rect(
-    1850,
-    20,
+    current_width // 2 - 980,
+    current_height // 2 + 470,
     150,
     150
 )
@@ -1395,7 +1435,6 @@ CHOOSE_IMAGE.WIDTH_HEIGHT_gettter(screen,current_width,current_height)
 CHOOSE_IMAGE.WIDTH_HEIGHT_gettter(screen,current_width,current_height)
 
 
-
 #-----------------------------این برای بک گراند های مود های بازی است که باید بک گراند متحرک غیر فعال شود در آن زمان 
 ON_BACKGROUND=None
 DETECT_BACKGROUND=pygame.image.load("./asset/image/background/DETECT_BACKGROUND.png").convert_alpha()
@@ -1444,7 +1483,6 @@ flag_in_menu= pygame.transform.smoothscale(pygame.image.load("./asset/image/in_g
 
 
 
-# from modules.MODE import SNAKE
 #############################################################################################################
 #############################################################################################################
 
@@ -1462,7 +1500,7 @@ setting_menu=None
 is_guest = None
 # برای موزیک است 
 control_every_button_in_setting_on_or_off= None
-
+FOUR_ICON_FOR_SCREEN=None
 restart_OFF_ON_game=None
 
 SUPPORT_IS=None
@@ -1563,9 +1601,8 @@ while running:
         store__button_rect,
         call_button_rect,
         support__button_rect,
-        sms_button_rect
-        # SUPPORT_IS,
-        # STOR_IS
+        sms_button_rect,
+        FOUR_ICON_FOR_SCREEN
 
     ) = handle_events(
 
@@ -1653,8 +1690,9 @@ while running:
         store__button_rect,
         call_button_rect,
         support__button_rect,
-        sms_button_rect        # SUPPORT_IS,
-        # STOR_IS
+        sms_button_rect,
+        FOUR_ICON_FOR_SCREEN
+
     )
     
     
@@ -1832,7 +1870,8 @@ while running:
             screen,
             profile_images,
             STS.current_player_type,
-            (50, 50)
+            (230, 116),
+            STS.dashboard_player_profile
         )
                 
                 
@@ -2097,12 +2136,12 @@ while running:
         )
         
              
-        draw_burst_icon(
-            screen,
-            icon_image__,
-            current_width // 2,
-            current_height // 2
-        )
+        # draw_burst_icon(
+        #     screen,
+        #     icon_image__,
+        #     current_width // 2,
+        #     current_height // 2
+        # )
     if game_state == "MENU" and menu_state == "DAILY GAME":
         # draw_punch_image(
         #     screen,
@@ -2217,9 +2256,9 @@ while running:
         # gif_setting(screen,gif_frames_lan,width_for_profile_logo,current_height // 2 - 570)
         
 
-        # draw_back_button(
-        #     screen,
-        #     back_button_rect)
+        draw_back_button(
+            screen,
+            back_button_rect)
         # support_button(
         #     screen,
         #     support_button_rect
@@ -2429,10 +2468,10 @@ while running:
         #     support_button_rect
         # )
         
-        donate_base(
-            screen,
-            call_button_rect
-        )        
+        # donate_base(
+        #     screen,
+        #     call_button_rect
+        # )        
     
         # image_setter(screen,pathth,xyz_for_profile_logo,current_height//2 - 666)
         # gif_setting(screen,gif_frames_credit,width_for_profile_logo,current_height // 2 - 570)
@@ -2442,10 +2481,10 @@ while running:
             p99,
             current_width
         )
-        donate_button(
-            screen,
-            call_button_rect
-        )
+        # donate_button(
+        #     screen,
+        #     call_button_rect
+        # )
 
         
         
@@ -2626,7 +2665,7 @@ while running:
 
 
         update_center_images_punch()
-        image_game_mode_page1, _ = draw_game_mode_page(
+        image_game_mode_page1 , _ , _ = draw_game_mode_page(
             screen,
             MO.images_MODE_page1,
             MO.image_sizes_page,
@@ -2642,7 +2681,15 @@ while running:
                 None,
                 None,
                 None
-            ]
+            ],
+            badge_images=[
+                fr_BG,
+                fr_BG,
+                fr_BG,
+                fr_BG,
+                fr_BG,
+                fr_BG
+            ],
         )
         
         draw_game_mode_text(
@@ -2667,7 +2714,7 @@ while running:
         
         
                 
-        image_game_mode_page2, _ = draw_game_mode_page(
+        image_game_mode_page2,_,_ = draw_game_mode_page(
             screen,
             MO.images_MODE_page2,
             MO.image_sizes_page,
@@ -2684,7 +2731,15 @@ while running:
                 None,
                 None,
                 None
-            ]
+            ],
+            badge_images=[
+                fr_BG,
+                fr_BG,
+                fr_BG,
+                fr_BG,
+                fr_BG,
+                fr_BG
+            ],
         )
                 
         draw_game_mode_text(
@@ -2713,7 +2768,7 @@ while running:
         
         
         
-        image_game_mode_page3, _ = draw_game_mode_page(
+        image_game_mode_page3, _ , _ = draw_game_mode_page(
             screen,
             MO.images_MODE_page3,
             MO.image_sizes_page,
@@ -2730,7 +2785,15 @@ while running:
                 None,
                 None,
                 None
-            ]
+            ],
+            badge_images=[
+                pr_BG,
+                pr_BG,
+                pr_BG,
+                pr_BG,
+                pr_BG,
+                pr_BG
+            ],
         )
         draw_game_mode_text(
             screen,
@@ -2760,7 +2823,7 @@ while running:
         
         
         
-        image_game_mode_page4, _ = draw_game_mode_page(
+        image_game_mode_page4, _ ,_ = draw_game_mode_page(
             screen,
             MO.images_MODE_page4,
             MO.image_sizes_page,
@@ -2777,7 +2840,15 @@ while running:
                 None,
                 None,
                 None
-            ]
+            ],
+            badge_images=[
+                pr_BG,
+                pr_BG,
+                pr_BG,
+                pr_BG,
+                pr_BG,
+                pr_BG
+            ],
         )
         
         draw_game_mode_text(
@@ -2805,7 +2876,7 @@ while running:
         
         
         
-        image_game_mode_page5, _ = draw_game_mode_page(
+        image_game_mode_page5,  _ , _ = draw_game_mode_page(
             screen,
             MO.images_MODE_page1,
             MO.image_sizes_page,
@@ -2822,7 +2893,15 @@ while running:
                 None,
                 None,
                 None
-            ]
+            ],
+            badge_images=[
+                pr_BG,
+                pr_BG,
+                pr_BG,
+                pr_BG,
+                pr_BG,
+                pr_BG
+            ],
         )
         draw_game_mode_text(
             screen,
@@ -2843,7 +2922,7 @@ while running:
         
         
         
-        image_game_mode_page6, _ = draw_game_mode_page(
+        image_game_mode_page6, _ , _ = draw_game_mode_page(
             screen,
             MO.images_MODE_page1,
             MO.image_sizes_page,
@@ -2859,7 +2938,15 @@ while running:
                 None,
                 None,
                 None
-            ]
+            ],
+            badge_images=[
+                pr_BG,
+                pr_BG,
+                pr_BG,
+                pr_BG,
+                pr_BG,
+                pr_BG
+            ],
         )
         draw_game_mode_text(
             screen,
@@ -2875,7 +2962,7 @@ while running:
 
 
 
-        image_game_mode_page7, _ = draw_game_mode_page(
+        image_game_mode_page7, _ , _ = draw_game_mode_page(
             screen,
             MO.images_MODE_page1,
             MO.image_sizes_page,
@@ -2892,7 +2979,15 @@ while running:
                 None,
                 MO.my_icon,
                 MO.my_icon
-            ]
+            ],
+            badge_images=[
+                pr_BG,
+                pr_BG,
+                pr_BG,
+                pr_BG,
+                cm_BG,
+                cm_BG
+            ],
         )
 
         
@@ -2912,7 +3007,7 @@ while running:
         
         
         
-        image_game_mode_page8, _ = draw_game_mode_page(
+        image_game_mode_page8, _ , _ = draw_game_mode_page(
             screen,
             MO.images_MODE_page1,
             MO.image_sizes_page,
@@ -2929,7 +3024,15 @@ while running:
                 MO.my_icon,
                 MO.my_icon,
                 MO.my_icon
-            ]
+            ],
+            badge_images=[
+                cm_BG,
+                cm_BG,
+                cm_BG,
+                cm_BG,
+                cm_BG,
+                cm_BG
+            ],
         )
 
         draw_game_mode_text(
@@ -2949,7 +3052,7 @@ while running:
         
         
         
-        image_game_mode_page9, _ = draw_game_mode_page(
+        image_game_mode_page9, _ , _ = draw_game_mode_page(
             screen,
             MO.images_MODE_page1,
             MO.image_sizes_page,
@@ -2964,10 +3067,18 @@ while running:
                 MO.my_icon,
                 MO.my_icon,
                 MO.my_icon
-            ]
+            ],
+            badge_images=[
+                cm_BG,
+                cm_BG,
+                cm_BG,
+                cm_BG,
+                cm_BG,
+                cm_BG
+            ],
         )
         
-        image_game_mode_page10, _ = draw_game_mode_page(
+        image_game_mode_page10, _ , _ = draw_game_mode_page(
             screen,
             MO.images_MODE_page1,
             MO.image_sizes_page,
@@ -2982,7 +3093,15 @@ while running:
                 MO.my_icon,
                 MO.my_icon,
                 MO.my_icon
-            ]
+            ],
+            badge_images=[
+                cm_BG,
+                cm_BG,
+                cm_BG,
+                cm_BG,
+                cm_BG,
+                cm_BG
+            ],
         )
 
         
@@ -3010,7 +3129,7 @@ while running:
             screen,
             "MATH",
             fonts["heart"],
-            (255, 255, 255),
+            (255, 140, 30),
             (current_width // 2, current_height // 2 - 530),
             TYPER.typing_start_time,
             80
@@ -3021,7 +3140,7 @@ while running:
             screen,
             "MEMORY",
             fonts["heart"],
-            (255, 255, 255),
+            (255, 140, 30),
             (current_width // 2, current_height // 2 - 530),
             TYPER.typing_start_time,
             80
@@ -3032,7 +3151,7 @@ while running:
             screen,
             "GET PREMIUM",
             fonts["heart"],
-            (255, 255, 255),
+            (255, 140, 30),
             (current_width // 2, current_height // 2 - 530),
             TYPER.typing_start_time,
             80
@@ -3043,7 +3162,7 @@ while running:
             screen,
             "GET PREMIUM",
             fonts["heart"],
-            (255, 255, 255),
+            (255, 140, 30),
             (current_width // 2, current_height // 2 - 530),
             TYPER.typing_start_time,
             80
@@ -3054,7 +3173,7 @@ while running:
             screen,
             "GET PREMIUM",
             fonts["heart"],
-            (255, 255, 255),
+            (255, 140, 30),
             (current_width // 2, current_height // 2 - 530),
             TYPER.typing_start_time,
             80
@@ -3065,7 +3184,7 @@ while running:
             screen,
             "GET PREMIUM",
             fonts["heart"],
-            (255, 255, 255),
+            (255, 140, 30),
             (current_width // 2, current_height // 2 - 530),
             TYPER.typing_start_time,
             80
@@ -3077,7 +3196,7 @@ while running:
             screen,
             "GET PREMIUM",
             fonts["heart"],
-            (255, 255, 255),
+            (255, 140, 30),
             (current_width // 2, current_height // 2 - 530),
             TYPER.typing_start_time,
             80
@@ -3089,7 +3208,7 @@ while running:
             screen,
             "COMING SOON...",
             fonts["heart"],
-            (255, 255, 255),
+            (255, 140, 30),
             (current_width // 2, current_height // 2 - 530),
             TYPER.typing_start_time,
             80
@@ -3100,7 +3219,7 @@ while running:
             screen,
             "COMING SOON...",
             fonts["heart"],
-            (255, 255, 255),
+            (255, 140, 30),
             (current_width // 2, current_height // 2 - 530),
             TYPER.typing_start_time,
             80
@@ -3111,11 +3230,12 @@ while running:
             screen,
             "COMING SOON...",
             fonts["heart"],
-            (255, 255, 255),
+            (255, 140, 30),
             (current_width // 2, current_height // 2 - 530),
             TYPER.typing_start_time,
             80
         )
+
 
 
         # # -------------------------------- رسم صفحه‌ها
@@ -3179,14 +3299,14 @@ while running:
 
         _window(screen,small_window)
 
-        donate_base(
-            screen,
-            call_button_rect
-        )
-        draw_back_button(
-        screen,
-        back_button_rect
-        )
+        # donate_base(
+        #     screen,
+        #     call_button_rect
+        # )
+        # draw_back_button(
+        # screen,
+        # back_button_rect
+        # )
         # support_button(
         #     screen,
         #     support_button_rect
@@ -3194,11 +3314,11 @@ while running:
         # bug_button(
         #     screen,
         #     bug_button_rect
-        # )     
-        donate_button(
-            screen,
-            call_button_rect
-        )
+        # # )     
+        # donate_button(
+        #     screen,
+        #     call_button_rect
+        # )
 
         draw_profile_live_circle(
             screen,
@@ -3212,7 +3332,9 @@ while running:
 
 
 
-
+        draw_back_button(
+            screen,
+            back_button_rect)
 
     if game_state == "MEMORY":
         memory_(
@@ -3220,7 +3342,9 @@ while running:
             current_width,
             current_height
         )
-        
+        draw_back_button(
+            screen,
+            back_button_rect)
     #---------------------------------------------------------------------------------STEP5
 
     # if ceill_entered and not time_entered:        
@@ -3264,18 +3388,18 @@ while running:
         #     screen,
         #     support_button_rect
         # )
-        donate_base(
-            screen,
-            call_button_rect
-        )
+        # donate_base(
+        #     screen,
+        #     call_button_rect
+        # )
         # bug_button(
         #     screen,
         #     bug_button_rect
         # )
-        donate_button(
-            screen,
-            call_button_rect
-        )
+        # donate_button(
+        #     screen,
+        #     call_button_rect
+        # )
 
         #-------------------------gif for time
         # image_setter(screen,pathth,xyz_for_profile_logo,current_height//2 - 666)
@@ -3342,6 +3466,14 @@ while running:
         )
 
 
+        STS.draw_current_player(
+            screen,
+            profile_images,
+            STS.current_player_type,
+            (230, 116),
+            STS.dashboard_player_profile
+        )
+                
         # # ========================================================
         # # IMAGE STAYS
         # # ========================================================
@@ -3361,10 +3493,10 @@ while running:
             settings_rects
         )
 
-        donate_base(
-            screen,
-            call_button_rect
-        )
+        # donate_base(
+        #     screen,
+        #     call_button_rect
+        # )
         draw_back_button(
             screen,
             back_button_rect_for_setting
@@ -3374,10 +3506,10 @@ while running:
         #     support_button_rect
         # )
 
-        donate_button(
-            screen,
-            call_button_rect
-        )
+        # donate_button(
+        #     screen,
+        #     call_button_rect
+        # )
 
 
         #----------------------------------این برای داشتبورد است 
@@ -3409,11 +3541,61 @@ while running:
 
 
 
+    if game_state == "BEFORE_GAMES_COUNT_DOWN":
+        # countdown(screen, image)
 
+        for index, game_name in enumerate(game_list.count_down_game_name):
 
+            if before_game.previous_game_state_F == game_name:
 
+                image = game_list.count_down_image[index]
 
+                countdown(screen, image)
+                break
 
+        before_game.before_game_start = False
+        game_state = before_game.previous_game_state_F
+        before_game.backgorund_now_for_any_game_mode = image
+    if game_state == "BEFORE_GAMES":
+        #------------------------for background 
+        draw_moving_map(
+            screen,
+            WIDTH,
+            HEIGHT,
+            dt    )
+        draw_flying_birds(
+            screen,
+            current_width,
+            current_height
+        )   
+        # punch_scale_animation_one_image(
+        #     screen,
+        #     games_first_window,
+        #     "NEXT",
+        #     current_width //2 - 400,
+        #     current_height //2 - 400    
+        # )
+        open_window_with_side_effect(
+            screen,
+            SUPPORT_window1,
+            current_width // 2,
+            current_height //2
+        )
+        punch_scale_animation_one_image(
+            screen,
+            next_page,
+            "NEXT",
+            current_width //2 + 900,
+            current_height //2 +540    
+        )
+        punch_scale_animation_one_image(
+            screen,
+            back_page,
+            "BACK",
+            current_width //2 - 900,
+            current_height //2 + 540
+        )
+    #۳ در انی  گیم استیت میشه بالایی 
 
 
 
@@ -3475,6 +3657,9 @@ while running:
             (700, 1050),
             "DAILY_GAME1"
         )
+        draw_back_button(
+            screen,
+            back_button_rect)
     if game_state == "DONATE":
                 # for background  flying and image 
         draw_moving_map(
@@ -3538,10 +3723,10 @@ while running:
         # image_setter(screen,pathth,xyz_for_profile_logo,current_height//2 - 666)
 
         # gif_setting(screen,gif_frames_op,width_for_profile_logo,current_height // 2 - 570)
-        donate_base(
-            screen,
-            call_button_rect
-        )       
+        # donate_base(
+        #     screen,
+        #     call_button_rect
+        # )       
         # support_button(
         #     screen,
         #     support_button_rect
@@ -3550,10 +3735,10 @@ while running:
         #     screen,
         #     bug_button_rect
         # ) 
-        donate_button(
-            screen,
-            call_button_rect
-        )   
+        # donate_button(
+        #     screen,
+        #     call_button_rect
+        # )   
 
         draw_profile_live_circle(
             screen,
@@ -3577,147 +3762,152 @@ while running:
    #----------------------------------------------------------------------------------------------------------------
    #----------------------------------------------------------------------------------------------------------------
    #----------------------------------------------------------------------------------------------------------------
+        #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if game_state == "MEMORY":
-        if restart_OFF_ON_game == True:
-            print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
-        back_setter(screen,MEMORY_BACKGROUND)
+        before_game.previous_game_state_F = game_state
+        if before_game.before_game_start  == True:
+            game_state = "BEFORE_GAMES"
+        else:       
+            #ادامه کد 
+            if restart_OFF_ON_game == True:
+                print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
+            back_setter(screen,before_game.backgorund_now_for_any_game_mode)
 
-        memory_(
-            screen,
-            current_width,
-            current_height
-        )
-        
-        draw_back_button(
-            screen,
-            back_button_rect
-        )
-    #--------------------------------------------------------------------------------
+            memory_(
+                screen,
+                current_width,
+                current_height
+            )
+            
+            draw_back_button(
+                screen,
+                back_button_rect
+            )
+    #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if game_state == "SHAPE_COLOR_NAME":
-        if restart_OFF_ON_game == True:
-            print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
-        back_setter(screen,SHAPE_COLOR_NAME_BACKGROUND)
-        SHAPE_COLOR_NAME(screen,current_width)
-        
-        draw_back_button(
-            screen,
-            back_button_rect
-        )
-    #--------------------------------------------------------------------------------
+        before_game.previous_game_state_F = game_state
+        if before_game.before_game_start  == True:
+            game_state = "BEFORE_GAMES"
+        else:       
+            #ادامه کد 
+            if restart_OFF_ON_game == True:
+                print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
+            back_setter(screen,before_game.backgorund_now_for_any_game_mode)
+            SHAPE_COLOR_NAME(screen,current_width)
+            
+            draw_back_button(
+                screen,
+                back_button_rect
+            )
+    #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if game_state == "REPEAT_AFTER_ME":
-        if restart_OFF_ON_game == True:
-            print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
-        back_setter(screen,REPEAT_AFTER_ME_BACKGROUND)
-        REPEAT_AFTER_ME_(screen)
-        
-        
-        draw_back_button(
-            screen,
-            back_button_rect
-        )
-    #--------------------------------------------------------------------------------
+        before_game.previous_game_state_F = game_state
+        if before_game.before_game_start  == True:
+            game_state = "BEFORE_GAMES"
+        else:       
+            #ادامه کد 
+            if restart_OFF_ON_game == True:
+                print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
+            back_setter(screen,before_game.backgorund_now_for_any_game_mode)
+            REPEAT_AFTER_ME_(screen)
+            
+            
+            draw_back_button(
+                screen,
+                back_button_rect
+            )
+    #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if game_state == "DIRECTION":
-        if restart_OFF_ON_game == True:
-            print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
-        back_setter(screen,DIRECTION_BACKGROUND)
+        before_game.previous_game_state_F = game_state
+        if before_game.before_game_start  == True:
+            game_state = "BEFORE_GAMES"
+        else:       
+            #ادامه کد 
+            if restart_OFF_ON_game == True:
+                print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
+            back_setter(screen,before_game.backgorund_now_for_any_game_mode)
 
-        DIREC.DIRECTION_(screen)
-        
-        
-        draw_back_button(
-            screen,
-            back_button_rect
-        )
-    # #--------------------------------------------------------------------------------
+            DIREC.DIRECTION_(screen)
+            
+            
+            draw_back_button(
+                screen,
+                back_button_rect
+            )
+    #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if  game_state == "MIRROR":
-        if restart_OFF_ON_game == True:
-            print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
-        back_setter(screen,MIRROR_BACKGROUND)
+        before_game.previous_game_state_F = game_state
+        if before_game.before_game_start  == True:
+            game_state = "BEFORE_GAMES"
+        else:       
+            #ادامه کد 
+            if restart_OFF_ON_game == True:
+                print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
+            back_setter(screen,before_game.backgorund_now_for_any_game_mode)
 
-        MIRROR_(screen)
+            MIRROR_(screen)
 
-        draw_back_button(
-            screen,
-            back_button_rect
-        )
-    #--------------------------------------------------------------------------------
+            draw_back_button(
+                screen,
+                back_button_rect
+            )
+    #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if game_state =="ACTION":
-        if restart_OFF_ON_game == True:
-            print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
-        back_setter(screen,ACTION_BACKGROUND)
+        before_game.previous_game_state_F = game_state
+        if before_game.before_game_start  == True:
+            game_state = "BEFORE_GAMES"
+        else:       
+            #ادامه کد 
+            if restart_OFF_ON_game == True:
+                print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
+            back_setter(screen,before_game.backgorund_now_for_any_game_mode)
 
-        ACTION_(screen)
-        draw_back_button(
-            screen,
-            back_button_rect
-        )
+            ACTION_(screen)
+            draw_back_button(
+                screen,
+                back_button_rect
+            )
 
     
     # page 2
    #----------------------------------------------------------------------------------------------------------------
    #----------------------------------------------------------------------------------------------------------------
     #----------------------------------------------------------------------------------------------------------------
-    if game_state == "BEFORE_GAMES":
-        #------------------------for background 
-        draw_moving_map(
-            screen,
-            WIDTH,
-            HEIGHT,
-            dt    )
-        draw_flying_birds(
-            screen,
-            current_width,
-            current_height
-        )   
-        punch_scale_animation_one_image(
-            screen,
-            games_first_window,
-            "NEXT",
-            current_width //2 - 400,
-            current_height //2 - 400    
-        )
-        punch_scale_animation_one_image(
-            screen,
-            next_page,
-            "NEXT",
-            current_width //2 - 500,
-            current_height //2 - 500    
-        )
-        punch_scale_animation_one_image(
-            screen,
-            back_page,
-            "BACK",
-            current_width //2 - 300,
-            current_height //2 - 300
-        )
+
         # if now_game_start:
         #     # if previous_game_state != "FIND_NUMBER":
 
                 # ---------------- Question Background ----------------
 
+    #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
 
     if game_state == "FIND_NUMBER":
-        if restart_OFF_ON_game == True:
-            print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
+        before_game.previous_game_state_F = game_state
+        if before_game.before_game_start  == True:
+            game_state = "BEFORE_GAMES"
+        else:       
+            #ادامه کد 
+            if restart_OFF_ON_game == True:
+                print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
+                
+            # before_game.window_before_start_game(screen,dt,current_width,current_height)# این صفحه اول است  بعد از این صفحه صفحه دوم بیاد 
+            # if not now_game_start:
+            #     countdown(# اسن صفحه دوم خب بعد از این صفحه دوم بازی بیاد 
+            #         screen,
+            #         FIND_NUMBER_BACKGROUND
+            #     )
 
-        if not now_game_start:
-            countdown(
-                screen,
-                FIND_NUMBER_BACKGROUND
-            )
-
-            now_game_start = True
-        else:
+            #     now_game_start = True
+            # else:
 
 
-
-
+            
             # ============================================================
             # FIND NUMBER
             # ============================================================
             back_setter(
                 screen,
-                FIND_NUMBER_BACKGROUND
+                before_game.backgorund_now_for_any_game_mode
             )
 
 
@@ -3925,149 +4115,178 @@ while running:
             
             score_base(screen)
             scoreee11(screen)
-    previous_game_state =game_state
-    # ============================================================
-    # 60 SECONDS GAME
-    # ============================================================
+        previous_game_state =game_state
+        
+        
+        
+        
+        
+    
+    #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
 
     if game_state == "60S":
-        if restart_OFF_ON_game == True:
-            print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
-        back_setter(
-            screen,
-            _60S_BACKGROUND
-        )
+        before_game.previous_game_state_F = game_state
+        if before_game.before_game_start  == True:
+            game_state = "BEFORE_GAMES"
+        else:       
+                #ادامه کد 
+            if restart_OFF_ON_game == True:
+                print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
+            back_setter(
+                screen,
+                before_game.backgorund_now_for_any_game_mode
+            )
 
 
-        SIX_60S(
-            screen,
-            current_width
-        )
+            SIX_60S(
+                screen,
+                current_width
+            )
 
 
-        # ---------------- Player ----------------
+            # ---------------- Player ----------------
 
-        draw_profile_live_circle(
-            screen,
-            selected_profile_image,
-            p99,
-            current_width
-        )
-
-
-        # ---------------- Home ----------------
-
-        in_game_button(
-            screen,
-            home_button_rect,
-            menu
-        )
+            draw_profile_live_circle(
+                screen,
+                selected_profile_image,
+                p99,
+                current_width
+            )
 
 
-        # ---------------- Back ----------------
+            # ---------------- Home ----------------
 
-        draw_back_button(
-            screen,
-            back_button_rect
-        )
+            in_game_button(
+                screen,
+                home_button_rect,
+                menu
+            )
 
 
-    #---------------------------------------------------------------------------------x(+-/*)y
+            # ---------------- Back ----------------
+
+            draw_back_button(
+                screen,
+                back_button_rect
+            )
+
+
+    #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if game_state == "MORE_LESS_EQUAL":
-        if restart_OFF_ON_game == True:
-            print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
-        back_setter(screen,MORE_LESS_EQUAL_BACKGROUND)
+        before_game.previous_game_state_F = game_state
+        if before_game.before_game_start  == True:
+            game_state = "BEFORE_GAMES"
+        else:       
+            #ادامه کد 
+            if restart_OFF_ON_game == True:
+                print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
+            back_setter(screen,before_game.backgorund_now_for_any_game_mode)
 
-        MORE_LESS_EQUAL_(screen)
-        draw_profile_live_circle(
-            screen,
-            selected_profile_image,
-            p99,
-            current_width
-        )
-        in_game_button(
-            screen,
-            home_button_rect,
-            menu
-        )
-        draw_back_button(
-            screen,
-            back_button_rect
-        )
+            MORE_LESS_EQUAL_(screen)
+            draw_profile_live_circle(
+                screen,
+                selected_profile_image,
+                p99,
+                current_width
+            )
+            in_game_button(
+                screen,
+                home_button_rect,
+                menu
+            )
+            draw_back_button(
+                screen,
+                back_button_rect
+            )
 
-    #--------------------------------------------------------------------------------->=<
+    #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if game_state == "TRUE_FALSE":
-        if restart_OFF_ON_game == True:
-            print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
-        back_setter(screen,TRUE_FALSE_BACKGROUND)
+        before_game.previous_game_state_F = game_state
+        if before_game.before_game_start  == True:
+            game_state = "BEFORE_GAMES"
+        else:       
+            #ادامه کد 
+            if restart_OFF_ON_game == True:
+                print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
+            back_setter(screen,before_game.backgorund_now_for_any_game_mode)
 
-        TRUE_FALSE_(screen)
-        draw_profile_live_circle(
-            screen,
-            selected_profile_image,
-            p99,
-            current_width
-        )
-        in_game_button(
-            screen,
-            home_button_rect,
-            menu
-        )
-        draw_back_button(
-            screen,
-            back_button_rect
-        )
-        
+            TRUE_FALSE_(screen)
+            draw_profile_live_circle(
+                screen,
+                selected_profile_image,
+                p99,
+                current_width
+            )
+            in_game_button(
+                screen,
+                home_button_rect,
+                menu
+            )
+            draw_back_button(
+                screen,
+                back_button_rect
+            )
+            
 
-    #--------------------------------------------------------------------------------->=<
+    #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if game_state == "FIND_OPERATOR":
-        if restart_OFF_ON_game == True:
-            print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
-        back_setter(screen,FIND_OPERATOR_BACKGROUND)
+        before_game.previous_game_state_F = game_state
+        if before_game.before_game_start  == True:
+            game_state = "BEFORE_GAMES"
+        else:       
+            #ادامه کد 
+            if restart_OFF_ON_game == True:
+                print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
+            back_setter(screen,before_game.backgorund_now_for_any_game_mode)
 
-        FIND_OPERATOR_(screen)
-        draw_profile_live_circle(
-            screen,
-            selected_profile_image,
-            p99,
-            current_width
-        )
-        in_game_button(
-            screen,
-            home_button_rect,
-            menu
-        )
-        draw_back_button(
-            screen,
-            back_button_rect
-        )
+            FIND_OPERATOR_(screen)
+            draw_profile_live_circle(
+                screen,
+                selected_profile_image,
+                p99,
+                current_width
+            )
+            in_game_button(
+                screen,
+                home_button_rect,
+                menu
+            )
+            draw_back_button(
+                screen,
+                back_button_rect
+            )
         
-    #--------------------------------------------------------------------------------
+    #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if game_state =="DETECT":
-        if restart_OFF_ON_game == True:
-            print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
-        # back_setter(screen,DETECT_BACKGROUND)
-        #----------------- background_and_brids
-        draw_moving_map(
-            screen,
-            WIDTH,
-            HEIGHT,
-            dt    )
-        draw_flying_birds(
-            screen,
-            current_width,
-            current_height
-        )   
-    
-        # print("this is detect")
-        # این منطقش اشتباه است  زمانی که غلط میزنی در بازی 
-        DETECT_(screen,current_width,current_height)
+        before_game.previous_game_state_F = game_state
+        if before_game.before_game_start  == True:
+            game_state = "BEFORE_GAMES"
+        else:       
+            #ادامه کد 
+            if restart_OFF_ON_game == True:
+                print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
+            back_setter(screen,before_game.backgorund_now_for_any_game_mode)
+            #----------------- background_and_brids
+            draw_moving_map(
+                screen,
+                WIDTH,
+                HEIGHT,
+                dt    )
+            draw_flying_birds(
+                screen,
+                current_width,
+                current_height
+            )   
+        
+            # print("this is detect")
+            # این منطقش اشتباه است  زمانی که غلط میزنی در بازی 
+            DETECT_(screen,current_width,current_height)
 
 
-        draw_back_button(
-            screen,
-            back_button_rect
-        )
+            draw_back_button(
+                screen,
+                back_button_rect
+            )
 
     # page 3
    #----------------------------------------------------------------------------------------------------------------
@@ -4075,199 +4294,308 @@ while running:
    #----------------------------------------------------------------------------------------------------------------
 
 
-    
+    #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if game_state =="FAST":
-        if restart_OFF_ON_game == True:
-            print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
-        back_setter(screen,FAST_BACKGROUND)
+        before_game.previous_game_state_F = game_state
+        if before_game.before_game_start  == True:
+            game_state = "BEFORE_GAMES"
+        else:       
+            #ادامه کد 
+            if restart_OFF_ON_game == True:
+                print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
+            back_setter(screen,before_game.backgorund_now_for_any_game_mode)
 
-        FAST_(screen,current_width)
-        draw_back_button(
-            screen,
-            back_button_rect
-        )
+            FAST_(screen,current_width)
+            draw_back_button(
+                screen,
+                back_button_rect
+            )
 
 
-        draw_back_button(
-            screen,
-            back_button_rect
-        )
-
+            draw_back_button(
+                screen,
+                back_button_rect
+            )
+            
+    #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     # بک گراند این ها رو درست کنم ندارن 
     if game_state =="HOW_MANY":
-        if restart_OFF_ON_game == True:
-            print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
-        back_setter(screen,DETECT_BACKGROUND)
-        HOW.HOW_MANY_(screen,current_width,current_height)
-        draw_back_button(
-            screen,
-            back_button_rect
-        )
+        before_game.previous_game_state_F = game_state
+        if before_game.before_game_start  == True:
+            game_state = "BEFORE_GAMES"
+        else:       
+            #ادامه کد 
+            if restart_OFF_ON_game == True:
+                print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
+            back_setter(screen,before_game.backgorund_now_for_any_game_mode)
+            HOW.HOW_MANY_(screen,current_width,current_height)
+            draw_back_button(
+                screen,
+                back_button_rect
+            )
 
-
+    #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if game_state =="HARD":
-        if restart_OFF_ON_game == True:
-            print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
-        back_setter(screen,DETECT_BACKGROUND)
+        before_game.previous_game_state_F = game_state
+        if before_game.before_game_start  == True:
+            game_state = "BEFORE_GAMES"
+        else:       
+            #ادامه کد 
+            if restart_OFF_ON_game == True:
+                print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
+            back_setter(screen,before_game.backgorund_now_for_any_game_mode)
 
-        HARD.HARD_(screen,current_width,current_height)
-        draw_back_button(
-            screen,
-            back_button_rect
-        )
+            HARD.HARD_(screen,current_width,current_height)
+            draw_back_button(
+                screen,
+                back_button_rect
+            )
+    #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if game_state =="DETECT_PRO":
-        if restart_OFF_ON_game == True:
-            print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
-        back_setter(screen,DETECT_BACKGROUND)
-        
-        DPRO.DETECT_PRO_(screen,current_width,current_height)
-        draw_back_button(
-            screen,
-            back_button_rect
-        )
+        before_game.previous_game_state_F = game_state
+        if before_game.before_game_start  == True:
+            game_state = "BEFORE_GAMES"
+        else:       
+            #ادامه کد 
+            if restart_OFF_ON_game == True:
+                print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
+            back_setter(screen,before_game.backgorund_now_for_any_game_mode)
+            
+            DPRO.DETECT_PRO_(screen,current_width,current_height)
+            draw_back_button(
+                screen,
+                back_button_rect
+            )
+     #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if game_state =="MEMORY_GO":
-        if restart_OFF_ON_game == True:
-            print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
-        back_setter(screen,DETECT_BACKGROUND)
+        before_game.previous_game_state_F = game_state
+        if before_game.before_game_start  == True:
+            game_state = "BEFORE_GAMES"
+        else:       
+            #ادامه کد 
+            if restart_OFF_ON_game == True:
+                print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
+            back_setter(screen,before_game.backgorund_now_for_any_game_mode)
 
-        MEMGO.MEMORY_GO_(screen,current_width,current_height)
-        draw_back_button(
-            screen,
-            back_button_rect
-        )
+            MEMGO.MEMORY_GO_(screen,current_width,current_height)
+            draw_back_button(
+                screen,
+                back_button_rect
+            )
 
+    #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if game_state =="MOVE_ARROW":
-        if restart_OFF_ON_game == True:
-            print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
-        back_setter(screen,DETECT_BACKGROUND)
-        M_ARR.MOVE_ARROW_(screen,current_width,current_height)
-        draw_back_button(
-            screen,
-            back_button_rect
-        )
+        before_game.previous_game_state_F = game_state
+        if before_game.before_game_start  == True:
+            game_state = "BEFORE_GAMES"
+        else:       
+            #ادامه کد 
+            if restart_OFF_ON_game == True:
+                print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
+            back_setter(screen,before_game.backgorund_now_for_any_game_mode)
+            M_ARR.MOVE_ARROW_(screen,current_width,current_height)
+            draw_back_button(
+                screen,
+                back_button_rect
+            )
 
 
     # page 4
    #----------------------------------------------------------------------------------------------------------------
    #----------------------------------------------------------------------------------------------------------------
    #----------------------------------------------------------------------------------------------------------------
+    #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if game_state =="MATH_GO":
-        if restart_OFF_ON_game == True:
-            print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
-        back_setter(screen,DETECT_BACKGROUND)
+        before_game.previous_game_state_F = game_state
+        if before_game.before_game_start  == True:
+            game_state = "BEFORE_GAMES"
+        else:       
+            #ادامه کد 
+            if restart_OFF_ON_game == True:
+                print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
+            back_setter(screen,before_game.backgorund_now_for_any_game_mode)
 
-        MATHGO.MATH_GO_(screen)
-        draw_back_button(
-            screen,
-            back_button_rect
-        )
+            MATHGO.MATH_GO_(screen)
+            draw_back_button(
+                screen,
+                back_button_rect
+            )
 
+    #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if game_state =="FAST_ADD_SUB":
-        if restart_OFF_ON_game == True:
-            print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
-        back_setter(screen,DETECT_BACKGROUND)
+        before_game.previous_game_state_F = game_state
+        if before_game.before_game_start  == True:
+            game_state = "BEFORE_GAMES"
+        else:       
+            #ادامه کد 
+            if restart_OFF_ON_game == True:
+                print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
+            back_setter(screen,before_game.backgorund_now_for_any_game_mode)
 
-        FAS.QUICK_MATH(screen)
-        draw_back_button(
-            screen,
-            back_button_rect
-        )
+            FAS.QUICK_MATH(screen)
+            draw_back_button(
+                screen,
+                back_button_rect
+            )
+        
+        
+    #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if game_state =="FOLLOW_THAT":
-        if restart_OFF_ON_game == True:
-            print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
-        back_setter(screen,DETECT_BACKGROUND)
+        before_game.previous_game_state_F = game_state
+        if before_game.before_game_start  == True:
+            game_state = "BEFORE_GAMES"
+        else:       
+            #ادامه کد 
+            if restart_OFF_ON_game == True:
+                print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم")
+            back_setter(screen,before_game.backgorund_now_for_any_game_mode)
 
-        FOTHAT.FOLLOW_THAT_(screen)
-        draw_back_button(
-            screen,
-            back_button_rect
-        )
+            FOTHAT.FOLLOW_THAT_(screen)
+            draw_back_button(
+                screen,
+                back_button_rect
+            )
+        
+        
+        
+        
+        
+        
+    #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if game_state =="IMAGE_SELECT":
-        if restart_OFF_ON_game == True:
-            print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم برای دکمه ریستارت بازی ")
-        back_setter(screen,DETECT_BACKGROUND)
+        before_game.previous_game_state_F = game_state
+        if before_game.before_game_start  == True:
+            game_state = "BEFORE_GAMES"
+        else:       
+            #ادامه کد 
+            if restart_OFF_ON_game == True:
+                print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم برای دکمه ریستارت بازی ")
+            back_setter(screen,before_game.backgorund_now_for_any_game_mode)
 
-        IMSE.IMAGE_SELECT_(screen)
+            IMSE.IMAGE_SELECT_(screen)
 
-        draw_back_button(
-            screen,
-            back_button_rect
-        )
+            draw_back_button(
+                screen,
+                back_button_rect
+            )
+            
+            
+        
+        
+    #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if game_state =="THOOZ":
-        if restart_OFF_ON_game == True:
-            print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم برای دکمه ریستارت بازی ")
-        TOZ.THOOZ_(screen,current_width)
-        
-        draw_back_button(
-            screen,
-            back_button_rect
-        )
+
+        before_game.previous_game_state_F = game_state
+        if before_game.before_game_start  == True:
+            game_state = "BEFORE_GAMES"
+        else:       
+            #ادامه کد 
+            if restart_OFF_ON_game == True:
+                print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم برای دکمه ریستارت بازی ")
+            TOZ.THOOZ_(screen,current_width)
+            
+            draw_back_button(
+                screen,
+                back_button_rect
+            )
+            
+            
+            
+            
+            
+            
+    #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if game_state =="CHESS":
-        if restart_OFF_ON_game == True:
-            print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم برای دکمه ریستارت بازی ")
-        CHESS.CHESS_()
-        
-        draw_back_button(
-            screen,
-            back_button_rect
-        )
+        before_game.previous_game_state_F = game_state
+        if before_game.before_game_start  == True:
+            game_state = "BEFORE_GAMES"
+        else:       
+            #ادامه کد 
+            if restart_OFF_ON_game == True:
+                print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم برای دکمه ریستارت بازی ")
+            CHESS.CHESS_()
+            
+            draw_back_button(
+                screen,
+                back_button_rect
+            )
 
     # page 5
    #----------------------------------------------------------------------------------------------------------------
    #----------------------------------------------------------------------------------------------------------------
    #----------------------------------------------------------------------------------------------------------------
-   
+    #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if game_state =="SORT_NUMBER":
-        if restart_OFF_ON_game == True:
-            print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم برای دکمه ریستارت بازی ")
-        draw_moving_map(
-            screen,
-            WIDTH,
-            HEIGHT,
-            dt    )
-        draw_flying_birds(
-            screen,
-            current_width,
-            current_height
-        )   
-        SORT_NUMBER.SORT_NUMBER_()
-        draw_back_button(
-            screen,
-            back_button_rect
-        )
+        before_game.previous_game_state_F = game_state
+        if before_game.before_game_start  == True:
+            game_state = "BEFORE_GAMES"
+        else:       
+            #ادامه کد 
+            if restart_OFF_ON_game == True:
+                print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم برای دکمه ریستارت بازی ")
+            draw_moving_map(
+                screen,
+                WIDTH,
+                HEIGHT,
+                dt    )
+            draw_flying_birds(
+                screen,
+                current_width,
+                current_height
+            )   
+            SORT_NUMBER.SORT_NUMBER_()
+            draw_back_button(
+                screen,
+                back_button_rect
+            )
         
-        
+    #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if game_state =="SUDOKU":
-        if restart_OFF_ON_game == True:
-            print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم برای دکمه ریستارت بازی ")
-        SUDOKU.SUDOKU_()
-        draw_back_button(
-            screen,
-            back_button_rect
-        )
+        before_game.previous_game_state_F = game_state
+        if before_game.before_game_start  == True:
+            game_state = "BEFORE_GAMES"
+        else:       
+            #ادامه کد 
+            if restart_OFF_ON_game == True:
+                print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم برای دکمه ریستارت بازی ")
+            SUDOKU.SUDOKU_()
+            draw_back_button(
+                screen,
+                back_button_rect
+            )
+            
         
         
-        
-        
+    #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if game_state =="WORD":
-        if restart_OFF_ON_game == True:
-            print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم برای دکمه ریستارت بازی ")
-        WORD.WORD_()
-        draw_back_button(
-            screen,
-            back_button_rect
-        )
+        before_game.previous_game_state_F = game_state
+        if before_game.before_game_start  == True:
+            game_state = "BEFORE_GAMES"
+        else:       
+            #ادامه کد 
+            if restart_OFF_ON_game == True:
+                print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم برای دکمه ریستارت بازی ")
+            WORD.WORD_()
+            draw_back_button(
+                screen,
+                back_button_rect
+            )
         
         
-        
+    #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if game_state =="MINESWEEPER":
-        if restart_OFF_ON_game == True:
-            print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم برای دکمه ریستارت بازی ")
-        MINESWEEPER.MINESWEEPER_()
-        draw_back_button(
-            screen,
-            back_button_rect
-        )
+        before_game.previous_game_state_F = game_state
+        if before_game.before_game_start  == True:
+            game_state = "BEFORE_GAMES"
+        else:       
+            #ادامه کد 
+            if restart_OFF_ON_game == True:
+                print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم برای دکمه ریستارت بازی ")
+            MINESWEEPER.MINESWEEPER_()
+            draw_back_button(
+                screen,
+                back_button_rect
+            )
         
         
         
@@ -4275,42 +4603,65 @@ while running:
         
     
         
-        
+    #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if game_state =="MAZE":
-        if restart_OFF_ON_game == True:
-            print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم برای دکمه ریستارت بازی ")
-        MAZE.MAZE_()
-        draw_back_button(
-            screen,
-            back_button_rect
-        )
-        
+        before_game.previous_game_state_F = game_state
+        if before_game.before_game_start  == True:
+            game_state = "BEFORE_GAMES"
+        else:       
+            #ادامه کد 
+            if restart_OFF_ON_game == True:
+                print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم برای دکمه ریستارت بازی ")
+            MAZE.MAZE_()
+            draw_back_button(
+                screen,
+                back_button_rect
+            )
+            
+    #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if game_state =="MEMORY_FAST":
-        if restart_OFF_ON_game == True:
-            print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم برای دکمه ریستارت بازی ")
-        MEMORY_FAST.MEMORY_FAST_()
-        draw_back_button(
-            screen,
-            back_button_rect
-        )
+        before_game.previous_game_state_F = game_state
+        if before_game.before_game_start  == True:
+            game_state = "BEFORE_GAMES"
+        else:       
+            #ادامه کد 
+            if restart_OFF_ON_game == True:
+                print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم برای دکمه ریستارت بازی ")
+            MEMORY_FAST.MEMORY_FAST_()
+            draw_back_button(
+                screen,
+                back_button_rect
+            )
 
        # page 6
    #----------------------------------------------------------------------------------------------------------------
    #----------------------------------------------------------------------------------------------------------------
    #----------------------------------------------------------------------------------------------------------------
    
+   #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if game_state =="CHOOSE_IMAGE":
-        if restart_OFF_ON_game == True:
-            print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم برای دکمه ریستارت بازی ")
-        CHOOSE_IMAGE.CHOOSE_IMAGE_()
-        draw_back_button(
-            screen,
-            back_button_rect
-        )
+        
+        before_game.previous_game_state_F = game_state
+        if before_game.before_game_start  == True:
+            game_state = "BEFORE_GAMES"
+        else:       
+            #ادامه کد 
+            if restart_OFF_ON_game == True:
+                print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم برای دکمه ریستارت بازی ")
+            CHOOSE_IMAGE.CHOOSE_IMAGE_()
+            draw_back_button(
+                screen,
+                back_button_rect
+            )
 
    
    
     # if game_state =="SNAKE":
+            # before_game.previous_game_state_F = game_state
+            # if before_game.before_game_start  == True:
+            #     game_state = "BEFORE_GAMES"
+            # else:       
+            #ادامه کد 
     #     if restart_OFF_ON_game == True:
     #         print("ریستارت هر بازی رو باید این جا بنویسم برای هر بازی این رو میخام در این  جا بنویسم برای دکمه ریستارت بازی ")
     #     SNAKE.SNAKE_()
@@ -4386,18 +4737,18 @@ while running:
         #     screen,
         #     support_button_rect
         # )
-        donate_base(
-            screen,
-            call_button_rect
-        )
+        # donate_base(
+        #     screen,
+        #     call_button_rect
+        # )
         # bug_button(
         #     screen,
         #     bug_button_rect
         # )   
-        donate_button(
-            screen,
-            call_button_rect
-        )
+        # donate_button(
+        #     screen,
+        #     call_button_rect
+        # )
 
         draw_profile_in_profile_tab(
             screen,
@@ -4737,12 +5088,6 @@ while running:
 
 
 
-
-
-
-
-
-
    #این برای داشتبورد است 
     if  DASHBOARD == True and is_guest == False: 
         #-------------------
@@ -4885,9 +5230,46 @@ while running:
 
 
 
+    if  FOUR_ICON_FOR_SCREEN == True and DASHBOARD == False :
+        # call_base1(
+        #     screen,
+        #     support__button_rect1
+        # )
+        # call_support1(
+        #     screen,
+        #     support__button_rect1
+        # )
 
 
+        store_base(
+            screen,
+            store__button_rect1
+        )
+        store_button(
+            screen,
+            store__button_rect1
+        )
+        
 
+        donate_base(
+            screen,
+            call_button_rect1
+        )
+        donate_button(
+            screen,
+            call_button_rect1
+        )
+        
+
+
+        sms_base(
+            screen,
+            sms_button_rect1
+        )
+        sms_button(
+            screen,
+            sms_button_rect1
+        )
 
 
 
