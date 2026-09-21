@@ -73,24 +73,6 @@ def open_window_with_side_effect(
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # ============================================================
 # RESET
 # ============================================================
@@ -124,8 +106,101 @@ def reset_window_side_effect():
     
 #------------------------------------------------- تابع ساید افکت با   چند تصویره 
 
+feed_________ = pygame.image.load(
+    "asset/image/support/in/feedback.png"
+).convert_alpha()
+
+feed_________ = pygame.transform.smoothscale(
+    feed_________,
+    (200, 200)
+)
+
+
+bug__________ = pygame.image.load(
+    "asset/image/support/in/bug.png"
+).convert_alpha()
+
+bug__________ = pygame.transform.smoothscale(
+    bug__________,
+    (200, 200)
+)
+
+
+donatee_____ = pygame.image.load(
+    "asset/image/support/in/donate.png"
+).convert_alpha()
+
+donatee_____ = pygame.transform.smoothscale(
+    donatee_____,
+    (200, 200)
+)
+
+
+contact_______ = pygame.image.load(
+    "asset/image/support/in/contact.png"
+).convert_alpha()
+
+contact_______ = pygame.transform.smoothscale(
+    contact_______,
+    (200, 200)
+)
+
+contactt=[
+        # (image____1, 300, 500),
+        # (image____2, 300, 750),
+        (contact_______, 1021.3, 200)
+    ]
+donatee=[
+        # (image____1, 300, 500),
+        # (image____2, 300, 750),
+        (donatee_____, 1021021.30, 200)
+    ]
+feedd=[
+        # (image____1, 300, 500),
+        # (image____2, 300, 750),
+        (feed_________, 1021.3, 200)
+    ]
+bugg=[
+        # (image____1, 300, 500),
+        # (image____2, 300, 750),
+        (bug__________, 1021.3, 200)
+    ]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 info_________ = pygame.image.load(
-    "asset/image/support/info.png"
+    "asset/image/support/in/info.png"
 ).convert_alpha()
 
 info_________ = pygame.transform.smoothscale(
@@ -142,7 +217,7 @@ info_________ = pygame.transform.smoothscale(
 
 
 faq__________ = pygame.image.load(
-    "asset/image/support/faq.png"
+    "asset/image/support/in/faq.png"
 ).convert_alpha()
 
 faq__________ = pygame.transform.smoothscale(
@@ -162,7 +237,7 @@ faq__________ = pygame.transform.smoothscale(
 
 
 policy_______ = pygame.image.load(
-    "asset/image/support/policy.png"
+    "asset/image/support/in/policy.png"
 ).convert_alpha()
 
 policy_______ = pygame.transform.smoothscale(
@@ -181,24 +256,23 @@ policy_______ = pygame.transform.smoothscale(
 faqq=[
         # (image____1, 300, 500),
         # (image____2, 300, 750),
-        (faq__________, 1020, 150)
+        (faq__________, 1021.3, 200)
     ]
 infoo=[
         # (image____1, 300, 500),
         # (image____2, 300, 750),
-        (info_________, 1020, 150)
+        (info_________, 1021.3, 200)
     ]
 policyy=[
         # (image____1, 300, 500),
         # (image____2, 300, 750),
-        (policy_______, 1020, 150)
+        (policy_______, 1021.3, 200)
     ]
 def open_window_with_side_effect_MULLTI_WINDOW(
     screen,
     image,
     x,
     y,
-    images,
     text=None,
     text_font=None,
     text_color=(255, 255, 255),
@@ -298,54 +372,54 @@ def open_window_with_side_effect_MULLTI_WINDOW(
     # EXTRA IMAGES
     # ========================================================
 
-    for extra_image, extra_x, extra_y in images:
+    # for extra_image, extra_x, extra_y in images:
 
-        current_x = slide_x(
-            extra_x,
-            extra_image.get_width()
-        )
+    #     current_x = slide_x(
+    #         extra_x,
+    #         extra_image.get_width()
+    #     )
 
-        extra_rect = extra_image.get_rect(
-            center=(
-                current_x,
-                extra_y
-            )
-        )
+    #     extra_rect = extra_image.get_rect(
+    #         center=(
+    #             current_x,
+    #             extra_y
+    #         )
+    #     )
 
-        screen.blit(
-            extra_image,
-            extra_rect
-        )
+    #     screen.blit(
+    #         extra_image,
+    #         extra_rect
+    #     )
 
 
     # ========================================================
     # TEXT
     # ========================================================
 
-    if text is not None and text_font is not None:
+    # if text is not None and text_font is not None:
 
-        text_surface = text_font.render(
-            text,
-            True,
-            text_color
-        )
+    #     text_surface = text_font.render(
+    #         text,
+    #         True,
+    #         text_color
+    #     )
 
-        current_x = slide_x(
-            text_x,
-            text_surface.get_width()
-        )
+    #     current_x = slide_x(
+    #         text_x,
+    #         text_surface.get_width()
+    #     )
 
-        text_rect = text_surface.get_rect(
-            center=(
-                current_x,
-                text_y
-            )
-        )
+    #     text_rect = text_surface.get_rect(
+    #         center=(
+    #             current_x,
+    #             text_y
+    #         )
+    #     )
 
-        screen.blit(
-            text_surface,
-            text_rect
-        )
+    #     screen.blit(
+    #         text_surface,
+    #         text_rect
+    #     )
         
         
         
