@@ -347,6 +347,15 @@ def handle_events(
 
 
 
+        if event.type == pygame.MOUSEBUTTONDOWN:
+
+            if event.button == 3:
+
+                x, y = event.pos
+
+                print(
+                    f"X = {x}, Y = {y}"
+                )
 
 
 
@@ -1928,15 +1937,19 @@ def handle_events(
                         # CUSTOM_MATH=False
                         menu_state ="االلکی "
                         CUS.reset_punch_images_animation()
+                        S_E_W.reset_menu_setting_panel()
+
                     elif CUS.punch1_rect.collidepoint(event.pos):
                         game_state = "GAME MODE"
                         menu_state ="االلکی "
                         CUS.reset_punch_images_animation()
                         # CUSTOM_MATH=False
+                        S_E_W.reset_menu_setting_panel()
                         FOUR_ICON_FOR_SCREEN=True
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         DONT_LET_CLICK_GAMES_BUTTON_BEFORE_THAT=True
+
                         continue
         #--------------------DAILY GAME این مال 
 
@@ -1952,12 +1965,14 @@ def handle_events(
                     DES.reset_menu_back_setters()
                     SUP.reset_window_side_effect()
                     SUP.reset_punch_scale_animation_one_image()
+                    S_E_W.reset_menu_setting_panel()
 
                 if CUS.IMG1_REC2.collidepoint(event.pos):
 
                     game_state = "STATUS"
                     DES.reset_menu_back_setters()
                     SUP.reset_window_side_effect()
+                    S_E_W.reset_menu_setting_panel()
 
 
                 # if CUS.IMG1_REC1.collidepoint(event.pos):
@@ -2330,7 +2345,7 @@ def handle_events(
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = event.pos
-                if SUP.next_page_rec2 and SUP.back_page_rec is not None:
+                if SUP.next_page_rec2 and SUP.back_page_rec and SUP.how_to_play_next_button_rec is not None:
                     if SUP.back_page_rec.collidepoint(event.pos):
                         game_state = "GAME MODE"
                         SUP.reset_window_side_effect()
@@ -2342,6 +2357,18 @@ def handle_events(
                         # SUP.now_game_start = False
                         game_state = "BEFORE_GAMES_COUNT_DOWN"
                         DES.reset_menu_back_setters()
+                    if SUP.how_to_play_next_button_rec.collidepoint(event.pos):
+                        SUP.reset_window_side_effect()
+                        SUP.reset_punch_scale_animation_one_image()
+                        DES.reset_menu_back_setters()
+                        game_state = "NEXT_PAGE_BEFORE_GAME"
+                        before_game.reset_window_before_each_game()
+
+                        
+                        
+                        
+                        
+                        
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_pos = event.pos
             if DES.restart_rec is not None and DES.restart_rec.collidepoint(mouse_pos):
@@ -2357,17 +2384,23 @@ def handle_events(
                 if  support__button_rect.collidepoint(mouse_pos):
                     # SUPPORT_IS = True
                     game_state="SUPPORT_CALL"
+                    DASHBOARD=False
 
                 if  store__button_rect.collidepoint(mouse_pos):
                     # STOR_IS = True
                     game_state="STORE"
                     # print("thisisaiden")
+                    DASHBOARD=False
+
                 if  call_button_rect.collidepoint(mouse_pos):
                     # STOR_IS = True
-                    game_state="DONATE"
+                    game_state="DONATE_button"
+                    DASHBOARD=False
+
                 if  sms_button_rect.collidepoint(mouse_pos):
                     # STOR_IS = True
                     menu_state="MESSAGE"
+                    DASHBOARD=False
 
         if event.type == pygame.MOUSEBUTTONDOWN:
 
@@ -2480,6 +2513,8 @@ def handle_events(
                         control_every_button_in_setting_on_or_off="menu"
                         DASHBOARD=True
                         game_state="MENU"
+                        S_E_W.reset_menu_setting_panel()
+
                     elif game_state == "MUSIC":
                         reset_music_side_effect()
 
@@ -2511,6 +2546,8 @@ def handle_events(
                         DES.menu_slide_back = False
                         DES.menu_slide_active = True
                         DES.menu_slide_x = None
+                        S_E_W.reset_menu_setting_panel()
+
                         #--------------------
                     elif game_state == "MORE":
                         game_state = "SETTING"
@@ -2538,7 +2575,7 @@ def handle_events(
                         #------------------ for before game start
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
-                        
+
 
                     elif game_state == "BEFORE_GAMES":
                         game_state = "GAME MODE"
@@ -2574,12 +2611,14 @@ def handle_events(
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         
+                        
                     elif game_state == "ACTION":
                         game_state = "GAME MODE"
                         #------------------ for before game start
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         
+
                     elif game_state == "MIRROR":
                         game_state = "GAME MODE"
                         #------------------ for before game start
@@ -2651,7 +2690,6 @@ def handle_events(
                         #------------------ for before game start
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
-                        
                     elif game_state == "MATCH3":
                         game_state = "GAME MODE"
                         #------------------ for before game start
@@ -2674,10 +2712,13 @@ def handle_events(
                         SUP.reset_window_side_effect()   
                         S_E_W.reset_window_side_effect()
                         S_E_W.reset_window_side_effect_MULLTI_WINDOW()
+                        S_E_W.reset_menu_setting_panel()
 
                     elif game_state == "How to Play":
                         game_state = "SETTING"
                         setting_menu = "MORE"    
+                        S_E_W.reset_menu_setting_panel()
+
                         CUS.reset_punch_images_animation()
                         SUP.reset_window_side_effect()   
                         S_E_W.reset_window_side_effect()
@@ -2689,6 +2730,7 @@ def handle_events(
                         SUP.reset_window_side_effect()   
                         S_E_W.reset_window_side_effect()
                         S_E_W. reset_window_side_effect_MULLTI_WINDOW()
+                        S_E_W.reset_menu_setting_panel()
 
                     elif game_state == "FAQ":
                         game_state = "SETTING"
@@ -2698,6 +2740,7 @@ def handle_events(
                         S_E_W.reset_window_side_effect()
                         S_E_W. reset_window_side_effect_MULLTI_WINDOW()
                         
+                        S_E_W.reset_menu_setting_panel()
 
                         
                     elif game_state == "OPERATION":
@@ -2729,6 +2772,7 @@ def handle_events(
                         menu_state = "SUPPORT"
                         CUS.reset_punch_images_animation()
                         S_E_W.reset_window_side_effect_MULLTI_WINDOW()
+                        S_E_W.reset_menu_setting_panel()
 
                     elif game_state == "Report Bug":
                         game_state = "MENU"
@@ -2736,6 +2780,7 @@ def handle_events(
                         menu_state = "SUPPORT"
                         CUS.reset_punch_images_animation()
                         S_E_W.reset_window_side_effect_MULLTI_WINDOW()
+                        S_E_W.reset_menu_setting_panel()
 
                     elif game_state == "Donate":
                         game_state = "MENU"
@@ -2743,6 +2788,7 @@ def handle_events(
                         menu_state = "SUPPORT"
                         CUS.reset_punch_images_animation()
                         S_E_W.reset_window_side_effect_MULLTI_WINDOW()
+                        S_E_W.reset_menu_setting_panel()
 
                     elif game_state == "Contact Us":
                         game_state = "MENU"
@@ -2750,6 +2796,7 @@ def handle_events(
                         menu_state = "SUPPORT"
                         CUS.reset_punch_images_animation()
                         S_E_W.reset_window_side_effect_MULLTI_WINDOW()
+                        S_E_W.reset_menu_setting_panel()
 
                         
                         
@@ -2852,6 +2899,7 @@ def handle_events(
                         #------------------ for before game start
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
+                        
                     elif game_state == "UNBLOCK_CAR":
                         game_state = "GAME MODE"
                         #------------------ for before game start
@@ -2871,6 +2919,10 @@ def handle_events(
                         before_game.previous_game_state_F = "NONE"
                         
                         
+                    elif game_state == "NEXT_PAGE_BEFORE_GAME":
+                        game_state = "BEFORE_GAMES"
+                        before_game.reset_window_before_each_game()
+
                     elif game_state == "Contact Us":
                         game_state = "MENU"
                         menu_state = "SUPPORT"
@@ -2884,6 +2936,20 @@ def handle_events(
                         game_state = "MENU"
                         menu_state = "SUPPORT"
 
+
+                    elif game_state == "DONATE_button":
+                        game_state = "MENU"
+                        menu_state = "MENU"
+                        DASHBOARD=True
+
+                    elif game_state == "STORE":
+                        game_state = "MENU"
+                        menu_state = "MENU"
+                        DASHBOARD=True
+                    elif game_state == "MESSAGE":
+                        game_state = "MENU"
+                        menu_state = "MENU"
+                        DASHBOARD=True
 
 
 
@@ -2976,7 +3042,6 @@ def handle_events(
                         #------------------ for before game start
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
-                        
 
                   
                 # ==========================================
@@ -3067,6 +3132,8 @@ def handle_events(
                                 DES.menu_slide_active = True
                                 DES.menu_slide_x = None
                                 DASHBOARD=True
+                                S_E_W.reset_menu_setting_panel()
+
                                 SUP.reset_punch_scale_animation_one_image()
                                 SUP.reset_window_side_effect()
                                 CUSTOM_MATH = False
@@ -3091,6 +3158,7 @@ def handle_events(
                                 DASHBOARD=False
                                 SUP.reset_window_side_effect()
                                 CUSTOM_MATH = False
+                                S_E_W.reset_menu_setting_panel()
 
                                 # EXIT_OK=True
                                 # CUSTOM_MATH = False
@@ -3164,6 +3232,8 @@ def handle_events(
 
                             elif i == 5:
                                 ACC.reset_profile_account_side_effect()
+                                S_E_W.reset_menu_setting_panel()
+
                                 DASHBOARD=True
                                 game_state="MENU"
                                 menu_state="الکی "
