@@ -1260,6 +1260,8 @@ info_box = pygame.Rect(
 
 
 
+from modules import donate
+donate.load_donate_images()
 
 
 WIDTH, HEIGHT = screen.get_size()
@@ -1274,7 +1276,14 @@ dt = clock.tick(60) / 1000
 
 
 
-
+menu_panel = pygame.transform.smoothscale(
+    pygame.image.load("./asset/image/panel/menu.png").convert_alpha(),
+    (500, 1358)
+)
+setting_panel = pygame.transform.smoothscale(
+    pygame.image.load("./asset/image/panel/setting.png").convert_alpha(),
+    (480, 1315)
+)
 
 from modules.transition import *
 from modules.droping import *
@@ -1285,7 +1294,6 @@ icon_start_time = pygame.time.get_ticks()
 # icon_image__ = pygame.transform.smoothscale(pygame.image.load(
 #     "asset/image/droping/qq.png"
 # ).convert_alpha(),(100,100))
-
 
 
 
@@ -1397,6 +1405,7 @@ previous_game_state = None
 from modules.start_game import countdown
 from modules.effect import *
 from modules.exit import *
+from modules.before_game import guid_sild_effect
 from modules import donate as DONATE
 from modules.button_setting import *
 from modules import music as MUS
@@ -1428,8 +1437,8 @@ from modules import menu_effect
 
 
 
-
-
+#---این فقط  برای ساختن دیفالت است که هیچ وقت دیده نمیشود ولی باید باشه برای صفحه قبل از هر بازی 
+before_game.loader_image_for_before_game(before_game.count_down_image[39],MODE.fast,"online","online","online","easy")
 
 
 
@@ -1437,7 +1446,9 @@ from modules.game_mode_scroll import *
 
 #############################################################################################################
 #############################################################################################################
-
+#انتخاب زبان دیفالت 
+from modules import policy
+policy.now_language_is_this = "en"
 
 #############################################################################################################
 #############################################################################################################
@@ -1462,7 +1473,6 @@ restart_OFF_ON_game=None
 SUPPORT_IS=None
 # STOR_IS = None
 DONT_LET_CLICK_GAMES_BUTTON_BEFORE_THAT=False
-
 
 # عکس انتخابی کاربر و عکس گست 
 # STS.user_image_selected
@@ -1800,17 +1810,22 @@ while running:
         )   
         
 
-        DES.menu_back_setters(
+        # DES.menu_back_setters(
+        #     screen,
+        #     menu_bacccccck,
+        #     x=220,
+        #     y=current_height // 2 - 770,
+        #     gap=2,
+        #     first_x=220,
+        #     first_y=current_height // 2 - 720,
+
+        # )
+
+        S_E_W.menu_setting_panel(
             screen,
-            menu_bacccccck,
-            x=220,
-            y=current_height // 2 - 770,
-            gap=2,
-            first_x=220,
-            first_y=current_height // 2 - 720,
-
-        )
-
+            menu_panel,
+            current_width // 2  - 810 ,current_height // 2 - 4.5
+        )  
 
 
         #for menu
@@ -1942,11 +1957,6 @@ while running:
                 current_width,
                 current_height
             )   
-            # open_window_with_side_effect(
-            #     screen,
-            #     all_image.contact,
-            #     current_width // 2 ,current_height // 2 
-            # )  
             
             S_E_W.open_window_with_side_effect_MULLTI_WINDOW(
                 screen,
@@ -1961,15 +1971,15 @@ while running:
                 screen,
                 CONTACT.images,
                 CONTACT.urls,
-                current_x=400,
-                current_y=350
+                current_x=500,
+                current_y=900
             )
 
             CONTACT.draw_contact_form(
                 screen,
                 fonts["date"],
-                current_x=850,
-                current_y=500
+                current_x=900,
+                current_y=400
             )
                     
             
@@ -2122,7 +2132,7 @@ while running:
             "GAME_MODE",
             center_image=punch_1_1,
             center_image_size=(300, 300),
-            text="PLAY GAMES",
+            text="game_mode",
             text_font=fonts["date"]
         )
 
@@ -2134,7 +2144,7 @@ while running:
             "MATH",
             center_image=punch_2_1,
             center_image_size=(300, 300),
-            text="CUSTOM MATH",
+            text="custom_math",
             text_font=fonts["date"]
         )
         
@@ -2155,7 +2165,7 @@ while running:
             "DAILY_GAME2",0.351,
             center_image=punch_status,
             center_image_size=(150, 150),
-            text="Status",
+            text="status",
             text_font=fonts["date"],
             )
         #---- دو عکس چاپ میکنه 
@@ -2167,7 +2177,7 @@ while running:
             "DAILY_GAME1",0.351,
             center_image=punch_daily,
             center_image_size=(150, 150),
-            text="Start Workout",
+            text="today_workout",
             text_font=fonts["date"]
         )
         
@@ -2495,7 +2505,7 @@ while running:
             500,
             500,
             offset,
-            center_images=MO.center_images_MODE,
+            center_images=game_list.count_down_image,
             center_start_index=0,
             overlay_images=[
                 None,
@@ -2552,7 +2562,7 @@ while running:
             500,
             500,
             offset + screen.get_width(),
-            center_images=MO.center_images_MODE,
+            center_images=game_list.count_down_image,
             center_start_index=6,
 
             overlay_images=[
@@ -2615,7 +2625,7 @@ while running:
             500,
             500,
             offset + screen.get_width() * 2,
-            center_images=MO.center_images_MODE,
+            center_images=game_list.count_down_image,
             center_start_index=12,
 
             overlay_images=[
@@ -2678,7 +2688,7 @@ while running:
             500,
             500,
             offset + screen.get_width() * 3,
-            center_images=MO.center_images_MODE,
+            center_images=game_list.count_down_image,
             center_start_index=18,
 
             overlay_images=[
@@ -2740,7 +2750,7 @@ while running:
             500,
             500,
             offset + screen.get_width() * 4,
-            center_images=MO.center_images_MODE,
+            center_images=game_list.count_down_image,
             center_start_index=24,
 
             overlay_images=[
@@ -2795,7 +2805,7 @@ while running:
             500,
             500,
             offset + screen.get_width() * 5,
-            center_images=MO.center_images_MODE,
+            center_images=game_list.count_down_image,
             center_start_index=30,
             overlay_images=[
                 None,
@@ -2843,7 +2853,7 @@ while running:
             500,
             500,
             offset + screen.get_width() * 6,
-            center_images=MO.center_images_MODE,
+            center_images=game_list.count_down_image,
             center_start_index=36,
 
             overlay_images=[
@@ -2896,7 +2906,7 @@ while running:
             500,
             500,
             offset + screen.get_width() * 7,
-            center_images=MO.center_images_MODE,
+            center_images=game_list.count_down_image,
             center_start_index=40,
 
             overlay_images=[
@@ -2941,7 +2951,7 @@ while running:
             500,
             500,
             offset + screen.get_width() * 8,
-            center_images=MO.center_images_MODE,
+            center_images=game_list.count_down_image,
             overlay_images=[
                 MO.my_icon,
                 MO.my_icon,
@@ -2967,7 +2977,7 @@ while running:
             500,
             500,
             offset + screen.get_width() * 9,
-            center_images=MO.center_images_MODE,
+            center_images=game_list.count_down_image,
             overlay_images=[
                 MO.my_icon,
                 MO.my_icon,
@@ -3347,16 +3357,20 @@ while running:
         
 
 
-        DES.menu_back_setters(
+        # DES.menu_back_setters(
+        #     screen,
+        #     setting_backkkkkk,
+        #     x=220,
+        #     y=current_height // 2 - 770,
+        #     gap=2,
+        #     first_x=220,
+        #     first_y=current_height // 2 - 720,
+        # )
+        S_E_W.menu_setting_panel(
             screen,
-            setting_backkkkkk,
-            x=220,
-            y=current_height // 2 - 770,
-            gap=2,
-            first_x=220,
-            first_y=current_height // 2 - 720,
-        )
-
+            setting_panel,
+            current_width // 2  - 804 ,current_height // 2 
+        )  
 
         STS.draw_current_player(
             screen,
@@ -3429,7 +3443,7 @@ while running:
 
             if before_game.previous_game_state_F == game_name:
 
-                image = game_list.count_down_image[index]
+                image = game_list.count_down_image_background[index]
 
                 countdown(screen, image)
                 break
@@ -3456,17 +3470,25 @@ while running:
         #     current_width //2 - 400,
         #     current_height //2 - 400    
         # )
-        open_window_with_side_effect(
+
+        guid_sild_effect(
             screen,
-            SUPPORT_window1,
+            before_game_window,
             current_width // 2,
             current_height //2
         )
         punch_scale_animation_one_image(
             screen,
-            next_page,
+            how_to_play_next_button_page,
             "NEXT",
-            current_width //2 + 900,
+            current_width //2 + 920,
+            current_height //2 +320    
+        )
+        punch_scale_animation_one_image(
+            screen,
+            next_page,#play button 
+            "PLAY",
+            current_width //2 + 920,
             current_height //2 +540    
         )
         punch_scale_animation_one_image(
@@ -3478,7 +3500,38 @@ while running:
         )
     #۳ در انی  گیم استیت میشه بالایی 
 
+    if game_state == "NEXT_PAGE_BEFORE_GAME":
+        draw_moving_map(
+            screen,
+            WIDTH,
+            HEIGHT,
+            dt    )
+        draw_flying_birds(
+            screen,
+            current_width,
+            current_height
+        )   
+        guid_sild_effect(
+            screen,
+            before_game_window,
+            current_width // 2,
+            current_height //2
+        )
 
+        punch_scale_animation_one_image(
+            screen,
+            next_page,#play button 
+            "NEXT",
+            current_width //2 + 900,
+            current_height //2 +540    
+        )
+        punch_scale_animation_one_image(
+            screen,
+            back_page,
+            "BACK",
+            current_width //2 - 900,
+            current_height //2 + 540
+        )
 
 
 
@@ -3541,7 +3594,7 @@ while running:
         draw_back_button(
             screen,
             back_button_rect)
-    if game_state == "DONATE":
+    if game_state == "DONATE_button":
                 # for background  flying and image 
         draw_moving_map(
             screen,
@@ -4809,14 +4862,14 @@ while running:
 
         open_window_with_side_effect(
             screen,
-            all_image.music,
+            all_image.setting,
             current_width // 2 + 150,current_height // 2 
         )
         draw_music(
             screen,
             current_width,
             current_height,
-            all_image.music,
+            all_image.setting,
             music_profile_image
         )
 
@@ -4824,7 +4877,7 @@ while running:
 
         open_window_with_side_effect(
                 screen,
-                all_image.language,
+                all_image.setting,
                 current_width // 2 + 150,current_height // 2 
             )
 
@@ -4989,7 +5042,7 @@ while running:
 
         open_window_with_side_effect(
                 screen,
-                all_image.account,
+                all_image.setting,
                 current_width // 2 + 150 ,current_height // 2 
             )
         if is_guest :
@@ -5018,7 +5071,7 @@ while running:
 
         open_window_with_side_effect(
                 screen,
-                all_image.sound,
+                all_image.setting,
                 current_width // 2 + 150,current_height // 2 
             )
 
