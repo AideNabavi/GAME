@@ -6,29 +6,31 @@ from modules.MODE import SORT_NUMBER
 from modules.MODE import CHOOSE_IMAGE
 from modules.MODE.MEMORY import *
 import modules.MODE.REPEAT_AFTER_ME as MEM
-from modules.MODE.REPEAT_AFTER_ME import *
+from modules.MODE import REPEAT_AFTER_ME
 from modules.MODE.SHAPE_COLOR_NAME import *
 from modules.MODE import SHAPE_COLOR_NAME as SCN
 import  modules.MODE.DIRECTION as DIR
 import  modules.MODE.ACTION as ACT
 import  modules.MODE.MIRROR as MIR
 import  modules.MODE.DETECT as DET
+from  modules.MODE import CONNECT_FOUR 
 from modules.MODE import FIND_NUMBER  as FNUM
 from modules.MODE.FIND_NUMBER import * 
 from modules.MODE import  FAST as FF
 from modules.MODE import  SIX_60S as SIX
-from modules.MODE import  TRUE_FLASE as TF
+from modules.MODE import  TRUE_FALSE as TF
 from modules.MODE import  FIND_OPERATOR as FO
 from modules.MODE import  MORE_LESS_EQUAL as MLE
-from modules.MODE import  MATH_GO as MGO
 from modules.MODE import IMAGE_SELECT as IMSE
 from modules.MODE  import THOOZ as TOZ
 from modules.MODE import CHESS
 from modules.MODE import SUDOKU
 from modules.MODE import WORD
+from modules.MODE import SNAKE
+from modules.MODE import UNBLOCK_CAR
 from modules.MODE import MAZE
 from modules.MODE import MINESWEEPER
-from modules.MODE import MEMORY_FAST
+from modules.MODE import MEMORY_HARD
 from modules.MODE import HOW_MANY as HOW
 from modules.MODE import HARD as HARD
 from modules.MODE import MEMORY_GO as MEMGO
@@ -36,12 +38,23 @@ from modules.MODE import DETECT_PRO as DPRO
 from modules.MODE import MATH_GO as MATHGO
 from modules.MODE import FAST_ADD_SUB as FAS
 from modules.MODE import FAST as RESE
+from modules.MODE import MATCH3 
+from modules.MODE import FOLLOW_FREE 
+from modules.MODE import CHECKERS 
+from modules.MODE import GO 
+from modules.MODE import MINESWEEPER 
+from modules.MODE import PUZZLE 
+from modules.MODE import DOTS_BOX 
+from modules.MODE import FIND_NUMBER 
+from modules import before_game 
 
 def event_click_game(game_state,is_guest,x=None,y=None):
     
     # ----------------------------game                                    
     if game_state == "SHAPE_COLOR_NAME":
         new_question_SHAPE_COLOR_NAME()
+        before_game.guid_icon_setter_for_eatch_game("SHAPE_COLOR_NAME")
+        before_game.reset_window_before_each_game()
 
         if not is_guest :
             popular_game.add_popular_game("SHAPE_COLOR_NAME")
@@ -52,7 +65,10 @@ def event_click_game(game_state,is_guest,x=None,y=None):
             
     # ----------------------------game                                    
     if game_state == "REPEAT_AFTER_ME":
-        new_round()
+        REPEAT_AFTER_ME.new_round()
+        REPEAT_AFTER_ME.reset_REPEAT_AFTER_ME()
+        before_game.guid_icon_setter_for_eatch_game("REPEAT_AFTER_ME")
+        before_game.reset_window_before_each_game()
 
         if not is_guest :
             popular_game.add_popular_game("REPEAT_AFTER_ME")
@@ -63,14 +79,14 @@ def event_click_game(game_state,is_guest,x=None,y=None):
             
     # ----------------------------game                                    
     if game_state == "DIRECTION":
+        before_game.guid_icon_setter_for_eatch_game("DIRECTION")
+        before_game.reset_window_before_each_game()
 
         if not is_guest :
             popular_game.add_popular_game("DIRECTION")
             recent_game.add_recent_game("DIRECTION")
         DIR.new_round_DIRECTION()
         DIR.reset_game_DIRECTION(
-            x,
-            y
         )
 
             
@@ -78,21 +94,23 @@ def event_click_game(game_state,is_guest,x=None,y=None):
             
     # ----------------------------game                                    
     if game_state == "MEMORY":
+        create_cards()
+        before_game.guid_icon_setter_for_eatch_game("MEMORY")
+        before_game.reset_window_before_each_game()
 
         if not is_guest :
             popular_game.add_popular_game("MEMORY")
             recent_game.add_recent_game("MEMORY")
             
         start_memory_game()
-        reset_memory_game(
-            x,
-            y
-        )  
+        reset_memory_game()  
             
             
     # ----------------------------game                                    
     if game_state == "MIRROR":
         MIR.new_round_MIRROR()
+        before_game.guid_icon_setter_for_eatch_game("MIRROR")
+        before_game.reset_window_before_each_game()
 
         if not is_guest :
             popular_game.add_popular_game("MIRROR")
@@ -104,6 +122,8 @@ def event_click_game(game_state,is_guest,x=None,y=None):
     # ----------------------------game                                    
     if game_state == "ACTION":
         ACT.reset_game_ACTION()
+        before_game.guid_icon_setter_for_eatch_game("ACTION")
+        before_game.reset_window_before_each_game()
 
         if not is_guest :
             popular_game.add_popular_game("ACTION")
@@ -115,6 +135,8 @@ def event_click_game(game_state,is_guest,x=None,y=None):
     # ----------------------------game                                    
     if game_state == "DETECT":
         DET.restart_game()
+        before_game.guid_icon_setter_for_eatch_game("DETECT")
+        before_game.reset_window_before_each_game()
 
         if not is_guest :
             popular_game.add_popular_game("DETECT")
@@ -125,6 +147,8 @@ def event_click_game(game_state,is_guest,x=None,y=None):
             
     # ----------------------------game                                    
     if game_state == "FIDN_NUMBER":
+        before_game.guid_icon_setter_for_eatch_game("FIDN_NUMBER")
+        before_game.reset_window_before_each_game()
 
         if not is_guest :
             popular_game.add_popular_game("FIDN_NUMBER")
@@ -136,6 +160,8 @@ def event_click_game(game_state,is_guest,x=None,y=None):
     # ----------------------------game                                    
     if game_state == "MORE_LESS_EQUAL":
         MLE.reset_MORE_LESS_EQUAL()
+        before_game.guid_icon_setter_for_eatch_game("MORE_LESS_EQUAL")
+        before_game.reset_window_before_each_game()
 
         if not is_guest :
             popular_game.add_popular_game("MORE_LESS_EQUAL")
@@ -147,6 +173,8 @@ def event_click_game(game_state,is_guest,x=None,y=None):
     # ----------------------------game                                    
     if game_state == "60S":
         SIX.start_game()
+        before_game.guid_icon_setter_for_eatch_game("60S")
+        before_game.reset_window_before_each_game()
 
         if not is_guest :
             popular_game.add_popular_game("60S")
@@ -158,6 +186,8 @@ def event_click_game(game_state,is_guest,x=None,y=None):
     # ----------------------------game                                    
     if game_state == "FIND_OPERATOR":
         FO.start_game_find_Op()
+        before_game.guid_icon_setter_for_eatch_game("FIND_OPERATOR")
+        before_game.reset_window_before_each_game()
 
         if not is_guest :
             popular_game.add_popular_game("FIND_OPERATOR")
@@ -169,6 +199,8 @@ def event_click_game(game_state,is_guest,x=None,y=None):
     # ----------------------------game                                    
     if game_state == "TRUE_FALSE":
         TF.start_game_TRUE_FALSE()
+        before_game.guid_icon_setter_for_eatch_game("TRUE_FALSE")
+        before_game.reset_window_before_each_game()
 
         if not is_guest :
             popular_game.add_popular_game("TRUE_FALSE")
@@ -180,6 +212,8 @@ def event_click_game(game_state,is_guest,x=None,y=None):
     # ----------------------------game                                    
     if game_state == "FAST":
         RESE.reset_FAST()
+        before_game.guid_icon_setter_for_eatch_game("FAST")
+        before_game.reset_window_before_each_game()
 
         if not is_guest :
             popular_game.add_popular_game("FAST")
@@ -191,6 +225,8 @@ def event_click_game(game_state,is_guest,x=None,y=None):
     # ----------------------------game                                    
     if game_state == "HOW_MANY":
         HOW.new_round()
+        before_game.guid_icon_setter_for_eatch_game("HOW_MANY")
+        before_game.reset_window_before_each_game()
 
         if not is_guest :
             popular_game.add_popular_game("HOW_MANY")
@@ -202,6 +238,9 @@ def event_click_game(game_state,is_guest,x=None,y=None):
     # ----------------------------game                                    
     if game_state == "HARD":
         HARD.new_round()
+        before_game.guid_icon_setter_for_eatch_game("HARD")
+        before_game.reset_window_before_each_game()
+
         if not is_guest :
             popular_game.add_popular_game("HARD")
             recent_game.add_recent_game("HARD")
@@ -211,7 +250,9 @@ def event_click_game(game_state,is_guest,x=None,y=None):
             
     # ----------------------------game                                    
     if game_state == "DETECT_PRO":
-        DPRO.new_round(x,y)
+        DPRO.reset_game()
+        before_game.guid_icon_setter_for_eatch_game("DETECT_PRO")
+        before_game.reset_window_before_each_game()
 
         if not is_guest :
             popular_game.add_popular_game("DETECT_PRO")
@@ -222,7 +263,9 @@ def event_click_game(game_state,is_guest,x=None,y=None):
             
     # ----------------------------game                                    
     if game_state == "MEMORY_GO":
-        MEMGO.new_level(x,y)
+        MEMGO.reset_game()
+        before_game.guid_icon_setter_for_eatch_game("MEMORY_GO")
+        before_game.reset_window_before_each_game()
 
         if not is_guest :
             popular_game.add_popular_game("MEMORY_GO")
@@ -233,12 +276,15 @@ def event_click_game(game_state,is_guest,x=None,y=None):
             
     # ----------------------------game                                    
     if game_state == "MOVE_ARROW":
+        before_game.guid_icon_setter_for_eatch_game("MOVE_ARROW")
+        before_game.reset_window_before_each_game()
 
         if not is_guest :
             popular_game.add_popular_game("MOVE_ARROW")
             recent_game.add_recent_game("MOVE_ARROW")
             
-        M_ARR.new_question(x,y)
+        M_ARR.new_question()
+        M_ARR.reset_game()
 
             
             
@@ -246,6 +292,9 @@ def event_click_game(game_state,is_guest,x=None,y=None):
     if game_state == "MATH_GO":
         MATHGO.reset_game()
         MATHGO.create_question()
+        before_game.guid_icon_setter_for_eatch_game("MATH_GO")
+        before_game.reset_window_before_each_game()
+
         if not is_guest :
             popular_game.add_popular_game("MATH_GO")
             recent_game.add_recent_game("MATH_GO")
@@ -257,6 +306,8 @@ def event_click_game(game_state,is_guest,x=None,y=None):
     if game_state == "FAST_ADD_SUB":
         FAS.restart_game()
         FAS.create_question()
+        before_game.guid_icon_setter_for_eatch_game("FAST_ADD_SUB")
+        before_game.reset_window_before_each_game()
 
         if not is_guest :
             popular_game.add_popular_game("FAST_ADD_SUB")
@@ -267,7 +318,9 @@ def event_click_game(game_state,is_guest,x=None,y=None):
             
     # ----------------------------game                                    
     if game_state == "FOLLOW_THAT":
-        FOTHAT.reset_game(x,y)
+        FOTHAT.reset_game()
+        before_game.guid_icon_setter_for_eatch_game("FOLLOW_THAT")
+        before_game.reset_window_before_each_game()
 
         if not is_guest :
             popular_game.add_popular_game("FOLLOW_THAT")
@@ -279,6 +332,9 @@ def event_click_game(game_state,is_guest,x=None,y=None):
     # ----------------------------game                                    
     if game_state == "IMAGE_SELECT":
         IMSE.reset_game()
+        before_game.guid_icon_setter_for_eatch_game("IMAGE_SELECT")
+        before_game.reset_window_before_each_game()
+
         if not is_guest :
             popular_game.add_popular_game("IMAGE_SELECT")
             recent_game.add_recent_game("IMAGE_SELECT")
@@ -288,6 +344,8 @@ def event_click_game(game_state,is_guest,x=None,y=None):
             
     # ----------------------------game                                    
     if game_state == "THOOZ":
+        before_game.guid_icon_setter_for_eatch_game("THOOZ")
+        before_game.reset_window_before_each_game()
 
         if not is_guest :
             popular_game.add_popular_game("THOOZ")
@@ -299,6 +357,8 @@ def event_click_game(game_state,is_guest,x=None,y=None):
     # ----------------------------game                                    
     if game_state == "CHESS":
         CHESS.reset_chess()
+        before_game.guid_icon_setter_for_eatch_game("CHESS")
+        before_game.reset_window_before_each_game()
 
         if not is_guest :
             popular_game.add_popular_game("CHESS")
@@ -310,6 +370,8 @@ def event_click_game(game_state,is_guest,x=None,y=None):
     # ----------------------------game                                    
     if game_state == "SORT_NUMBER":
         SORT_NUMBER.reset_sort_number()
+        before_game.guid_icon_setter_for_eatch_game("SORT_NUMBER")
+        before_game.reset_window_before_each_game()
 
         if not is_guest :
             popular_game.add_popular_game("SORT_NUMBER")
@@ -321,6 +383,8 @@ def event_click_game(game_state,is_guest,x=None,y=None):
     # ----------------------------game                                    
     if game_state == "SUDOKU":
         SUDOKU.reset_sudoku()
+        before_game.guid_icon_setter_for_eatch_game("SUDOKU")
+        before_game.reset_window_before_each_game()
 
         if not is_guest :
             popular_game.add_popular_game("SUDOKU")
@@ -332,6 +396,8 @@ def event_click_game(game_state,is_guest,x=None,y=None):
     # ----------------------------game                                    
     if game_state == "WORD":
         WORD.reset_word()
+        before_game.guid_icon_setter_for_eatch_game("WORD")
+        before_game.reset_window_before_each_game()
 
         if not is_guest :
             popular_game.add_popular_game("WORD")
@@ -343,6 +409,8 @@ def event_click_game(game_state,is_guest,x=None,y=None):
     # ----------------------------game                                    
     if game_state == "MINESWEEPER":
         MINESWEEPER.reset_MINESWEEPER()
+        before_game.guid_icon_setter_for_eatch_game("MINESWEEPER")
+        before_game.reset_window_before_each_game()
 
         if not is_guest :
             popular_game.add_popular_game("MINESWEEPER")
@@ -353,18 +421,22 @@ def event_click_game(game_state,is_guest,x=None,y=None):
             
     # ----------------------------game                                    
     if game_state == "MAZE":
-        MAZE.reset_maze()
+        # MAZE.reset_maze()
+        before_game.guid_icon_setter_for_eatch_game("MAZE")
+        before_game.reset_window_before_each_game()
 
         if not is_guest :
             popular_game.add_popular_game("MAZE")
             recent_game.add_recent_game("MAZE")
             
-            
+        
             
             
     # ----------------------------game                                    
     if game_state == "CHOOSE_IMAGE":
         CHOOSE_IMAGE.reset_game()                                     
+        before_game.guid_icon_setter_for_eatch_game("CHOOSE_IMAGE")
+        before_game.reset_window_before_each_game()
 
         if not is_guest :
             popular_game.add_popular_game("CHOOSE_IMAGE")
@@ -374,130 +446,113 @@ def event_click_game(game_state,is_guest,x=None,y=None):
             
             
     # ----------------------------game                                    
-    if game_state == "MEMORY_FAST":
-        MEMORY_FAST.restart_game()
+    if game_state == "MEMORY_HARD":
+        MEMORY_HARD.reset_game()
+        before_game.guid_icon_setter_for_eatch_game("MEMORY_HARD")
+        before_game.reset_window_before_each_game()
 
         if not is_guest :
-            popular_game.add_popular_game("MEMORY_FAST")
-            recent_game.add_recent_game("MEMORY_FAST")
+            popular_game.add_popular_game("MEMORY_HARD")
+            recent_game.add_recent_game("MEMORY_HARD")
             
-            
-            
-            
-    # # ----------------------------game                                    
-    # if game_state == "":
+    # ----------------------------game                                    
+    if game_state == "MATCH3":
+        MATCH3.reset_game()
+        before_game.guid_icon_setter_for_eatch_game("MATCH3")
+        before_game.reset_window_before_each_game()
 
-    #     if not is_guest :
-    #         popular_game.add_popular_game("")
-    #         recent_game.add_recent_game("")
+        if not is_guest :
+            popular_game.add_popular_game("MATCH3")
+            recent_game.add_recent_game("MATCH3")
             
-            
-            
-            
-    # # ----------------------------game                                    
-    # if game_state == "":
+    # ----------------------------game                                    
+    if game_state == "CONNECT_FOUR":
+        CONNECT_FOUR.update_geometry()
+        CONNECT_FOUR.reset_game()
+        before_game.guid_icon_setter_for_eatch_game("CONNECT_FOUR")
+        before_game.reset_window_before_each_game()
 
-    #     if not is_guest :
-    #         popular_game.add_popular_game("")
-    #         recent_game.add_recent_game("")
+        if not is_guest :
+            popular_game.add_popular_game("CONNECT_FOUR")
+            recent_game.add_recent_game("CONNECT_FOUR")
             
             
-            
-            
-    # # ----------------------------game                                    
-    # if game_state == "":
+    # ----------------------------game                                    
+    if game_state == "SNAKE":
+        SNAKE.reset_SNAKE()
+        before_game.guid_icon_setter_for_eatch_game("SNAKE")
+        before_game.reset_window_before_each_game()
 
-    #     if not is_guest :
-    #         popular_game.add_popular_game("")
-    #         recent_game.add_recent_game("")
+        if not is_guest :
+            popular_game.add_popular_game("SNAKE")
+            recent_game.add_recent_game("SNAKE")
             
-            
-            
-            
-    # # ----------------------------game                                    
-    # if game_state == "":
+    # ----------------------------game                                    
+    if game_state == "UNBLOCK_CAR":
+        UNBLOCK_CAR.reset_game()
+        before_game.guid_icon_setter_for_eatch_game("UNBLOCK_CAR")
+        before_game.reset_window_before_each_game()
 
-    #     if not is_guest :
-    #         popular_game.add_popular_game("")
-    #         recent_game.add_recent_game("")
+        if not is_guest :
+            popular_game.add_popular_game("UNBLOCK_CAR")
+            recent_game.add_recent_game("UNBLOCK_CAR")
             
             
-            
-            
-    # # ----------------------------game                                    
-    # if game_state == "":
+    if game_state == "DOTS_BOX":
+        DOTS_BOX.reset_game()
+        before_game.guid_icon_setter_for_eatch_game("DOTS_BOX")
+        before_game.reset_window_before_each_game()
 
-    #     if not is_guest :
-    #         popular_game.add_popular_game("")
-    #         recent_game.add_recent_game("")
+        if not is_guest :
+            popular_game.add_popular_game("DOTS_BOX")
+            recent_game.add_recent_game("DOTS_BOX")
             
             
-            
-            
-    # # ----------------------------game                                    
-    # if game_state == "":
+    if game_state == "PUZZLE":
+        PUZZLE.reset_game()
+        before_game.guid_icon_setter_for_eatch_game("PUZZLE")
+        before_game.reset_window_before_each_game()
 
-    #     if not is_guest :
-    #         popular_game.add_popular_game("")
-    #         recent_game.add_recent_game("")
+        if not is_guest :
+            popular_game.add_popular_game("PUZZLE")
+            recent_game.add_recent_game("PUZZLE")
             
             
-            
-            
-    # # ----------------------------game                                    
-    # if game_state == "":
+    if game_state == "GO":
+        GO.reset_game()
+        before_game.guid_icon_setter_for_eatch_game("GO")
+        before_game.reset_window_before_each_game()
 
-    #     if not is_guest :
-    #         popular_game.add_popular_game("")
-    #         recent_game.add_recent_game("")
+        if not is_guest :
+            popular_game.add_popular_game("GO")
+            recent_game.add_recent_game("GO")
             
             
-            
-            
-    # # ----------------------------game                                    
-    # if game_state == "":
+    if game_state == "CHECKERS":
+        CHECKERS.reset_checkers()
+        before_game.guid_icon_setter_for_eatch_game("CHECKERS")
+        before_game.reset_window_before_each_game()
 
-    #     if not is_guest :
-    #         popular_game.add_popular_game("")
-    #         recent_game.add_recent_game("")
+        if not is_guest :
+            popular_game.add_popular_game("CHECKERS")
+            recent_game.add_recent_game("CHECKERS")
             
             
-            
-            
-    # # ----------------------------game                                    
-    # if game_state == "":
+    if game_state == "FOLLOW_FREE":
+        FOLLOW_FREE.reset_game()
+        before_game.guid_icon_setter_for_eatch_game("FOLLOW_FREE")
+        before_game.reset_window_before_each_game()
 
-    #     if not is_guest :
-    #         popular_game.add_popular_game("")
-    #         recent_game.add_recent_game("")
+        if not is_guest :
+            popular_game.add_popular_game("FOLLOW_FREE")
+            recent_game.add_recent_game("FOLLOW_FREE")
             
-            
-            
-            
-    # # ----------------------------game                                    
-    # if game_state == "":
+    if game_state == "MINESWEEPER":
+        MINESWEEPER.reset_MINESWEEPER()
+        before_game.guid_icon_setter_for_eatch_game("MINESWEEPER")
+        before_game.reset_window_before_each_game()
 
-    #     if not is_guest :
-    #         popular_game.add_popular_game("")
-    #         recent_game.add_recent_game("")
+        if not is_guest :
+            popular_game.add_popular_game("MINESWEPEER")
+            recent_game.add_recent_game("MINESWEPEER")
             
-            
-            
-            
-    # # ----------------------------game                                    
-    # if game_state == "":
-
-    #     if not is_guest :
-    #         popular_game.add_popular_game("")
-    #         recent_game.add_recent_game("")
-            
-            
-            
-            
-    # # ----------------------------game                                    
-    # if game_state == "":
-
-    #     if not is_guest :
-    #         popular_game.add_popular_game("")
-    #         recent_game.add_recent_game("")
-
