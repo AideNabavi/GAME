@@ -65,49 +65,46 @@ from modules.game_engine import run_game
 from modules.timer import draw_timer_circle
 # from modules.window import _window
 from modules.button import *
-from modules.ab import *
 from modules.design import *
 from modules.language import *
 from modules.sound import *
 from modules.font import *
-from modules.player_profile import *
+from modules.ACCOUNT.player_profile import *
 from modules.screen import *
-from modules.theme import *
 from modules.design import *
 from modules.ceill_screen import *
-from modules.profile_ import draw_profile_live_circle
+from modules.ACCOUNT.profile_ import draw_profile_live_circle
 from modules.mode  import *
-from modules.support  import *
-from modules  import support as SUP
-from modules.more  import *
-from modules import more  as  MORE
+from modules.SUPPORT.support  import *
+from modules.SUPPORT  import support as SUP
+from modules.MORE.more  import *
+from modules.MORE import more  as  MORE
 
-from modules.profile_ import  *
-from modules.profile import  *
+from modules.ACCOUNT.profile_ import  *
 from modules.music import *
 from modules.operation_screen import *
 from modules import design as DES
-from modules import account as ACC
+from modules.ACCOUNT import account as ACC
 from modules import before_game
 from modules import game_list
-from modules import report_bug
+from modules.SUPPORT import report_bug
 
-from modules import more_app as more_app
+from modules.MORE import more_app as more_app
 # from modules.date import date
-from modules.save import save as SAVE
-from modules.save import popular_game as popular_game
+from modules.SAVE import save as SAVE
+from modules.SAVE import popular_game as popular_game
 
-from modules.save import recent_game as recent_game
+from modules.SAVE import recent_game as recent_game
 from modules import custom_math as CUS
 
-from modules import FAQ 
-from modules import INFO
-from modules import more_app as HOW_TO_PLAY
+from modules.MORE import FAQ 
+from modules.MORE import INFO
+from modules.MORE import more_app as HOW_TO_PLAY
 
 
 
 from modules import mode as MODE
-from daily import daily_game 
+from modules.DAILY import daily_game 
 
 
 
@@ -127,11 +124,11 @@ current_width, current_height = screen.get_size()
 
 
 
-background_account = pygame.image.load(
-    "./asset/image/music/music111.png"
+background_for_account_music_sound_language = pygame.image.load(
+    "./asset/image/all_window/all.png"
 ).convert_alpha()
-background_account = pygame.transform.smoothscale(
-    background_account,
+background_for_account_music_sound_language = pygame.transform.smoothscale(
+    background_for_account_music_sound_language,
     (1550,1100)
 )
 
@@ -155,19 +152,10 @@ music_profile_image = pygame.image.load(
 
 
 
-background_music = pygame.image.load(
-    "./asset/image/music/music111.png"
-).convert_alpha()
-
-calender =pygame.image.load(
-    "./asset/image/calender.png").convert_alpha()
 
 
 
-background_music = pygame.transform.smoothscale(
-    background_music,
-    (1550,1100)
-)
+
 back_image=back_image.convert_alpha()
 
 
@@ -449,9 +437,9 @@ effect_on = True
 # x = (screen.get_width() - sound_bg.get_width()) // 2 
 # y = (screen.get_height() - sound_bg.get_height()) // 2
 
-#-------------------------------------------------------------LANGUAGE
+#-------------------------------------------------------------برای پشت صفحه اول پروفایل است اون پنرجه پشتی چوبی بزرگ 
 
-profile_for_back = pygame.image.load("./asset/image/profile.png").convert_alpha()
+profile_for_back = pygame.image.load("./asset/image/all_window/all.png").convert_alpha()
 #-------------------------------------------------------------
 # Load background
 # sound_bg = pygame.image.load(
@@ -481,7 +469,7 @@ profile_for_back = pygame.image.load("./asset/image/profile.png").convert_alpha(
 #-------------------------------------------------------------
 
 
-from modules.slid_effect import *
+from modules.EFFECT.slid_effect import *
 
 
 
@@ -985,7 +973,6 @@ positions_____ = [
 
 ##############################################برای  تب ستینگ                    تنظمیات بازی   
 
-settings_rects = []
 
 
 
@@ -1057,8 +1044,8 @@ imm = pygame.transform.scale(
 
 
 
-from online import online_checker as ONLINE_CHECKER
-from clock import clock as CLOCK
+from modules.ONLINE import online_checker as ONLINE_CHECKER
+from modules.CLOCK import clock as CLOCK
 #------------------------------------- این برای دیدن انلاین بودن سیستم است  اکر انلاین بود اپیدت زمان و گرفتن زمان     
 IS_ONLINE=None
 # IS_ONLINE = ONLINE_CHECKER.check_online()
@@ -1091,7 +1078,7 @@ image_back_quastion = pygame.transform.smoothscale(
 #---------------- برای ایمیل 
 
 
-from modules import player_profile  as PLAYER
+from modules.ACCOUNT import player_profile  as PLAYER
 
 enter_button = pygame.Rect(
     current_width // 2 - 75,
@@ -1114,7 +1101,7 @@ target_offset_GAME_MODE = 0
 
 
 
-from modules.slide import *
+from modules.EFFECT.slide import *
 
 game_mode_slide = PageSlide(
     screen.get_width(),
@@ -1170,7 +1157,7 @@ recent_game.load_recent_images(
 
 #این ها باید حذف بشن 
 #-------------------------------- SHAPE_COLOR_NAME ببرای ای  قسمت است 
-from modules.MODE import SHAPE_COLOR_NAME
+from modules.GAMES import SHAPE_COLOR_NAME
 # new_question_SHAPE_COLOR_NAME()
 
 SHAPE_COLOR_NAME.one____(screen,current_width,current_height)
@@ -1182,16 +1169,16 @@ SHAPE_COLOR_NAME.one____(screen,current_width,current_height)
 
 
 #---------------------------------------------DIRECTION_
-from modules.MODE import DIRECTION as DIREC
+from modules.GAMES import DIRECTION as DIREC
 DIREC.WIDTH_HEIGHT_gettter(screen,current_width,current_height)
 # new_round_DIRECTION()
 
 #---------------------------------------------DIRECTION_
-from modules.MODE import ACTION 
+from modules.GAMES import ACTION 
 # reset_game_ACTION()
 
 #---------------------------------------------DIRECTION_
-from modules.MODE import MIRROR
+from modules.GAMES import MIRROR
 # new_round_MIRROR()
 
 
@@ -1199,17 +1186,17 @@ from modules.MODE import MIRROR
 
 
 
-from modules.MODE import FAST_ADD_SUB as  FAS
+from modules.GAMES import FAST_ADD_SUB as  FAS
 
 #-------------------------------- country
 
-from modules.profile import country as  CON
+from modules.ACCOUNT import country as  CON
 country = CON.load_flags()
 
 
 
 #-------------------------------- save mecanizem
-from modules.save.save import load_player
+from modules.SAVE.save import load_player
 
 # قبل از while اصلی
 player = load_player()
@@ -1248,7 +1235,7 @@ player = load_player()
 # )
 
 
-from modules.INFO import *
+from modules.MORE.INFO import *
 info_box = pygame.Rect(
     current_width // 2 - 370,
     current_height // 2 - 100,
@@ -1260,7 +1247,7 @@ info_box = pygame.Rect(
 
 
 
-from modules import donate
+from modules.SUPPORT import donate
 donate.load_donate_images()
 
 
@@ -1276,6 +1263,11 @@ dt = clock.tick(60) / 1000
 
 
 
+game_mode_panel = pygame.transform.smoothscale(
+    pygame.image.load("./asset/image/panel/gamemode.png").convert_alpha(),
+    (400, 1000)
+)
+
 menu_panel = pygame.transform.smoothscale(
     pygame.image.load("./asset/image/panel/menu.png").convert_alpha(),
     (500, 1358)
@@ -1285,11 +1277,10 @@ setting_panel = pygame.transform.smoothscale(
     (480, 1315)
 )
 
-from modules.transition import *
 from modules.droping import *
 from modules.custom_math import *
 
-from modules.zh import *   
+from modules.EFFECT.burst_effect import *   
 icon_start_time = pygame.time.get_ticks()
 # icon_image__ = pygame.transform.smoothscale(pygame.image.load(
 #     "asset/image/droping/qq.png"
@@ -1310,46 +1301,46 @@ recent_game.selected_images = recent_game.choose_three_random_images()
 popular_game.selected_images = popular_game.choose_three_random_images()
 #--------------------------------------------------------- HOW MANY GAME PAGE 3
 
-from modules.MODE import HOW_MANY as HOW
-from modules.MODE import HARD as HARD
-from modules.MODE import DETECT_PRO as DPRO
-from modules.MODE import FOLLOW_THAT as FOTHAT
-from modules.MODE import MEMORY_GO as MEMGO
-from modules.MODE import MOVE_ARROW as M_ARR
-from modules.MODE import MATH_GO as MATHGO
-from modules import  contact_us as CONTACT
-from modules.MODE import  SUDOKU 
-from modules.MODE import  WORD 
-from modules.MODE import  MAZE 
-from modules.MODE import  MATCH3  
-from modules.MODE import  SNAKE  
-from modules.MODE import  CONNECT_FOUR 
-from modules.MODE import  UNBLOCK_CAR 
-from modules.MODE import  MEMORY_HARD 
-from modules.MODE import PUZZLE
-from modules.MODE import GO
-from modules.MODE import DOTS_BOX
-from modules.MODE import CHECKERS
-from modules.MODE import FOLLOW_FREE
-from modules.MODE import MEMORY
-from modules.MODE import CHESS
-from modules.MODE import CHOOSE_IMAGE
-from modules.MODE import SORT_NUMBER
-from modules.MODE import MINESWEEPER
-from modules.MODE import IMAGE_SELECT as IMSE
-from modules.MODE import FIND_NUMBER as FNUM
-from modules.MODE import FIND_NUMBER  
-from modules.MODE import MEMORY  
-from modules.MODE import REPEAT_AFTER_ME  
-from modules.MODE import MORE_LESS_EQUAL  
-from modules.MODE import DETECT
-from modules.MODE import FAST
-from modules.MODE import SIX_60S
-from modules.MODE import TRUE_FALSE
-from modules.MODE import FIND_OPERATOR
-from modules.MODE import THOOZ
-from modules import feedback as FEED_BACK
-from modules.MODE.FIND_NUMBER import option_rects,current_question,correct_count, wrong_count , question_number
+from modules.GAMES import HOW_MANY as HOW
+from modules.GAMES import HARD as HARD
+from modules.GAMES import DETECT_PRO as DPRO
+from modules.GAMES import FOLLOW_THAT as FOTHAT
+from modules.GAMES import MEMORY_GO as MEMGO
+from modules.GAMES import MOVE_ARROW as M_ARR
+from modules.GAMES import MATH_GO as MATHGO
+from modules.SUPPORT import  contact_us as CONTACT
+from modules.GAMES import  SUDOKU 
+from modules.GAMES import  WORD 
+from modules.GAMES import  MAZE 
+from modules.GAMES import  MATCH3  
+from modules.GAMES import  SNAKE  
+from modules.GAMES import  CONNECT_FOUR 
+from modules.GAMES import  UNBLOCK_CAR 
+from modules.GAMES import  MEMORY_HARD 
+from modules.GAMES import PUZZLE
+from modules.GAMES import GO
+from modules.GAMES import DOTS_BOX
+from modules.GAMES import CHECKERS
+from modules.GAMES import FOLLOW_FREE
+from modules.GAMES import MEMORY
+from modules.GAMES import CHESS
+from modules.GAMES import CHOOSE_IMAGE
+from modules.GAMES import SORT_NUMBER
+from modules.GAMES import MINESWEEPER
+from modules.GAMES import IMAGE_SELECT as IMSE
+from modules.GAMES import FIND_NUMBER as FNUM
+from modules.GAMES import FIND_NUMBER  
+from modules.GAMES import MEMORY  
+from modules.GAMES import REPEAT_AFTER_ME  
+from modules.GAMES import MORE_LESS_EQUAL  
+from modules.GAMES import DETECT
+from modules.GAMES import FAST
+from modules.GAMES import SIX_60S
+from modules.GAMES import TRUE_FALSE
+from modules.GAMES import FIND_OPERATOR
+from modules.GAMES import THOOZ
+from modules.SUPPORT import feedback as FEED_BACK
+from modules.GAMES.FIND_NUMBER import option_rects,current_question,correct_count, wrong_count , question_number
 from modules.background_moving import *
 
 from modules.coming_soon import *
@@ -1397,26 +1388,26 @@ _60S_BACKGROUND=pygame.image.load("./asset/image/background/_60S_BACKGROUND.png"
 TRUE_FALSE_BACKGROUND=pygame.image.load("./asset/image/background/TRUE_FALSE_BACKGROUND.png").convert_alpha()
 FIND_OPERATOR_BACKGROUND=pygame.image.load("./asset/image/background/FIND_OPERATOR_BACKGROUND.png").convert_alpha()
 CUSTOM__GAME=pygame.image.load("./asset/image/background/CUSTOM__GAME.png").convert_alpha()
-from modules import policy as POL
+from modules.MORE import policy as POL
 from modules import image as all_image 
 #-------------------------- for game start
 countdown_done = False
 previous_game_state = None
 from modules.start_game import countdown
-from modules.effect import *
+from modules.EFFECT.effect import *
 from modules.exit import *
 from modules.before_game import guid_sild_effect
-from modules import donate as DONATE
-from modules.button_setting import *
+from modules.SUPPORT import donate as DONATE
+from modules.button_menu_setting_gamemode import *
 from modules import music as MUS
 from modules import mode as MO
 from modules import start_screen as STS
 from modules import typer as TYPER
 from modules import date as DA
-from modules import side_effect_window as S_E_W
+from modules.EFFECT import side_effect_window as S_E_W
 from modules import menu__ as MENU__
-from modules import INFO as INFO
-from modules.MODE  import THOOZ as TOZ
+from modules.MORE import INFO as INFO
+from modules.GAMES  import THOOZ as TOZ
 #------------------------------------------------------------------------ پرچم ها 
 #flage  in the game 
 # flag_in_game = pygame.image.load("./asset/image/in_game/flage.png").convert_alpha()
@@ -1431,8 +1422,7 @@ flag_in_menu= pygame.transform.smoothscale(pygame.image.load("./asset/image/in_g
 cdcsc=fonts["heart"].render("profile",True,(255,255,255))
 
 menu_open = True
-from modules import menu_effect
-
+from modules.EFFECT import menu_effect
 
 
 
@@ -1447,12 +1437,12 @@ from modules.game_mode_scroll import *
 #############################################################################################################
 #############################################################################################################
 #انتخاب زبان دیفالت 
-from modules import policy
+from modules.MORE import policy
 policy.now_language_is_this = "en"
 
 #############################################################################################################
 #############################################################################################################
-
+game_mode_feature = None
 game_state = "MENU"
 SUPPORT_MENU=None
 SUPPORT_window=None # for window  for each item (4 icon in support button )
@@ -1490,13 +1480,15 @@ saved_player = SAVE.load_player()
 if saved_player is not None:
 
 
-    game_state = "MENU"#start
+    game_state = "START"#start
     DASHBOARD=False
 
 else:
 
     game_state = "NAME"#name
     DASHBOARD=False
+
+
 
 
 
@@ -1528,7 +1520,6 @@ while running:
         answer_selected,
         game_state,
         select_buttons,
-        settings_rects,
         back_button_rect,
         small_window,
         clicked_button,
@@ -1570,7 +1561,7 @@ while running:
         support__button_rect,
         sms_button_rect,
         FOUR_ICON_FOR_SCREEN,
-        DONT_LET_CLICK_GAMES_BUTTON_BEFORE_THAT
+        DONT_LET_CLICK_GAMES_BUTTON_BEFORE_THAT,game_mode_feature
 
     ) = handle_events(
 
@@ -1598,7 +1589,6 @@ while running:
         answer_selected,
         game_state,
         select_buttons,
-        settings_rects,
         back_button_rect,
 
         # این مورد قبلاً جا افتاده بود
@@ -1656,7 +1646,7 @@ while running:
         support__button_rect,
         sms_button_rect,
         FOUR_ICON_FOR_SCREEN,
-        DONT_LET_CLICK_GAMES_BUTTON_BEFORE_THAT
+        DONT_LET_CLICK_GAMES_BUTTON_BEFORE_THAT,game_mode_feature
 
     )
     
@@ -1821,34 +1811,34 @@ while running:
 
         # )
 
-        S_E_W.menu_setting_panel(
+        # S_E_W.menu_setting_panel(
+        #     screen,
+        #     menu_panel,
+        #     current_width // 2  - 810 ,current_height // 2 - 4.5
+        # )  
+
+        gamemode_menu_setting_panel(
             screen,
             menu_panel,
+            menu_icons,
+            menu_positions,
+            "menu",
+            "menu",
             current_width // 2  - 810 ,current_height // 2 - 4.5
         )  
 
-
         #for menu
-        select_buttons.clear()
-        draw_menu_buttons(
-            screen,
-            current_width,
-            current_height,
-            fonts,
-            select_buttons
-        )     
+        # select_buttons.clear()
+        # draw_menu_buttons(
+        #     screen,
+        #     current_width,
+        #     current_height,
+        #     fonts,
+        #     select_buttons
+        # )     
             
 
-#این ها باید درست بشن چون السشو همش اجرا میشن در همه حالت ها 
-    # برای ساپورت است
-        STS.draw_current_player(
-            screen,
-            profile_images,
-            STS.current_player_type,
-            (230, 116),
-            STS.dashboard_player_profile
-        )
-                
+          
                 
         # menu_back_setters(
         #     screen,
@@ -1922,22 +1912,7 @@ while running:
         
         
         
-        # SUP.support_punch(
-        #     screen=screen,
-        #     image=punch_11,
-        #     center=(600, 400),
-        #     target_size=(300, 300),
-        #     page_id=1,
-        #     duration=450,
-        #     center_image=icon_image,
-        #     center_image_size=(120, 120),
-        #     text="Memory",
-        #     text_font=font,
-        #     text_color=(255, 255, 255)
-        # )
-        
-        
-        
+ 
         
         
         
@@ -2138,11 +2113,11 @@ while running:
 
         draw_punch_image2(
             screen,
-            punch_2,
+            punch_1,
             (current_width//2 - 375 + 1000, current_height // 2),
             (600, 600),
             "MATH",
-            center_image=punch_2_1,
+            center_image=punch_1_1,
             center_image_size=(300, 300),
             text="custom_math",
             text_font=fonts["date"]
@@ -2159,7 +2134,7 @@ while running:
         #---- دو عکس چاپ میکنه 
         draw_punch_image_1(
             screen,
-            IMG2,
+            IMG1,
             (current_width//2 - 375 + 830, current_height // 2  ),
             (700, 1050),
             "DAILY_GAME2",0.351,
@@ -2256,7 +2231,7 @@ while running:
         )   
         open_window_with_side_effect(
             screen,
-            SUPPORT_window1,
+            daily_window,
             current_width // 2,
             current_height //2
         )
@@ -2460,10 +2435,60 @@ while running:
 
 
 
-#-------------------------------------------------------------------------------------- GAME MODE 
 
-    if game_state == "GAME MODE":
-        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#--------------------------------------------------------
+    if game_state == "GAME MODE" and  game_mode_feature == "logic":
+                #----------------- background_and_brids
+        draw_moving_map(
+            screen,
+            WIDTH,
+            HEIGHT,
+            dt    )
+        draw_flying_birds(
+            screen,
+            current_width,
+            current_height
+        )   
+
+        update_vertical_scroll()
+        draw_vertical_scroll_grid(
+            screen,
+            game_list.center_image_game_mode_logic,
+            12,
+            card_gap_x=490,
+            card_gap_y=490
+        )    
+        gamemode_menu_setting_panel(
+            screen,
+            game_mode_panel,
+            game_list.gamemode_icons,
+            game_mode_positions_,
+            "gamemode",
+            "gamemode",
+            current_width // 2  - 842 ,current_height // 2 - 4.5
+        )  
+        draw_back_button(
+            screen,
+            back_button_rect)
+
+#--------------------------------------------------------
+    if game_state == "GAME MODE" and  game_mode_feature == "memory":
         #----------------- background_and_brids
         draw_moving_map(
             screen,
@@ -2475,768 +2500,802 @@ while running:
             current_width,
             current_height
         )   
-    
-
-        
-        
-        
-   
-        
-        # آپدیت اسلاید
-        game_mode_slide.update()
-
-        offset = game_mode_slide.get_offset()
-
-
-
-        # update_vertical_scroll()
-        # draw_vertical_scroll_grid(
-        #     screen,
-        #     MO.sadasdadasd,
-        #     card_gap_x=500,
-        #     card_gap_y=500
-        # )    
-
-        update_center_images_punch()
-        image_game_mode_page1 , _ ,_ , _ = draw_game_mode_page(
+        update_vertical_scroll()
+        draw_vertical_scroll_grid(
             screen,
-            MO.images_MODE_page1,
-            MO.image_sizes_page,
-            500,
-            500,
-            offset,
-            center_images=game_list.count_down_image,
-            center_start_index=0,
-            overlay_images=[
-                None,
-                None,
-                None,
-                None,
-                None,
-                None
-            ],
-            badge_images=[
-                fr_BG,
-                fr_BG,
-                fr_BG,
-                fr_BG,
-                fr_BG,
-                fr_BG
-            ],
-            feature_badge_images=[
-                MODE.logic,
-                MODE.detection,
-                MODE.detection,
-                MODE.logic,
-                MODE.logic,
-                MODE.memory,
-            ],
-        )
-        
-        draw_game_mode_text(
+            game_list.center_image_game_mode_memory,
+            8,
+            card_gap_x=490,
+            card_gap_y=490
+        )    
+        gamemode_menu_setting_panel(
             screen,
-            image_game_mode_page1,
-            MO.game_names,
-            fonts["date"],
-            text_start_index=0
-        ) 
-                
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-                
-        image_game_mode_page2, _ ,_,_ = draw_game_mode_page(
-            screen,
-            MO.images_MODE_page2,
-            MO.image_sizes_page,
-            500,
-            500,
-            offset + screen.get_width(),
-            center_images=game_list.count_down_image,
-            center_start_index=6,
-
-            overlay_images=[
-                None,
-                None,
-                None,
-                None,
-                None,
-                None
-            ],
-            badge_images=[
-                fr_BG,
-                fr_BG,
-                fr_BG,
-                fr_BG,
-                fr_BG,
-                fr_BG
-            ],
-            feature_badge_images=[
-                MODE.detection,
-                MODE.math,
-                MODE.logic,
-                MODE.logic,
-                MODE.math,
-                MODE.memory,
-
-            ],
-        )
-                
-        draw_game_mode_text(
-            screen,
-            image_game_mode_page2,
-            MO.game_names,
-            fonts["date"],
-            text_start_index=6
-        ) 
-                
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        image_game_mode_page3, _ , _ , _ = draw_game_mode_page(
-            screen,
-            MO.images_MODE_page3,
-            MO.image_sizes_page,
-            500,
-            500,
-            offset + screen.get_width() * 2,
-            center_images=game_list.count_down_image,
-            center_start_index=12,
-
-            overlay_images=[
-                None,
-                None,
-                None,
-                None,
-                None,
-                None
-            ],
-            badge_images=[
-                pr_BG,
-                pr_BG,
-                pr_BG,
-                pr_BG,
-                pr_BG,
-                pr_BG
-            ],
-            feature_badge_images=[
-                MODE.math,
-                MODE.detection,
-                MODE.detection,
-                MODE.memory,
-                MODE.memory,
-                MODE.math,
-            ],
-        )
-        draw_game_mode_text(
-            screen,
-            image_game_mode_page3,
-            MO.game_names,
-            fonts["date"],
-            text_start_index=12
-        ) 
-                
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        image_game_mode_page4,  _ ,_ ,_ = draw_game_mode_page(
-            screen,
-            MO.images_MODE_page4,
-            MO.image_sizes_page,
-            500,
-            500,
-            offset + screen.get_width() * 3,
-            center_images=game_list.count_down_image,
-            center_start_index=18,
-
-            overlay_images=[
-                None,
-                None,
-                None,
-                None,
-                None,
-                None
-            ],
-            badge_images=[
-                pr_BG,
-                pr_BG,
-                pr_BG,
-                pr_BG,
-                pr_BG,
-                pr_BG
-            ],
-            feature_badge_images=[
-                MODE.detection,
-                MODE.detection,
-                MODE.memory,
-                MODE.fast,
-                MODE.math,
-                MODE.math,
-
-            ],
-        )
-        
-        draw_game_mode_text(
-            screen,
-            image_game_mode_page4,
-            MO.game_names,
-            fonts["date"],
-            text_start_index=18
-        ) 
-                
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        image_game_mode_page5, _ ,  _ , _ = draw_game_mode_page(
-            screen,
-            MO.images_MODE_page1,
-            MO.image_sizes_page,
-            500,
-            500,
-            offset + screen.get_width() * 4,
-            center_images=game_list.count_down_image,
-            center_start_index=24,
-
-            overlay_images=[
-                None,
-                None,
-                None,
-                None,
-                None,
-                None
-            ],
-            badge_images=[
-                pr_BG,
-                pr_BG,
-                pr_BG,
-                pr_BG,
-                pr_BG,
-                pr_BG
-            ],
-            feature_badge_images=[
-                MODE.fast,
-                MODE.math,
-                MODE.detection,
-                MODE.detection,
-                MODE.detection,
-                MODE.fast,
-  
-            ],
-        )
-        draw_game_mode_text(
-            screen,
-            image_game_mode_page5,
-            MO.game_names,
-            fonts["date"],
-            text_start_index=24
-        ) 
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        image_game_mode_page6,  _ ,_ , _ = draw_game_mode_page(
-            screen,
-            MO.images_MODE_page1,
-            MO.image_sizes_page,
-            500,
-            500,
-            offset + screen.get_width() * 5,
-            center_images=game_list.count_down_image,
-            center_start_index=30,
-            overlay_images=[
-                None,
-                None,
-                None,
-                None,
-                None,
-                None
-            ],
-            badge_images=[
-                pr_BG,
-                pr_BG,
-                pr_BG,
-                pr_BG,
-                pr_BG,
-                pr_BG
-            ],
-            feature_badge_images=[
-                MODE.logic,
-                MODE.logic,
-                MODE.detection,
-                MODE.logic,
-                MODE.logic,
-                MODE.detection,
-            ],
-        )
-        draw_game_mode_text(
-            screen,
-            image_game_mode_page6,
-            MO.game_names,
-            fonts["date"],
-            text_start_index=30
-        ) 
-                
-
-
-
-
-
-
-        image_game_mode_page7, _ , _ , _ = draw_game_mode_page(
-            screen,
-            MO.images_MODE_page1,
-            MO.image_sizes_page,
-            500,
-            500,
-            offset + screen.get_width() * 6,
-            center_images=game_list.count_down_image,
-            center_start_index=36,
-
-            overlay_images=[
-                None,
-                None,
-                None,
-                None,
-                MO.my_icon,
-                MO.my_icon
-            ],
-            badge_images=[
-                pr_BG,
-                pr_BG,
-                pr_BG,
-                pr_BG,
-                cm_BG,
-                cm_BG
-            ],
-            feature_badge_images=[
-                MODE.logic,
-                MODE.logic,
-                MODE.detection,
-                MODE.memory,
-                None,
-                None,
-            ],
-        )
-
-        
-        draw_game_mode_text(
-            screen,
-            image_game_mode_page7,
-            MO.game_names,
-            fonts["date"],
-            text_start_index=36
-        ) 
-                
-                
-        
-        
-        
-        
-        
-        
-        
-        image_game_mode_page8, _ , _ , _ = draw_game_mode_page(
-            screen,
-            MO.images_MODE_page1,
-            MO.image_sizes_page,
-            500,
-            500,
-            offset + screen.get_width() * 7,
-            center_images=game_list.count_down_image,
-            center_start_index=40,
-
-            overlay_images=[
-                MO.my_icon,
-                MO.my_icon,
-                MO.my_icon,
-                MO.my_icon,
-                MO.my_icon,
-                MO.my_icon
-            ],
-            badge_images=[
-                cm_BG,
-                cm_BG,
-                cm_BG,
-                cm_BG,
-                cm_BG,
-                cm_BG
-            ],
-        )
-
-        draw_game_mode_text(
-            screen,
-            image_game_mode_page8,
-            MO.game_names,
-            fonts["date"],
-            text_start_index=40
-        ) 
-                
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        image_game_mode_page9,  _ ,_ , _ = draw_game_mode_page(
-            screen,
-            MO.images_MODE_page1,
-            MO.image_sizes_page,
-            500,
-            500,
-            offset + screen.get_width() * 8,
-            center_images=game_list.count_down_image,
-            overlay_images=[
-                MO.my_icon,
-                MO.my_icon,
-                MO.my_icon,
-                MO.my_icon,
-                MO.my_icon,
-                MO.my_icon
-            ],
-            badge_images=[
-                cm_BG,
-                cm_BG,
-                cm_BG,
-                cm_BG,
-                cm_BG,
-                cm_BG
-            ],
-        )
-        
-        image_game_mode_page10,  _ ,_ , _ = draw_game_mode_page(
-            screen,
-            MO.images_MODE_page1,
-            MO.image_sizes_page,
-            500,
-            500,
-            offset + screen.get_width() * 9,
-            center_images=game_list.count_down_image,
-            overlay_images=[
-                MO.my_icon,
-                MO.my_icon,
-                MO.my_icon,
-                MO.my_icon,
-                MO.my_icon,
-                MO.my_icon
-            ],
-            badge_images=[
-                cm_BG,
-                cm_BG,
-                cm_BG,
-                cm_BG,
-                cm_BG,
-                cm_BG
-            ],
-        )
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        # if TYPER.typing_start_time is not None:
-        if MO.page1_active:
-            # print("page1")
-            finished_type = TYPER.draw_typing_text(
-            screen,
-            "MATH",
-            fonts["heart"],
-            (255, 140, 30),
-            (current_width // 2, current_height // 2 - 530),
-            TYPER.typing_start_time,
-            80
-        )
-        if MO.page2_active:
-            # print("page2")
-            finished_type = TYPER.draw_typing_text(
-            screen,
-            "MEMORY",
-            fonts["heart"],
-            (255, 140, 30),
-            (current_width // 2, current_height // 2 - 530),
-            TYPER.typing_start_time,
-            80
-        )
-        if MO.page3_active:
-            # print("page3")
-            finished_type = TYPER.draw_typing_text(
-            screen,
-            "GET PREMIUM",
-            fonts["heart"],
-            (255, 140, 30),
-            (current_width // 2, current_height // 2 - 530),
-            TYPER.typing_start_time,
-            80
-        )
-        if MO.page4_active:
-            # print("page4")
-            finished_type = TYPER.draw_typing_text(
-            screen,
-            "GET PREMIUM",
-            fonts["heart"],
-            (255, 140, 30),
-            (current_width // 2, current_height // 2 - 530),
-            TYPER.typing_start_time,
-            80
-        )
-        if MO.page5_active:
-            # print("page5")
-            finished_type = TYPER.draw_typing_text(
-            screen,
-            "GET PREMIUM",
-            fonts["heart"],
-            (255, 140, 30),
-            (current_width // 2, current_height // 2 - 530),
-            TYPER.typing_start_time,
-            80
-        )
-        if MO.page6_active:
-            # print("page6")
-            finished_type = TYPER.draw_typing_text(
-            screen,
-            "GET PREMIUM",
-            fonts["heart"],
-            (255, 140, 30),
-            (current_width // 2, current_height // 2 - 530),
-            TYPER.typing_start_time,
-            80
-        )
-
-        if MO.page7_active:
-            # print("page6")
-            finished_type = TYPER.draw_typing_text(
-            screen,
-            "GET PREMIUM",
-            fonts["heart"],
-            (255, 140, 30),
-            (current_width // 2, current_height // 2 - 530),
-            TYPER.typing_start_time,
-            80
-        )
-
-        if MO.page8_active:
-            # print("page6")
-            finished_type = TYPER.draw_typing_text(
-            screen,
-            "COMING SOON...",
-            fonts["heart"],
-            (255, 140, 30),
-            (current_width // 2, current_height // 2 - 530),
-            TYPER.typing_start_time,
-            80
-        )
-        if MO.page9_active:
-            # print("page6")
-            finished_type = TYPER.draw_typing_text(
-            screen,
-            "COMING SOON...",
-            fonts["heart"],
-            (255, 140, 30),
-            (current_width // 2, current_height // 2 - 530),
-            TYPER.typing_start_time,
-            80
-        )
-        if MO.page10_active:
-            # print("page6")
-            finished_type = TYPER.draw_typing_text(
-            screen,
-            "COMING SOON...",
-            fonts["heart"],
-            (255, 140, 30),
-            (current_width // 2, current_height // 2 - 530),
-            TYPER.typing_start_time,
-            80
-        )
-
-
-
-        # # -------------------------------- رسم صفحه‌ها
-        # rects, current_sizes = draw_image_MODE_page_1(
-        #     screen,
-        #     500,
-        #     500,
-        #     offset
-        # )
-        # #  # این هم برایعسک های وسط ۶ تا عکس در گیم مود با افکت پانج 
-        # draw_center_images_MODE(
-        #     screen,
-        #     rects,
-        #     image_sizes_page1
-        # )
-
-
-
-        # draw_image_MODE_page_2(
-        #     screen,
-        #     500,
-        #     500,
-        #     offset + screen.get_width()
-        # )
-        
-        # draw_image_MODE_page_3(
-        #     screen,
-        #     500,
-        #     500,
-        #     offset + screen.get_width() * 2,
-        #     icons
-            
-        # )
-        
-        # draw_image_MODE_page_4(
-        #     screen,
-        #     500,
-        #     500,
-        #     offset + screen.get_width() * 3,
-        #     icons_4
-            
-        # )
-        
-        # draw_image_MODE_page_5(
-        #     screen,
-        #     500,
-        #     500,
-        #     offset + screen.get_width() * 4,
-        #     icons_5
-            
-        # )
-        
-        
-        
-        draw_page_indicator(
-            screen,
-            MO.current_page_GAME_MODE,
-            10,
-            current_height// 2 + 600
-        )
-
-        # _window(screen,small_window)
-
-        # donate_base(
-        #     screen,
-        #     call_button_rect
-        # )
-        # draw_back_button(
-        # screen,
-        # back_button_rect
-        # )
-        # support_button(
-        #     screen,
-        #     support_button_rect
-        # )
-        # bug_button(
-        #     screen,
-        #     bug_button_rect
-        # # )     
-        # donate_button(
-        #     screen,
-        #     call_button_rect
-        # )
-
-        draw_profile_live_circle(
-            screen,
-            selected_profile_image,
-            p99,
-            current_width
-        )
-        # عکس دایره. برای پروفایل هر صفحه
-        # image_setter(screen,pathth,xyz_for_profile_logo,current_height//2 - 666)
-        # gif_setting(screen,gif_frames_mode,width_for_profile_logo,current_height // 2 - 570)
-
-
-
+            game_mode_panel,
+            game_list.gamemode_icons,
+            game_mode_positions_,
+            "gamemode",
+            "gamemode",
+            current_width // 2  - 842 ,current_height // 2 - 4.5
+        )  
         draw_back_button(
             screen,
             back_button_rect)
 
-    if game_state == "MEMORY":
-        MEMORY.memory_(
+#--------------------------------------------------------
+    if game_state == "GAME MODE" and  game_mode_feature == "math":
+        #----------------- background_and_brids
+        draw_moving_map(
+            screen,
+            WIDTH,
+            HEIGHT,
+            dt    )
+        draw_flying_birds(
             screen,
             current_width,
             current_height
-        )
+        )   
+        update_vertical_scroll()
+        draw_vertical_scroll_grid(
+            screen,
+            game_list.center_image_game_mode_math,
+            5,
+            card_gap_x=490,
+            card_gap_y=490
+        )    
+        gamemode_menu_setting_panel(
+            screen,
+            game_mode_panel,
+            game_list.gamemode_icons,
+            game_mode_positions_,
+            "gamemode",
+            "gamemode",
+            current_width // 2  - 842 ,current_height // 2 - 4.5
+        )  
         draw_back_button(
             screen,
             back_button_rect)
+
+#--------------------------------------------------------
+    if game_state == "GAME MODE" and  game_mode_feature == "detection":
+        #----------------- background_and_brids
+        draw_moving_map(
+            screen,
+            WIDTH,
+            HEIGHT,
+            dt    )
+        draw_flying_birds(
+            screen,
+            current_width,
+            current_height
+        )   
+        update_vertical_scroll()
+        draw_vertical_scroll_grid(
+            screen,
+            game_list.center_image_game_mode_detection,
+            12,
+            card_gap_x=490,
+            card_gap_y=490
+        )    
+        gamemode_menu_setting_panel(
+            screen,
+            game_mode_panel,
+            game_list.gamemode_icons,
+            game_mode_positions_,
+            "gamemode",
+            "gamemode",
+            current_width // 2  - 842 ,current_height // 2 - 4.5
+        )  
+        draw_back_button(
+            screen,
+            back_button_rect)
+
+#--------------------------------------------------------
+    if game_state == "GAME MODE" and  game_mode_feature == "fast":
+        #----------------- background_and_brids
+        draw_moving_map(
+            screen,
+            WIDTH,
+            HEIGHT,
+            dt    )
+        draw_flying_birds(
+            screen,
+            current_width,
+            current_height
+        )   
+        update_vertical_scroll()
+        draw_vertical_scroll_grid(
+            screen,
+            game_list.center_image_game_mode_fast,
+            4,
+            card_gap_x=490,
+            card_gap_y=490
+        )    
+        gamemode_menu_setting_panel(
+            screen,
+            game_mode_panel,
+            game_list.gamemode_icons,
+            game_mode_positions_,
+            "gamemode",
+            "gamemode",
+            current_width // 2  - 842 ,current_height // 2 - 4.5
+        )  
+        draw_back_button(
+            screen,
+            back_button_rect)
+
+
+#-------------------------------------------------------------------------------------- GAME MODE 
+
+    
+
+
+        
+
+
+        
+        # # آپدیت اسلاید
+        # game_mode_slide.update()
+
+        # offset = game_mode_slide.get_offset()
+
+
+
+        
+
+        # update_center_images_punch()
+        # image_game_mode_page1 , _ ,_ , _ = draw_game_mode_page(
+        #     screen,
+        #     MO.images_MODE_page1,
+        #     MO.image_sizes_page,
+        #     500,
+        #     500,
+        #     offset,
+        #     center_images=game_list.count_down_image,
+        #     center_start_index=0,
+        #     overlay_images=[
+        #         None,
+        #         None,
+        #         None,
+        #         None,
+        #         None,
+        #         None
+        #     ],
+        #     badge_images=[
+        #         fr_BG,
+        #         fr_BG,
+        #         fr_BG,
+        #         fr_BG,
+        #         fr_BG,
+        #         fr_BG
+        #     ],
+        #     feature_badge_images=[
+        #         MODE.logic,
+        #         MODE.detection,
+        #         MODE.detection,
+        #         MODE.logic,
+        #         MODE.logic,
+        #         MODE.memory,
+        #     ],
+        # )
+        
+        # draw_game_mode_text(
+        #     screen,
+        #     image_game_mode_page1,
+        #     MO.game_names,
+        #     fonts["date"],
+        #     text_start_index=0
+        # ) 
+                
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+                
+        # image_game_mode_page2, _ ,_,_ = draw_game_mode_page(
+        #     screen,
+        #     MO.images_MODE_page2,
+        #     MO.image_sizes_page,
+        #     500,
+        #     500,
+        #     offset + screen.get_width(),
+        #     center_images=game_list.count_down_image,
+        #     center_start_index=6,
+
+        #     overlay_images=[
+        #         None,
+        #         None,
+        #         None,
+        #         None,
+        #         None,
+        #         None
+        #     ],
+        #     badge_images=[
+        #         fr_BG,
+        #         fr_BG,
+        #         fr_BG,
+        #         fr_BG,
+        #         fr_BG,
+        #         fr_BG
+        #     ],
+        #     feature_badge_images=[
+        #         MODE.detection,
+        #         MODE.math,
+        #         MODE.logic,
+        #         MODE.logic,
+        #         MODE.math,
+        #         MODE.memory,
+
+        #     ],
+        # )
+                
+        # draw_game_mode_text(
+        #     screen,
+        #     image_game_mode_page2,
+        #     MO.game_names,
+        #     fonts["date"],
+        #     text_start_index=6
+        # ) 
+                
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        # image_game_mode_page3, _ , _ , _ = draw_game_mode_page(
+        #     screen,
+        #     MO.images_MODE_page3,
+        #     MO.image_sizes_page,
+        #     500,
+        #     500,
+        #     offset + screen.get_width() * 2,
+        #     center_images=game_list.count_down_image,
+        #     center_start_index=12,
+
+        #     overlay_images=[
+        #         None,
+        #         None,
+        #         None,
+        #         None,
+        #         None,
+        #         None
+        #     ],
+        #     badge_images=[
+        #         pr_BG,
+        #         pr_BG,
+        #         pr_BG,
+        #         pr_BG,
+        #         pr_BG,
+        #         pr_BG
+        #     ],
+        #     feature_badge_images=[
+        #         MODE.math,
+        #         MODE.detection,
+        #         MODE.detection,
+        #         MODE.memory,
+        #         MODE.memory,
+        #         MODE.math,
+        #     ],
+        # )
+        # draw_game_mode_text(
+        #     screen,
+        #     image_game_mode_page3,
+        #     MO.game_names,
+        #     fonts["date"],
+        #     text_start_index=12
+        # ) 
+                
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        # image_game_mode_page4,  _ ,_ ,_ = draw_game_mode_page(
+        #     screen,
+        #     MO.images_MODE_page4,
+        #     MO.image_sizes_page,
+        #     500,
+        #     500,
+        #     offset + screen.get_width() * 3,
+        #     center_images=game_list.count_down_image,
+        #     center_start_index=18,
+
+        #     overlay_images=[
+        #         None,
+        #         None,
+        #         None,
+        #         None,
+        #         None,
+        #         None
+        #     ],
+        #     badge_images=[
+        #         pr_BG,
+        #         pr_BG,
+        #         pr_BG,
+        #         pr_BG,
+        #         pr_BG,
+        #         pr_BG
+        #     ],
+        #     feature_badge_images=[
+        #         MODE.detection,
+        #         MODE.detection,
+        #         MODE.memory,
+        #         MODE.fast,
+        #         MODE.math,
+        #         MODE.math,
+
+        #     ],
+        # )
+        
+        # draw_game_mode_text(
+        #     screen,
+        #     image_game_mode_page4,
+        #     MO.game_names,
+        #     fonts["date"],
+        #     text_start_index=18
+        # ) 
+                
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        # image_game_mode_page5, _ ,  _ , _ = draw_game_mode_page(
+        #     screen,
+        #     MO.images_MODE_page1,
+        #     MO.image_sizes_page,
+        #     500,
+        #     500,
+        #     offset + screen.get_width() * 4,
+        #     center_images=game_list.count_down_image,
+        #     center_start_index=24,
+
+        #     overlay_images=[
+        #         None,
+        #         None,
+        #         None,
+        #         None,
+        #         None,
+        #         None
+        #     ],
+        #     badge_images=[
+        #         pr_BG,
+        #         pr_BG,
+        #         pr_BG,
+        #         pr_BG,
+        #         pr_BG,
+        #         pr_BG
+        #     ],
+        #     feature_badge_images=[
+        #         MODE.fast,
+        #         MODE.math,
+        #         MODE.detection,
+        #         MODE.detection,
+        #         MODE.detection,
+        #         MODE.fast,
+  
+        #     ],
+        # )
+        # draw_game_mode_text(
+        #     screen,
+        #     image_game_mode_page5,
+        #     MO.game_names,
+        #     fonts["date"],
+        #     text_start_index=24
+        # ) 
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        # image_game_mode_page6,  _ ,_ , _ = draw_game_mode_page(
+        #     screen,
+        #     MO.images_MODE_page1,
+        #     MO.image_sizes_page,
+        #     500,
+        #     500,
+        #     offset + screen.get_width() * 5,
+        #     center_images=game_list.count_down_image,
+        #     center_start_index=30,
+        #     overlay_images=[
+        #         None,
+        #         None,
+        #         None,
+        #         None,
+        #         None,
+        #         None
+        #     ],
+        #     badge_images=[
+        #         pr_BG,
+        #         pr_BG,
+        #         pr_BG,
+        #         pr_BG,
+        #         pr_BG,
+        #         pr_BG
+        #     ],
+        #     feature_badge_images=[
+        #         MODE.logic,
+        #         MODE.logic,
+        #         MODE.detection,
+        #         MODE.logic,
+        #         MODE.logic,
+        #         MODE.detection,
+        #     ],
+        # )
+        # draw_game_mode_text(
+        #     screen,
+        #     image_game_mode_page6,
+        #     MO.game_names,
+        #     fonts["date"],
+        #     text_start_index=30
+        # ) 
+                
+
+
+
+
+
+
+        # image_game_mode_page7, _ , _ , _ = draw_game_mode_page(
+        #     screen,
+        #     MO.images_MODE_page1,
+        #     MO.image_sizes_page,
+        #     500,
+        #     500,
+        #     offset + screen.get_width() * 6,
+        #     center_images=game_list.count_down_image,
+        #     center_start_index=36,
+
+        #     overlay_images=[
+        #         None,
+        #         None,
+        #         None,
+        #         None,
+        #         MO.my_icon,
+        #         MO.my_icon
+        #     ],
+        #     badge_images=[
+        #         pr_BG,
+        #         pr_BG,
+        #         pr_BG,
+        #         pr_BG,
+        #         cm_BG,
+        #         cm_BG
+        #     ],
+        #     feature_badge_images=[
+        #         MODE.logic,
+        #         MODE.logic,
+        #         MODE.detection,
+        #         MODE.memory,
+        #         None,
+        #         None,
+        #     ],
+        # )
+
+        
+        # draw_game_mode_text(
+        #     screen,
+        #     image_game_mode_page7,
+        #     MO.game_names,
+        #     fonts["date"],
+        #     text_start_index=36
+        # ) 
+                
+                
+        
+        
+        
+        
+        
+        
+        
+        # image_game_mode_page8, _ , _ , _ = draw_game_mode_page(
+        #     screen,
+        #     MO.images_MODE_page1,
+        #     MO.image_sizes_page,
+        #     500,
+        #     500,
+        #     offset + screen.get_width() * 7,
+        #     center_images=game_list.count_down_image,
+        #     center_start_index=40,
+
+        #     overlay_images=[
+        #         MO.my_icon,
+        #         MO.my_icon,
+        #         MO.my_icon,
+        #         MO.my_icon,
+        #         MO.my_icon,
+        #         MO.my_icon
+        #     ],
+        #     badge_images=[
+        #         cm_BG,
+        #         cm_BG,
+        #         cm_BG,
+        #         cm_BG,
+        #         cm_BG,
+        #         cm_BG
+        #     ],
+        # )
+
+        # draw_game_mode_text(
+        #     screen,
+        #     image_game_mode_page8,
+        #     MO.game_names,
+        #     fonts["date"],
+        #     text_start_index=40
+        # ) 
+                
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        # image_game_mode_page9,  _ ,_ , _ = draw_game_mode_page(
+        #     screen,
+        #     MO.images_MODE_page1,
+        #     MO.image_sizes_page,
+        #     500,
+        #     500,
+        #     offset + screen.get_width() * 8,
+        #     center_images=game_list.count_down_image,
+        #     overlay_images=[
+        #         MO.my_icon,
+        #         MO.my_icon,
+        #         MO.my_icon,
+        #         MO.my_icon,
+        #         MO.my_icon,
+        #         MO.my_icon
+        #     ],
+        #     badge_images=[
+        #         cm_BG,
+        #         cm_BG,
+        #         cm_BG,
+        #         cm_BG,
+        #         cm_BG,
+        #         cm_BG
+        #     ],
+        # )
+        
+        # image_game_mode_page10,  _ ,_ , _ = draw_game_mode_page(
+        #     screen,
+        #     MO.images_MODE_page1,
+        #     MO.image_sizes_page,
+        #     500,
+        #     500,
+        #     offset + screen.get_width() * 9,
+        #     center_images=game_list.count_down_image,
+        #     overlay_images=[
+        #         MO.my_icon,
+        #         MO.my_icon,
+        #         MO.my_icon,
+        #         MO.my_icon,
+        #         MO.my_icon,
+        #         MO.my_icon
+        #     ],
+        #     badge_images=[
+        #         cm_BG,
+        #         cm_BG,
+        #         cm_BG,
+        #         cm_BG,
+        #         cm_BG,
+        #         cm_BG
+        #     ],
+        # )
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        # # if TYPER.typing_start_time is not None:
+        # if MO.page1_active:
+        #     # print("page1")
+        #     finished_type = TYPER.draw_typing_text(
+        #     screen,
+        #     "MATH",
+        #     fonts["heart"],
+        #     (255, 140, 30),
+        #     (current_width // 2, current_height // 2 - 530),
+        #     TYPER.typing_start_time,
+        #     80
+        # )
+        # if MO.page2_active:
+        #     # print("page2")
+        #     finished_type = TYPER.draw_typing_text(
+        #     screen,
+        #     "MEMORY",
+        #     fonts["heart"],
+        #     (255, 140, 30),
+        #     (current_width // 2, current_height // 2 - 530),
+        #     TYPER.typing_start_time,
+        #     80
+        # )
+        # if MO.page3_active:
+        #     # print("page3")
+        #     finished_type = TYPER.draw_typing_text(
+        #     screen,
+        #     "GET PREMIUM",
+        #     fonts["heart"],
+        #     (255, 140, 30),
+        #     (current_width // 2, current_height // 2 - 530),
+        #     TYPER.typing_start_time,
+        #     80
+        # )
+        # if MO.page4_active:
+        #     # print("page4")
+        #     finished_type = TYPER.draw_typing_text(
+        #     screen,
+        #     "GET PREMIUM",
+        #     fonts["heart"],
+        #     (255, 140, 30),
+        #     (current_width // 2, current_height // 2 - 530),
+        #     TYPER.typing_start_time,
+        #     80
+        # )
+        # if MO.page5_active:
+        #     # print("page5")
+        #     finished_type = TYPER.draw_typing_text(
+        #     screen,
+        #     "GET PREMIUM",
+        #     fonts["heart"],
+        #     (255, 140, 30),
+        #     (current_width // 2, current_height // 2 - 530),
+        #     TYPER.typing_start_time,
+        #     80
+        # )
+        # if MO.page6_active:
+        #     # print("page6")
+        #     finished_type = TYPER.draw_typing_text(
+        #     screen,
+        #     "GET PREMIUM",
+        #     fonts["heart"],
+        #     (255, 140, 30),
+        #     (current_width // 2, current_height // 2 - 530),
+        #     TYPER.typing_start_time,
+        #     80
+        # )
+
+        # if MO.page7_active:
+        #     # print("page6")
+        #     finished_type = TYPER.draw_typing_text(
+        #     screen,
+        #     "GET PREMIUM",
+        #     fonts["heart"],
+        #     (255, 140, 30),
+        #     (current_width // 2, current_height // 2 - 530),
+        #     TYPER.typing_start_time,
+        #     80
+        # )
+
+        # if MO.page8_active:
+        #     # print("page6")
+        #     finished_type = TYPER.draw_typing_text(
+        #     screen,
+        #     "COMING SOON...",
+        #     fonts["heart"],
+        #     (255, 140, 30),
+        #     (current_width // 2, current_height // 2 - 530),
+        #     TYPER.typing_start_time,
+        #     80
+        # )
+        # if MO.page9_active:
+        #     # print("page6")
+        #     finished_type = TYPER.draw_typing_text(
+        #     screen,
+        #     "COMING SOON...",
+        #     fonts["heart"],
+        #     (255, 140, 30),
+        #     (current_width // 2, current_height // 2 - 530),
+        #     TYPER.typing_start_time,
+        #     80
+        # )
+        # if MO.page10_active:
+        #     # print("page6")
+        #     finished_type = TYPER.draw_typing_text(
+        #     screen,
+        #     "COMING SOON...",
+        #     fonts["heart"],
+        #     (255, 140, 30),
+        #     (current_width // 2, current_height // 2 - 530),
+        #     TYPER.typing_start_time,
+        #     80
+        # )
+
+
+
+  
+        
+        
+        # draw_page_indicator(
+        #     screen,
+        #     MO.current_page_GAME_MODE,
+        #     10,
+        #     current_height// 2 + 600
+        # )
+
+
+        # draw_profile_live_circle(
+        #     screen,
+        #     selected_profile_image,
+        #     p99,
+        #     current_width
+        # )
+
+
+
+
     #---------------------------------------------------------------------------------STEP5
 
     # if ceill_entered and not time_entered:        
@@ -3366,26 +3425,35 @@ while running:
         #     first_x=220,
         #     first_y=current_height // 2 - 720,
         # )
-        S_E_W.menu_setting_panel(
+        # S_E_W.menu_setting_panel(
+        #     screen,
+        #     setting_panel,
+        #     current_width // 2  - 804 ,current_height // 2 
+        # )  
+
+        # STS.draw_current_player(
+        #     screen,
+        #     profile_images,
+        #     STS.current_player_type,
+        #     (230, 116),
+        # )
+
+        # draw_setting_buttons(
+        #     screen,
+        #     current_width,
+        #     current_height,
+        #     fonts,
+        #     settings_rects
+        # )
+        
+        gamemode_menu_setting_panel(
             screen,
             setting_panel,
-            current_width // 2  - 804 ,current_height // 2 
-        )  
-
-        STS.draw_current_player(
-            screen,
-            profile_images,
-            STS.current_player_type,
-            (230, 116),
-            STS.dashboard_player_profile
-        )
-
-        draw_setting_buttons(
-            screen,
-            current_width,
-            current_height,
-            fonts,
-            settings_rects
+            setting_icons,
+            setting_positions,
+            "setting",
+            "setting",
+            current_width // 2  - 804 ,current_height // 2 ,
         )
 
         # donate_base(
@@ -3407,21 +3475,6 @@ while running:
         # )
 
 
-        #----------------------------------این برای داشتبورد است 
-        
-        # if DASHBOARD :
-            
-        #     #     #-------------------
-
-        #     DA.draw_dashboard_date(
-        #         screen,
-        #         DA.day_image,
-        #         DA.month_images,
-        #         fonts["DAY"],
-        #         fonts["weekdays"],
-        #         fonts["month"],
-        #         fonts["date"]
-        #     )
 
 
 
@@ -5134,22 +5187,16 @@ while running:
    #این برای داشتبورد است 
     if  DASHBOARD == True and is_guest == False: 
         #-------------------
-        draw_punch_image(
-            screen,
-            calender,
-            (current_width - 215,374),
-            (440, 700),
-            "calender")
+
         
-        
-        DA.draw_dashboard_date(
-            screen,
-            DA.month_images,
-            fonts["month"],
-            fonts["month"],
-            fonts["month_real"],
-            fonts["date"]
-        )
+        # DA.draw_dashboard_date(
+        #     screen,
+        #     DA.month_images,
+        #     fonts["month"],
+        #     fonts["month"],
+        #     fonts["month_real"],
+        #     fonts["date"]
+        # )
         # # if IS_ONLINE == True:
         # #     CLOCK.clock_ONLINE(screen,fonts["date"],current_width)
         # # else:
