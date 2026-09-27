@@ -3,109 +3,106 @@ from modules.sound_effect import play_click
 import modules.music as music
 from modules.sound_effect import *
 import modules.screen as  SC
-from modules.ab import *
-from modules.about import handle_about_scroll
 from modules.design import *
-from modules.theme import *
-from modules import support as SUP
-from modules import more as MORE
+from modules.SUPPORT import support as SUP
+from modules.MORE import more as MORE
 # from modules.levels import handle_level_slider_event,update_level_slider
 from event_helper import event_click_game
-from modules.MODE import FOLLOW_THAT as FOTHAT
+from modules.GAMES import FOLLOW_THAT as FOTHAT
 from modules import mode as MO
-from modules.MODE import MATCH3 
+from modules.GAMES import MATCH3 
 from modules import operation_screen as OP 
-from modules.MODE import SNAKE 
-from modules.MODE import CONNECT_FOUR 
-from modules.MODE import CHECKERS 
-from modules.MODE import GO 
-from modules import report_bug 
-from modules.MODE import FIND_NUMBER 
-from modules.MODE import FOLLOW_FREE 
-from modules.MODE import PUZZLE 
-from modules.MODE import DOTS_BOX 
-from modules.MODE import MOVE_ARROW as M_ARR
-from modules.INFO import *
-from modules.FAQ import *
-from modules.more_app import *
-from modules.MODE import SORT_NUMBER
+from modules.GAMES import SNAKE 
+from modules.GAMES import CONNECT_FOUR 
+from modules.GAMES import CHECKERS 
+from modules.GAMES import GO 
+from modules.SUPPORT import report_bug 
+from modules.GAMES import FIND_NUMBER 
+from modules.GAMES import FOLLOW_FREE 
+from modules.GAMES import PUZZLE 
+from modules.GAMES import DOTS_BOX 
+from modules.GAMES import MOVE_ARROW as M_ARR
+from modules.MORE.INFO import *
+from modules.MORE.FAQ import *
+from modules  import game_list
+from modules.MORE.more_app import *
+from modules.GAMES import SORT_NUMBER
 from modules.coming_soon import  *
-from modules import feedback as FEED_BACK
-from modules import donate as DONATE
+from modules.SUPPORT import feedback as FEED_BACK
+from modules.SUPPORT import donate as DONATE
 from modules import sound 
 from modules.game_mode_scroll import *
 from modules.game_mode_scroll import event_vertical_scroll
-from modules import side_effect_window as S_E_W
+from modules.EFFECT import side_effect_window as S_E_W
 # game mode
-from modules.MODE.MEMORY import *
-import modules.MODE.REPEAT_AFTER_ME as MEM
-from modules.MODE.REPEAT_AFTER_ME import *
-from modules.MODE.SHAPE_COLOR_NAME import *
-from modules.MODE import SHAPE_COLOR_NAME as SCN
-import  modules.MODE.DIRECTION as DIR
-import  modules.MODE.ACTION as ACT
-import  modules.MODE.MIRROR as MIR
-import  modules.MODE.DETECT as DET
-from modules.MODE import FIND_NUMBER  as FNUM
-from modules.MODE.FIND_NUMBER import * 
-from modules.MODE import  FAST as FF
-from modules.MODE import  SIX_60S as SIX
-from modules.MODE import  TRUE_FALSE as TF
-from modules.MODE import  FIND_OPERATOR as FO
-from modules.MODE import  MORE_LESS_EQUAL as MLE
-from modules.MODE import  MATH_GO as MGO
-from modules.MODE import IMAGE_SELECT as IMSE
-from modules.MODE  import THOOZ as TOZ
-from modules.MODE  import MINESWEEPER 
+from modules.GAMES.MEMORY import *
+import modules.GAMES.REPEAT_AFTER_ME as MEM
+from modules.GAMES.REPEAT_AFTER_ME import *
+from modules.GAMES.SHAPE_COLOR_NAME import *
+from modules.GAMES import SHAPE_COLOR_NAME as SCN
+import  modules.GAMES.DIRECTION as DIR
+import  modules.GAMES.ACTION as ACT
+import  modules.GAMES.MIRROR as MIR
+import  modules.GAMES.DETECT as DET
+from modules.GAMES import FIND_NUMBER  as FNUM
+from modules.GAMES.FIND_NUMBER import * 
+from modules.GAMES import  FAST as FF
+from modules.GAMES import  SIX_60S as SIX
+from modules.GAMES import  TRUE_FALSE as TF
+from modules.GAMES import  FIND_OPERATOR as FO
+from modules.GAMES import  MORE_LESS_EQUAL as MLE
+from modules.GAMES import  MATH_GO as MGO
+from modules.GAMES import IMAGE_SELECT as IMSE
+from modules.GAMES  import THOOZ as TOZ
+from modules.GAMES  import MINESWEEPER 
 from modules import before_game 
-from modules.MODE import CHOOSE_IMAGE
-from modules.translate import policy
+from modules.GAMES import CHOOSE_IMAGE
+from modules.TRANSLATE import policy
 
-from modules import account as ACC
+from modules.ACCOUNT import account as ACC
 from modules import  custom_math as CUS
 from modules import  design as DES
 from modules.music  import  *
-from modules import  player_profile as PLAYER
+from modules.ACCOUNT import  player_profile as PLAYER
 from modules import  typer as TYPER
-from modules.MODE import  FAST as RESE
-from modules.save import  popular_game as popular_game
-from modules.save import  recent_game as recent_game
+from modules.GAMES import  FAST as RESE
+from modules.SAVE import  popular_game as popular_game
+from modules.SAVE import  recent_game as recent_game
 
-from modules.MODE import CHESS
-from modules.MODE import SUDOKU
-from modules.MODE import WORD
-from modules.MODE import MAZE
-from modules.MODE import MINESWEEPER
-from modules.MODE import MEMORY_HARD
+from modules.GAMES import CHESS
+from modules.GAMES import SUDOKU
+from modules.GAMES import WORD
+from modules.GAMES import MAZE
+from modules.GAMES import MINESWEEPER
+from modules.GAMES import MEMORY_HARD
 
 from modules.custom_math import reset_punch_images_animation
-from modules.support import reset_support_animation
+from modules.SUPPORT.support import reset_support_animation
 from modules.exit import reset_exit_animation
-import modules.profile.country as CON
+import modules.ACCOUNT.country as CON
 import modules.exit as EX
-from  modules.policy import privacy_event
-from  modules.INFO import INFO_event
+from  modules.MORE.policy import privacy_event
+from  modules.MORE.INFO import INFO_event
 from modules import music as MUS
-from modules import blur as BLU
-from modules.save import save as SAVE
+from modules.SAVE import save as SAVE
 from modules import start_screen as STS
 from modules import mode as MOD
-from modules.MODE import HOW_MANY as HOW
+from modules.GAMES import HOW_MANY as HOW
 
-from modules.MODE import HARD as HARD
-from modules.MODE import MEMORY_GO as MEMGO
-from modules.MODE import DETECT_PRO as DPRO
-from modules.MODE import MATH_GO as MATHGO
-from modules.MODE import FAST_ADD_SUB as FAS
-from modules.MODE import UNBLOCK_CAR 
-
+from modules.GAMES import HARD as HARD
+from modules.GAMES import MEMORY_GO as MEMGO
+from modules.GAMES import DETECT_PRO as DPRO
+from modules.GAMES import MATH_GO as MATHGO
+from modules.GAMES import FAST_ADD_SUB as FAS
+from modules.GAMES import UNBLOCK_CAR 
+from modules import button_menu_setting_gamemode
 from modules.game_list import *
 from modules.mouse import *
 from modules import menu_window as MENU_WINDOW
 
 
 from modules import menu__ as MENU__
-from modules import contact_us as CONTACT
+from modules.SUPPORT import contact_us as CONTACT
 
 
 def handle_events(
@@ -133,7 +130,6 @@ def handle_events(
     answer_selected,
     game_state,
     select_buttons,
-    settings_rects,
     back_button_rect,
     small_window,
     clicked_button,
@@ -191,7 +187,7 @@ def handle_events(
     support__button_rect,
     sms_button_rect,
     FOUR_ICON_FOR_SCREEN,
-    DONT_LET_CLICK_GAMES_BUTTON_BEFORE_THAT
+    DONT_LET_CLICK_GAMES_BUTTON_BEFORE_THAT,game_mode_feature
 ):
     running = True
     # global fullscreen_
@@ -828,7 +824,31 @@ def handle_events(
                         
                         
                         
-                        
+        if game_state == "GAME MODE":
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos=event.pos
+                for i,rect in enumerate(button_menu_setting_gamemode.select_buttons_setting):
+                    if rect.collidepoint(mouse_pos):
+                        if  i == 0:
+                            game_mode_feature="logic"
+                            print("logic")
+
+                        if  i == 1:
+                            game_mode_feature="memory"
+                            print("memory")
+
+                        if  i == 2:
+                            game_mode_feature="math"
+                            print("math")
+
+                        if  i == 3:
+                            game_mode_feature="detection"
+                            print("detection")
+
+                        if  i == 4:
+                            game_mode_feature="fast"
+                            print("fast")
+
                         
                         
             # MODE GAME -------------------->    
@@ -1045,6 +1065,7 @@ def handle_events(
                     # print(game_state)
                     game_state = "Contact Us"
                     DES.reset_menu_back_setters()
+                    
                 elif CUS.rec_support_image1.collidepoint(mouse_pos):
                     game_state = "Feed Back"
                     DES.reset_menu_back_setters()
@@ -1335,7 +1356,6 @@ def handle_events(
                 # ---------------------------------------------
                 # MOUSE
                 # ---------------------------------------------
-
                 if event.type == pygame.MOUSEBUTTONDOWN:
 
                     if FAS.game_state == FAS.ANSWERING:
@@ -1941,6 +1961,7 @@ def handle_events(
 
                     elif CUS.punch1_rect.collidepoint(event.pos):
                         game_state = "GAME MODE"
+                        game_mode_feature="logic"
                         menu_state ="االلکی "
                         CUS.reset_punch_images_animation()
                         # CUSTOM_MATH=False
@@ -1949,6 +1970,7 @@ def handle_events(
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         DONT_LET_CLICK_GAMES_BUTTON_BEFORE_THAT=True
+                        button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
 
                         continue
         #--------------------DAILY GAME این مال 
@@ -2009,12 +2031,18 @@ def handle_events(
                 if CUS.rec_more_image0.collidepoint(mouse_pos):
                     game_state = "FAQ"
                     DES.reset_menu_back_setters()
+                    button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
+
                 elif CUS.rec_more_image1.collidepoint(mouse_pos):
                     game_state = "INFO"
                     DES.reset_menu_back_setters()
+                    button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
+
                 elif CUS.rec_more_image2.collidepoint(mouse_pos):
                     game_state = "Privacy Policy"
                     DES.reset_menu_back_setters()
+                    button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
+
                 elif CUS.rec_more_image3.collidepoint(mouse_pos):
 
                     coming_soon_notification(screen, trigger=True)
@@ -2197,7 +2225,7 @@ def handle_events(
 
 
 
-#------------------ thoz
+        #------------------ thoz
         if game_state == "THOOZ":
             if event.type == pygame.MOUSEBUTTONDOWN:
 
@@ -2210,82 +2238,77 @@ def handle_events(
 
 
 
-#------------- اسلاید  slide.  slid
 
         # ---------------- GAME MODE EVENT ----------------
 
         if game_state == "GAME MODE":
-
-            if event.type == pygame.MOUSEBUTTONDOWN:
-
-                if event.button == 1:
-
-                    drag_start_x_GAME_MODE = event.pos[0]
-                    dragging_GAME_MODE = True
-
-
-            elif event.type == pygame.MOUSEBUTTONUP:
-
-                if event.button == 1 and dragging_GAME_MODE:
-
-                    drag_end_x_GAME_MODE = event.pos[0]
-                    # print(drag_end_x_GAME_MODE)
-                    # print(drag_start_x_GAME_MODE)
-                    distance = (
-                        drag_end_x_GAME_MODE
-                        - drag_start_x_GAME_MODE
-                    )
-
-
-                    # -------------------------
-                    # رفتن صفحه بعد
-                    # Swipe Left
-                    # -------------------------
-
-                    if distance < -100:
-
-                        if MOD.current_page_GAME_MODE < 9:
-
-                            MOD.current_page_GAME_MODE += 1
-
-                            game_mode_slide.next()
-
-                            # فقط صفحه فعلی Active باشد
-                            MOD.update_game_mode_pages()
-                            TYPER.typing_start_time = pygame.time.get_ticks()
-                    # -------------------------
-                    # برگشت صفحه قبل
-                    # Swipe Right
-                    # -------------------------
-
-                    elif distance > 100:
-
-                        if MOD.current_page_GAME_MODE > 0:
-
-                            MOD.current_page_GAME_MODE -= 1
-
-                            game_mode_slide.back()
-                            # فقط صفحه فعلی Active باشد
-                            MOD.update_game_mode_pages()
-                            TYPER.typing_start_time = pygame.time.get_ticks()
-
-                    dragging_GAME_MODE = False
-
-
-
-
-
-
-
-
-        if game_state == "Donate":
-
+                    
             event_vertical_scroll(
                 event,
-                screen,
-                MO.sadasdadasd
-            )
-                            
+                screen            )
+            # if event.type == pygame.MOUSEBUTTONDOWN:
+
+            #     if event.button == 1:
+
+            #         drag_start_x_GAME_MODE = event.pos[0]
+            #         dragging_GAME_MODE = True
+
+
+            # elif event.type == pygame.MOUSEBUTTONUP:
+
+            #     if event.button == 1 and dragging_GAME_MODE:
+
+            #         drag_end_x_GAME_MODE = event.pos[0]
+            #         # print(drag_end_x_GAME_MODE)
+            #         # print(drag_start_x_GAME_MODE)
+            #         distance = (
+            #             drag_end_x_GAME_MODE
+            #             - drag_start_x_GAME_MODE
+            #         )
+
+
+            #         # -------------------------
+            #         # رفتن صفحه بعد
+            #         # Swipe Left
+            #         # -------------------------
+
+            #         if distance < -100:
+
+            #             if MOD.current_page_GAME_MODE < 9:
+
+            #                 MOD.current_page_GAME_MODE += 1
+
+            #                 game_mode_slide.next()
+
+            #                 # فقط صفحه فعلی Active باشد
+            #                 MOD.update_game_mode_pages()
+            #                 TYPER.typing_start_time = pygame.time.get_ticks()
+            #         # -------------------------
+            #         # برگشت صفحه قبل
+            #         # Swipe Right
+            #         # -------------------------
+
+            #         elif distance > 100:
+
+            #             if MOD.current_page_GAME_MODE > 0:
+
+            #                 MOD.current_page_GAME_MODE -= 1
+
+            #                 game_mode_slide.back()
+            #                 # فقط صفحه فعلی Active باشد
+            #                 MOD.update_game_mode_pages()
+            #                 TYPER.typing_start_time = pygame.time.get_ticks()
+
+            #         dragging_GAME_MODE = False
+
+
+
+
+
+
+
+
+
                     
                         
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -2340,6 +2363,7 @@ def handle_events(
                             
                             
                             
+                            
         if game_state == "BEFORE_GAMES":
             FOUR_ICON_FOR_SCREEN=False
 
@@ -2357,6 +2381,8 @@ def handle_events(
                         # SUP.now_game_start = False
                         game_state = "BEFORE_GAMES_COUNT_DOWN"
                         DES.reset_menu_back_setters()
+                        button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
+
                     if SUP.how_to_play_next_button_rec.collidepoint(event.pos):
                         SUP.reset_window_side_effect()
                         SUP.reset_punch_scale_animation_one_image()
@@ -2514,6 +2540,7 @@ def handle_events(
                         DASHBOARD=True
                         game_state="MENU"
                         S_E_W.reset_menu_setting_panel()
+                        button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
 
                     elif game_state == "MUSIC":
                         reset_music_side_effect()
@@ -2547,6 +2574,7 @@ def handle_events(
                         DES.menu_slide_active = True
                         DES.menu_slide_x = None
                         S_E_W.reset_menu_setting_panel()
+                        button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
 
                         #--------------------
                     elif game_state == "MORE":
@@ -2739,7 +2767,7 @@ def handle_events(
                         SUP.reset_window_side_effect()   
                         S_E_W.reset_window_side_effect()
                         S_E_W. reset_window_side_effect_MULLTI_WINDOW()
-                        
+      
                         S_E_W.reset_menu_setting_panel()
 
                         
@@ -2773,6 +2801,7 @@ def handle_events(
                         CUS.reset_punch_images_animation()
                         S_E_W.reset_window_side_effect_MULLTI_WINDOW()
                         S_E_W.reset_menu_setting_panel()
+                        button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
 
                     elif game_state == "Report Bug":
                         game_state = "MENU"
@@ -2781,6 +2810,7 @@ def handle_events(
                         CUS.reset_punch_images_animation()
                         S_E_W.reset_window_side_effect_MULLTI_WINDOW()
                         S_E_W.reset_menu_setting_panel()
+                        button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
 
                     elif game_state == "Donate":
                         game_state = "MENU"
@@ -2789,6 +2819,7 @@ def handle_events(
                         CUS.reset_punch_images_animation()
                         S_E_W.reset_window_side_effect_MULLTI_WINDOW()
                         S_E_W.reset_menu_setting_panel()
+                        button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
 
                     elif game_state == "Contact Us":
                         game_state = "MENU"
@@ -2797,6 +2828,7 @@ def handle_events(
                         CUS.reset_punch_images_animation()
                         S_E_W.reset_window_side_effect_MULLTI_WINDOW()
                         S_E_W.reset_menu_setting_panel()
+                        button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
 
                         
                         
@@ -2926,6 +2958,8 @@ def handle_events(
                     elif game_state == "Contact Us":
                         game_state = "MENU"
                         menu_state = "SUPPORT"
+                        button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
+
                     elif game_state == "Feed Back":
                         game_state = "MENU"
                         menu_state = "SUPPORT"
@@ -3073,7 +3107,7 @@ def handle_events(
                 # Select Menu
                 # ==========================================
                 elif game_state == "MENU":# menu
-                    for i, rect in enumerate(select_buttons):
+                    for i, rect in enumerate(button_menu_setting_gamemode.select_buttons_setting):
 
                         if rect.collidepoint(mouse_pos):
                             play_click()
@@ -3092,7 +3126,7 @@ def handle_events(
                                 SUP.reset_window_side_effect()
                                 CUSTOM_MATH = False
                                 FOUR_ICON_FOR_SCREEN=True
-
+                                button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
                             elif i == 1:
                                 menu_state = "DAILY GAME"
                                 DASHBOARD=False
@@ -3139,6 +3173,8 @@ def handle_events(
                                 CUSTOM_MATH = False
                                 FOUR_ICON_FOR_SCREEN=True
                                 DES.reset_menu_back_setters()
+                                button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
+
                             elif i == 6:                            
                                 menu_state = "SUPPORT"
                                 DASHBOARD=False
@@ -3173,7 +3209,7 @@ def handle_events(
 
                 elif game_state == "SETTING":
 
-                    for i, rect in enumerate(settings_rects):
+                    for i, rect in enumerate(button_menu_setting_gamemode.select_buttons_setting):
 
                         if rect.collidepoint(mouse_pos):
                             play_click()
@@ -3591,7 +3627,6 @@ def handle_events(
         answer_selected,
         game_state,
         select_buttons,
-        settings_rects,
         back_button_rect,
 
         small_window,
@@ -3650,7 +3685,7 @@ def handle_events(
        support__button_rect,
        sms_button_rect,
         FOUR_ICON_FOR_SCREEN,
-        DONT_LET_CLICK_GAMES_BUTTON_BEFORE_THAT
+        DONT_LET_CLICK_GAMES_BUTTON_BEFORE_THAT,game_mode_feature
 
     )
     
