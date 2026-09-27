@@ -1,51 +1,51 @@
-from modules.save import  popular_game as popular_game
-from modules.save import  recent_game as recent_game
-from modules.MODE import MOVE_ARROW as M_ARR
-from modules.MODE import FOLLOW_THAT as FOTHAT
-from modules.MODE import SORT_NUMBER
-from modules.MODE import CHOOSE_IMAGE
-from modules.MODE.MEMORY import *
-import modules.MODE.REPEAT_AFTER_ME as MEM
-from modules.MODE import REPEAT_AFTER_ME
-from modules.MODE.SHAPE_COLOR_NAME import *
-from modules.MODE import SHAPE_COLOR_NAME as SCN
-import  modules.MODE.DIRECTION as DIR
-import  modules.MODE.ACTION as ACT
-import  modules.MODE.MIRROR as MIR
-import  modules.MODE.DETECT as DET
-from  modules.MODE import CONNECT_FOUR 
-from modules.MODE import FIND_NUMBER  as FNUM
-from modules.MODE.FIND_NUMBER import * 
-from modules.MODE import  FAST as FF
-from modules.MODE import  SIX_60S as SIX
-from modules.MODE import  TRUE_FALSE as TF
-from modules.MODE import  FIND_OPERATOR as FO
-from modules.MODE import  MORE_LESS_EQUAL as MLE
-from modules.MODE import IMAGE_SELECT as IMSE
-from modules.MODE  import THOOZ as TOZ
-from modules.MODE import CHESS
-from modules.MODE import SUDOKU
-from modules.MODE import WORD
-from modules.MODE import SNAKE
-from modules.MODE import UNBLOCK_CAR
-from modules.MODE import MAZE
-from modules.MODE import MINESWEEPER
-from modules.MODE import MEMORY_HARD
-from modules.MODE import HOW_MANY as HOW
-from modules.MODE import HARD as HARD
-from modules.MODE import MEMORY_GO as MEMGO
-from modules.MODE import DETECT_PRO as DPRO
-from modules.MODE import MATH_GO as MATHGO
-from modules.MODE import FAST_ADD_SUB as FAS
-from modules.MODE import FAST as RESE
-from modules.MODE import MATCH3 
-from modules.MODE import FOLLOW_FREE 
-from modules.MODE import CHECKERS 
-from modules.MODE import GO 
-from modules.MODE import MINESWEEPER 
-from modules.MODE import PUZZLE 
-from modules.MODE import DOTS_BOX 
-from modules.MODE import FIND_NUMBER 
+from modules.SAVE import  popular_game as popular_game
+from modules.SAVE import  recent_game as recent_game
+from modules.GAMES import MOVE_ARROW as M_ARR
+from modules.GAMES import FOLLOW_THAT as FOTHAT
+from modules.GAMES import SORT_NUMBER
+from modules.GAMES import CHOOSE_IMAGE
+from modules.GAMES.MEMORY import *
+import modules.GAMES.REPEAT_AFTER_ME as MEM
+from modules.GAMES import REPEAT_AFTER_ME
+from modules.GAMES.SHAPE_COLOR_NAME import *
+from modules.GAMES import SHAPE_COLOR_NAME as SCN
+import  modules.GAMES.DIRECTION as DIR
+import  modules.GAMES.ACTION as ACT
+import  modules.GAMES.MIRROR as MIR
+import  modules.GAMES.DETECT as DET
+from  modules.GAMES import CONNECT_FOUR 
+from modules.GAMES import FIND_NUMBER  as FNUM
+from modules.GAMES.FIND_NUMBER import * 
+from modules.GAMES import  FAST as FF
+from modules.GAMES import  SIX_60S as SIX
+from modules.GAMES import  TRUE_FALSE as TF
+from modules.GAMES import  FIND_OPERATOR as FO
+from modules.GAMES import  MORE_LESS_EQUAL as MLE
+from modules.GAMES import IMAGE_SELECT as IMSE
+from modules.GAMES  import THOOZ as TOZ
+from modules.GAMES import CHESS
+from modules.GAMES import SUDOKU
+from modules.GAMES import WORD
+from modules.GAMES import SNAKE
+from modules.GAMES import UNBLOCK_CAR
+from modules.GAMES import MAZE
+from modules.GAMES import MINESWEEPER
+from modules.GAMES import MEMORY_HARD
+from modules.GAMES import HOW_MANY as HOW
+from modules.GAMES import HARD as HARD
+from modules.GAMES import MEMORY_GO as MEMGO
+from modules.GAMES import DETECT_PRO as DPRO
+from modules.GAMES import MATH_GO as MATHGO
+from modules.GAMES import FAST_ADD_SUB as FAS
+from modules.GAMES import FAST as RESE
+from modules.GAMES import MATCH3 
+from modules.GAMES import FOLLOW_FREE 
+from modules.GAMES import CHECKERS 
+from modules.GAMES import GO 
+from modules.GAMES import MINESWEEPER 
+from modules.GAMES import PUZZLE 
+from modules.GAMES import DOTS_BOX 
+from modules.GAMES import FIND_NUMBER 
 from modules import before_game 
 
 def event_click_game(game_state,is_guest,x=None,y=None):
