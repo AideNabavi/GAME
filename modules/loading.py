@@ -297,17 +297,7 @@ def LOADING(screen):
         )
     )
 
-    loader.add(
-        lambda: importlib.import_module(
-            "modules.window"
-        )
-    )
 
-    # loader.add(
-    #     lambda: importlib.import_module(
-    #         "modules.gif"
-    #     )
-    # )
 
     loader.add(
         lambda: importlib.import_module(
@@ -315,11 +305,6 @@ def LOADING(screen):
         )
     )
 
-    loader.add(
-        lambda: importlib.import_module(
-            "modules.ab"
-        )
-    )
 
     loader.add(
         lambda: importlib.import_module(
@@ -347,7 +332,7 @@ def LOADING(screen):
 
     loader.add(
         lambda: importlib.import_module(
-            "modules.player_profile"
+            "modules.ACCOUNT.player_profile"
         )
     )
 
@@ -357,23 +342,7 @@ def LOADING(screen):
         )
     )
 
-    loader.add(
-        lambda: importlib.import_module(
-            "modules.theme"
-        )
-    )
 
-    loader.add(
-        lambda: importlib.import_module(
-            "modules.about"
-        )
-    )
-
-    loader.add(
-        lambda: importlib.import_module(
-            "modules.LEVELS.LEVELS"
-        )
-    )
 
 
     loader.add(
@@ -384,7 +353,7 @@ def LOADING(screen):
 
     loader.add(
         lambda: importlib.import_module(
-            "modules.profile_"
+            "modules.ACCOUNT.profile_"
         )
     )
 
@@ -396,37 +365,37 @@ def LOADING(screen):
 
     loader.add(
         lambda: importlib.import_module(
-            "modules.support"
+            "modules.SUPPORT.support"
         )
     )
 
     loader.add(
         lambda: importlib.import_module(
-            "modules.more"
+            "modules.MORE.more"
         )
     )
 
     loader.add(
         lambda: importlib.import_module(
-            "modules.MODE.FIND_NUMBER"
+            "modules.GAMES.FIND_NUMBER"
         )
     )
 
     loader.add(
         lambda: importlib.import_module(
-            "modules.MODE.MEMORY"
+            "modules.GAMES.MEMORY"
         )
     )
 
     loader.add(
         lambda: importlib.import_module(
-            "modules.MODE.REPEAT_AFTER_ME"
+            "modules.GAMES.REPEAT_AFTER_ME"
         )
     )
 
     loader.add(
         lambda: importlib.import_module(
-            "modules.MODE.MORE_LESS_EQUAL"
+            "modules.GAMES.MORE_LESS_EQUAL"
         )
     )
 
