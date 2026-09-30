@@ -1,0 +1,10 @@
+import pygame
+info=pygame.transform.smoothscale(pygame.image.load("./asset/image/all_window/info.png").convert_alpha(),(1700,1200))
+contact=pygame.transform.smoothscale(pygame.image.load("./asset/image/all_window/contact.png").convert_alpha(),(1700,1200))
+faq=pygame.transform.smoothscale(pygame.image.load("./asset/image/all_window/faq.png").convert_alpha(),(1700,1200))
+policy=pygame.transform.smoothscale(pygame.image.load("./asset/image/all_window/policy.png").convert_alpha(),(1700,1200))
+bug=pygame.transform.smoothscale(pygame.image.load("./asset/image/all_window/bug.png").convert_alpha(),(1700,1200))
+donate=pygame.transform.smoothscale(pygame.image.load("./asset/image/all_window/donate.png").convert_alpha(),(1700,1200))
+more_app=pygame.transform.smoothscale(pygame.image.load("./asset/image/all_window/more.png").convert_alpha(),(1700,1200))
+feed=pygame.transform.smoothscale(pygame.image.load("./asset/image/all_window/feed.png").convert_alpha(),(1700,1200))
+setting=pygame.transform.smoothscale(pygame.image.load("./asset/image/all_window/all.png").convert_alpha(),(1550,1100))

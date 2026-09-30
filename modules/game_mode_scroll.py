@@ -1,5 +1,7 @@
 import pygame
 import random
+from modules.font import fonts
+from modules import typer as TYPER
 
 # =========================================================
 # VERTICAL SCROLL GRID
@@ -7,8 +9,8 @@ import random
 
 
 SCROLL_SPEED = 50
-scroll_y = 0.0
-target_scroll_y = 0.0
+scroll_y = 120
+target_scroll_y = 120
 punch_hidden_duration = 1000
 SCROLL_SPEED = 350
 SCROLL_SMOOTH = 0.08
@@ -26,10 +28,9 @@ def reset_scroll():
 # =========================================================
 # EVENT
 # =========================================================
-def event_vertical_scroll(event, screen, images):
+def event_vertical_scroll(event, screen,game_mode_feature):
 
     global target_scroll_y
-
     if event.type == pygame.MOUSEWHEEL:
 
         target_scroll_y += (
@@ -42,12 +43,21 @@ def event_vertical_scroll(event, screen, images):
         # =================================================
 
         cols = 3
-        card_gap_y = 500
+        if game_mode_feature == "math":
+            card_gap_y = 104
+        if game_mode_feature == "detection":
+            card_gap_y = 154
+        if game_mode_feature == "fast":
+            card_gap_y = 83
+        if game_mode_feature == "memory":
+            card_gap_y = 129
+        if game_mode_feature == "logic":
+            card_gap_y = 154
 
         screen_height = screen.get_height()
 
         rows = (
-            (len(images) + cols - 1)
+            (60 + cols - 1)
             // cols
         )
 
@@ -69,7 +79,7 @@ def event_vertical_scroll(event, screen, images):
         target_scroll_y = max(
             -max_scroll,
             min(
-                0,
+                120,
                 target_scroll_y
             )
         )
@@ -101,97 +111,329 @@ punch_wait_duration = 300
 
 punch_scale = 1.5
 
+yx=420
 
+# شش  تا عکس برای مود گیم 
+base_game_mode = pygame.transform.smoothscale(pygame.image.load("./asset/image/game_mode_window.png").convert_alpha(),(yx,yx))
+base_game_mode_lock = pygame.transform.smoothscale(pygame.transform.grayscale(pygame.image.load("./asset/image/game_mode_window.png").convert_alpha()),(yx,yx))
+
+# badge_fast_page=[
+    
+# ]
+# badge_memory_page=[
+    
+# ]
+# badge_logic_page=[
+    
+# ]
+# badge_detection_page=[
+    
+# ]
+# badge_math_page=[
+    
+# ]
+
+badge_index=[
+    "free",
+    "free",
+    "free",
+    "free",
+    "free",
+    "free",
+    "free",
+    "free",
+    "free",
+    "free",
+    
+    "premium",
+    "premium",
+    "premium",
+    "premium",
+    "premium",
+    
+    "premium",
+    "premium",
+    "premium",
+    "premium",
+    "premium",
+    
+    "premium",
+    "premium",
+    "premium",
+    "premium",
+    "premium",
+    
+    "premium",
+    "premium",
+    "premium",
+    "premium",
+    "premium",
+    
+    "premium",
+    "premium",
+    "premium",
+    "premium",
+    "premium",
+    
+    "premium",
+    "premium",
+    "premium",
+    "premium",
+    "premium",
+    
+    "lock",
+    "lock",
+    "lock",
+    "lock",
+    "lock",
+    
+    "lock",
+    "lock",
+    "lock",
+    "lock",
+    "lock",
+    
+    "lock",
+    "lock",
+    "lock",
+    "lock",
+    "lock",
+    
+    "lock",
+    "lock",
+    "lock",
+    "lock",
+    "lock",
+    
+    
+]
+badge_image=[
+    pygame.transform.smoothscale(
+        pygame.image.load(f"./asset/image/free.png").convert_alpha(),
+        (70,70)
+    ),
+
+    pygame.transform.smoothscale(
+        pygame.image.load(f"./asset/image/premium.png").convert_alpha(),
+        (70,70)
+    ),
+
+    pygame.transform.smoothscale(
+        pygame.image.load(f"./asset/image/upcoming.png").convert_alpha(),
+        (70,70)
+    ),
+
+]
+
+loccck=pygame.transform.smoothscale(
+        pygame.image.load(f"./asset/image/lock.png").convert_alpha(),
+        (300,300)
+    )
+GAME_MODE_60_IMAGE_RECT_FAST=[]
+GAME_MODE_60_IMAGE_RECT_LOGIC=[]
+GAME_MODE_60_IMAGE_RECT_MATH=[]
+GAME_MODE_60_IMAGE_RECT_MEMORY=[]
+GAME_MODE_60_IMAGE_RECT_DETECTION=[]
+
+
+
+grid_zoom_start_time = None
+grid_zoom_duration = 350
+grid_zoom_start_scale = 0.3
 def draw_vertical_scroll_grid(
     screen,
-    images,
     center_image,
+    mode,
+    number,
+    current_width,
+    current_height,
+    game_name,
     card_gap_x=500,
     card_gap_y=500
 ):
+    number = number + 5
 
     global scroll_y
     global punch_index
     global punch_start_time
+    global grid_zoom_start_time
+    global GAME_MODE_60_IMAGE_RECT
 
     screen_width = screen.get_width()
     screen_height = screen.get_height()
 
     cols = 3
 
-    center_x = screen_width // 2 + 150
+    center_x = screen_width // 2 + 30
     center_y = screen_height // 2
 
     total_width = 2 * card_gap_x
 
-    start_x = center_x - total_width // 2 
-    start_y = center_y - card_gap_y // 2 + scroll_y
-
-    now = pygame.time.get_ticks()
-    elapsed = now - punch_start_time
-
-
-    # =====================================================
-    # TOTAL CYCLE
-    # =====================================================
-
-    total_duration = (
-        punch_grow_duration
-        + punch_fade_duration
-        + punch_hidden_duration
-        + punch_zoom_in_duration
-        + punch_wait_duration
+    start_x = (
+        center_x
+        - total_width // 2
     )
 
+    start_y = (
+        center_y
+        - card_gap_y // 2
+        + scroll_y
+    )
+
+    now = pygame.time.get_ticks()
+
+    elapsed = (
+        now
+        - punch_start_time
+    )
 
     # =====================================================
-    # SELECT 2 NEW RANDOM IMAGES
+    # PAGE ENTER ZOOM
     # =====================================================
 
-    if elapsed >= total_duration:
+    if grid_zoom_start_time is None:
+        grid_zoom_start_time = now
 
-        if len(images) >= 2:
+    zoom_elapsed = (
+        now
+        - grid_zoom_start_time
+    )
 
-            punch_index = random.sample(
-                range(len(images)),
-                2
-            )
+    zoom_progress = min(
+        zoom_elapsed / grid_zoom_duration,
+        1.0
+    )
 
-        elif len(images) == 1:
+    # Ease Out
+    zoom_progress = 1 - (
+        1 - zoom_progress
+    ) ** 3
 
-            punch_index = [0]
+    grid_scale = (
+        grid_zoom_start_scale
+        + (
+            1
+            - grid_zoom_start_scale
+        ) * zoom_progress
+    )
+
+    # =====================================================
+    # CLEAR RECT LISTS
+    # =====================================================
+
+    GAME_MODE_60_IMAGE_RECT_FAST.clear()
+    GAME_MODE_60_IMAGE_RECT_LOGIC.clear()
+    GAME_MODE_60_IMAGE_RECT_MATH.clear()
+    GAME_MODE_60_IMAGE_RECT_MEMORY.clear()
+    GAME_MODE_60_IMAGE_RECT_DETECTION.clear()
+
+    # =====================================================
+    # TITLE
+    # =====================================================
+    title_y = (
+        current_height // 2
+        - 600
+        + scroll_y
+    )
+
+    if mode == "math":
+
+        title = "MATH"
+
+    elif mode == "memory":
+
+        title = "MEMORY"
+
+    elif mode == "logic":
+
+        title = "LOGIC"
+
+    elif mode == "fast":
+
+        title = "FAST"
+
+    elif mode == "detection":
+
+        title = "DETECTION"
+
+    else:
+
+        title = ""
+
+    if title:
+
+        TYPER.draw_typing_text(
+            screen,
+            title,
+            fonts["heart"],
+            (255, 140, 30),
+            (
+                current_width // 2,
+                title_y
+            ),
+            80
+        )
+
+    # =====================================================
+    # DRAW CARDS
+    # =====================================================
+
+    for i in range(number):
+
+        # =================================================
+        # IMAGE / CENTER IMAGE
+        # =================================================
+
+        if i >= number - 5:
+
+            center_ = loccck
+            images = base_game_mode_lock
 
         else:
 
-            punch_index = []
+            center_ = center_image[i]
+            images = base_game_mode
 
-        punch_start_time = now
-        elapsed = 0
+        # =================================================
+        # BADGE
+        # =================================================
 
+        if i == 0 or i == 1:
 
-    # =====================================================
-    # DRAW
-    # =====================================================
+            badge = badge_image[0]
 
-    for i, image in enumerate(images):
+        elif i >= number - 5:
 
-        center_ = center_image[i]
+            badge = badge_image[2]
+
+        else:
+
+            badge = badge_image[1]
+
+        # =================================================
+        # POSITION
+        # =================================================
 
         row = i // cols
         col = i % cols
 
-        x = start_x + col * card_gap_x
-        y = start_y + row * card_gap_y
-
-
-        # =================================================
-        # FRAME
-        # =================================================
-
-        rect = image.get_rect(
-            center=(x, y)
+        x = (
+            start_x
+            + col * card_gap_x
         )
 
+        y = (
+            start_y
+            + row * card_gap_y
+        )
+
+        # =================================================
+        # FRAME RECT
+        # =================================================
+
+        rect = images.get_rect(
+            center=(x, y)
+        )
 
         # =================================================
         # CENTER IMAGE
@@ -203,132 +445,150 @@ def draw_vertical_scroll_grid(
             center=(x, y)
         )
 
+        # ---------------------------------------------
+        # 3. ZOOM IN
+        # ---------------------------------------------
 
-        # =================================================
-        # PUNCH
-        # =================================================
+        if elapsed < (
+            punch_grow_duration
+            + punch_fade_duration
+            + punch_hidden_duration
+            + punch_zoom_in_duration
+        ):
 
-        if i in punch_index:
+            progress = (
+                elapsed
+                - punch_grow_duration
+                - punch_fade_duration
+                - punch_hidden_duration
+            ) / punch_zoom_in_duration
 
-            # ---------------------------------------------
-            # 1. GROW
-            # ---------------------------------------------
+            scale = progress
 
-            if elapsed < punch_grow_duration:
-
-                progress = (
-                    elapsed /
-                    punch_grow_duration
-                )
-
-                scale = 1 + (
-                    (punch_scale - 1)
-                    * progress
-                )
-
-                alpha = 255
-
-
-            # ---------------------------------------------
-            # 2. SHRINK + FADE
-            # ---------------------------------------------
-
-            elif elapsed < (
-                punch_grow_duration
-                + punch_fade_duration
-            ):
-
-                progress = (
-                    elapsed
-                    - punch_grow_duration
-                ) / punch_fade_duration
-
-                scale = punch_scale - (
-                    (punch_scale - 1)
-                    * progress
-                )
-
-                alpha = int(
-                    255 * (1 - progress)
-                )
-
-
-            # ---------------------------------------------
-            # 3. ZOOM IN
-            # ---------------------------------------------
-
-            elif elapsed < (
-                punch_grow_duration
-                + punch_fade_duration
-                + punch_hidden_duration
-                + punch_zoom_in_duration
-            ):
-
-                progress = (
-                    elapsed
-                    - punch_grow_duration
-                    - punch_fade_duration
-                    - punch_hidden_duration
-                ) / punch_zoom_in_duration
-
-                # از کوچک شروع شود و به اندازه اصلی برسد
-                scale = progress
-
-                alpha = int(
-                    255 * progress
-                )
-
-
-            # ---------------------------------------------
-            # 4. NORMAL
-            # ---------------------------------------------
-
-            else:
-
-                scale = 1
-                alpha = 255
-
-
-            # =================================================
-            # SCALE CENTER IMAGE
-            # =================================================
-
-            center_width = max(
-                1,
-                int(
-                    center_.get_width()
-                    * scale
-                )
+            alpha = int(
+                255
+                * progress
             )
 
-            center_height = max(
-                1,
-                int(
-                    center_.get_height()
-                    * scale
-                )
+        # ---------------------------------------------
+        # 4. NORMAL
+        # ---------------------------------------------
+
+        else:
+
+            scale = 1
+            alpha = 255
+
+        # =================================================
+        # SCALE CENTER IMAGE
+        # =================================================
+
+        center_width = max(
+            1,
+            int(
+                center_.get_width()
+                * scale
             )
+        )
 
+        center_height = max(
+            1,
+            int(
+                center_.get_height()
+                * scale
+            )
+        )
 
-            draw_center_image = pygame.transform.smoothscale(
+        draw_center_image = (
+            pygame.transform.smoothscale(
                 center_,
                 (
                     center_width,
                     center_height
                 )
             )
+        )
 
+        draw_center_image.set_alpha(
+            alpha
+        )
 
-            draw_center_image.set_alpha(
-                alpha
+        draw_center_rect = (
+            draw_center_image.get_rect(
+                center=(x, y)
             )
+        )
 
+        # =================================================
+        # SAVE RECT
+        # =================================================
+        text=None
+        if mode == "math":
 
-            draw_center_rect = (
-                draw_center_image.get_rect(
-                    center=(x, y)
+            GAME_MODE_60_IMAGE_RECT_MATH.append(
+                rect
+            )
+            if i < number - 5:
+                text = fonts["date"].render(
+                    game_name[i],
+                    True,
+                    (255, 140, 30)
                 )
+
+
+    
+        elif mode == "memory":
+
+            GAME_MODE_60_IMAGE_RECT_MEMORY.append(
+                rect
             )
+            if i < number - 5:
+                text = fonts["date"].render(
+                    game_name[i],
+                    True,
+                    (255, 140, 30)
+                )
+
+
+        elif mode == "logic":
+
+            GAME_MODE_60_IMAGE_RECT_LOGIC.append(
+                rect
+            )
+            if i < number - 5:
+                text = fonts["date"].render(
+                    game_name[i],
+                    True,
+                    (255, 140, 30)
+                )
+
+
+        elif mode == "fast":
+
+            GAME_MODE_60_IMAGE_RECT_FAST.append(
+                rect
+            )
+            if i < number - 5:
+                text = fonts["date"].render(
+                    game_name[i],
+                    True,
+                    (255, 140, 30)
+                )
+
+
+        elif mode == "detection":
+
+            GAME_MODE_60_IMAGE_RECT_DETECTION.append(
+                rect
+            )
+            if i < number - 5:
+                text = fonts["date"].render(
+                    game_name[i],
+                    True,
+                    (255, 140, 30)
+                )
+
+
 
 
         # =================================================
@@ -341,22 +601,143 @@ def draw_vertical_scroll_grid(
         ):
             continue
 
+        # =================================================
+        # PAGE ENTER ZOOM — FRAME
+        # =================================================
+
+        if grid_scale < 1.0:
+
+            width = max(
+                1,
+                int(
+                    images.get_width()
+                    * grid_scale
+                )
+            )
+
+            height = max(
+                1,
+                int(
+                    images.get_height()
+                    * grid_scale
+                )
+            )
+
+            zoom_image = (
+                pygame.transform.smoothscale(
+                    images,
+                    (
+                        width,
+                        height
+                    )
+                )
+            )
+
+            zoom_rect = (
+                zoom_image.get_rect(
+                    center=rect.center
+                )
+            )
+
+            screen.blit(
+                zoom_image,
+                zoom_rect
+            )
+
+        else:
+
+            screen.blit(
+                images,
+                rect
+            )
+
+
+        # TEXT
+        if text is not None:
+
+            text_rect = text.get_rect(
+                midtop=(
+                    rect.centerx,
+                    rect.bottom + 40
+                )
+            )
+
+            screen.blit(
+                text,
+                text_rect
+            )
+        # =================================================
+        # PAGE ENTER ZOOM — CENTER IMAGE
+        # =================================================
+
+        if grid_scale < 1.0:
+
+            width = max(
+                1,
+                int(
+                    draw_center_image.get_width()
+                    * grid_scale
+                )
+            )
+
+            height = max(
+                1,
+                int(
+                    draw_center_image.get_height()
+                    * grid_scale
+                )
+            )
+
+            zoom_center = (
+                pygame.transform.smoothscale(
+                    draw_center_image,
+                    (
+                        width,
+                        height
+                    )
+                )
+            )
+
+            zoom_center_rect = (
+                zoom_center.get_rect(
+                    center=draw_center_rect.center
+                )
+            )
+
+            screen.blit(
+                zoom_center,
+                zoom_center_rect
+            )
+
+        else:
+
+            screen.blit(
+                draw_center_image,
+                draw_center_rect
+            )
 
         # =================================================
-        # FRAME — NEVER SCALES
+        # BADGE
         # =================================================
 
-        screen.blit(
-            image,
-            rect
+        badge_rect = badge.get_rect(
+            topright=(
+                rect.right + 20,
+                rect.top + 20
+            )
         )
 
-
-        # =================================================
-        # CENTER IMAGE
-        # =================================================
-
         screen.blit(
-            draw_center_image,
-            draw_center_rect
+            badge,
+            badge_rect
         )
+        
+
+        
+        
+        
+def reset_grid_for_game_mode_zoom_in_effect_zoom():
+
+    global grid_zoom_start_time
+
+    grid_zoom_start_time = pygame.time.get_ticks()

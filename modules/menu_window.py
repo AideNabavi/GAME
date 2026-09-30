@@ -11,21 +11,21 @@ def draw_dark_overlay(screen):
 
 
 image_____ = pygame.transform.smoothscale(
-    pygame.image.load("./asset/image/window11.png").convert_alpha(),
+    pygame.image.load("./asset/image/game_menu_window.png").convert_alpha(),
     (1200, 1200)
 )
 
 button_images = [
     pygame.transform.smoothscale(
-        pygame.image.load("./asset/image/menu_window/home.png").convert_alpha(),
+        pygame.image.load("./asset/image/menu_in_game/home.png").convert_alpha(),
         (150, 150)
     ),
     pygame.transform.smoothscale(
-        pygame.image.load("./asset/image/menu_window/back.png").convert_alpha(),
+        pygame.image.load("./asset/image/menu_in_game/back.png").convert_alpha(),
         (150, 150)
     ),
     pygame.transform.smoothscale(
-        pygame.image.load("./asset/image/menu_window/next.png").convert_alpha(),
+        pygame.image.load("./asset/image/menu_in_game/next.png").convert_alpha(),
         (150, 150)
     )
 ]
