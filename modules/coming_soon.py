@@ -74,7 +74,7 @@ def coming_soon_notification(screen, trigger=False):
     elapsed = now - _coming_soon_start
 
     ENTER_TIME = 500
-    HOLD_TIME = 3000
+    HOLD_TIME = 1000
     EXIT_TIME = 250
 
     TOTAL_TIME = (

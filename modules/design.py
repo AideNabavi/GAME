@@ -1,16 +1,19 @@
 import pygame
-from modules.hover import hover_image_level
+from modules.EFFECT.hover import hover_image_level
 import math
 # برای تومار است 
 from modules.font import fonts
 
+
+
+
+    
 # d1=pygame.transform.smoothscale(pygame.image.load("./asset/image/design/1.png").convert_alpha(),(260,700))
 # d2=pygame.transform.smoothscale(pygame.image.load("./asset/image/design/2.png").convert_alpha(),(700,250))
 
 
-background_Lan=pygame.transform.smoothscale(pygame.image.load("./asset/image/language/theme.png").convert_alpha(),(1450,950))
-pathth =pygame.transform.smoothscale(pygame.image.load("./asset/image/logo.png").convert_alpha(),(300,300))
-liner =pygame.transform.smoothscale(pygame.image.load("./asset/image/liner1.png").convert_alpha(),(750,1365))
+# pathth =pygame.transform.smoothscale(pygame.image.load("./asset/image/logo.png").convert_alpha(),(300,300))
+# liner =pygame.transform.smoothscale(pygame.image.load("./asset/image/liner1.png").convert_alpha(),(700,1300))
 
 xyz_for_profile_logo=50
 width_for_profile_logo=120
@@ -62,11 +65,297 @@ import pygame
 
 
 
+xxxxxxxxxx=350
+yyyyyyyyyy=140
+# menu_0 = pygame.transform.smoothscale(
+#     pygame.image.load("./asset/image/menu/0.png").convert_alpha(),
+#     (500, 400)
+# )
+
+# menu_bacccccck = [
+#     menu_0,
+#     pygame.transform.smoothscale(
+#         pygame.image.load("./asset/image/menu/1.png").convert_alpha(),
+#         (xxxxxxxxxx,yyyyyyyyyy)
+#     ),
+#     pygame.transform.smoothscale(
+#         pygame.image.load("./asset/image/menu/2.png").convert_alpha(),
+#         (xxxxxxxxxx,yyyyyyyyyy)
+#     ),
+#     pygame.transform.smoothscale(
+#         pygame.image.load("./asset/image/menu/1.png").convert_alpha(),
+#         (xxxxxxxxxx,yyyyyyyyyy)
+#     ),
+#     pygame.transform.smoothscale(
+#         pygame.image.load("./asset/image/menu/2.png").convert_alpha(),
+#         (xxxxxxxxxx,yyyyyyyyyy)
+#     ),
+#     pygame.transform.smoothscale(
+#         pygame.image.load("./asset/image/menu/1.png").convert_alpha(),
+#         (xxxxxxxxxx,yyyyyyyyyy)
+#     ),
+#     pygame.transform.smoothscale(
+#         pygame.image.load("./asset/image/menu/2.png").convert_alpha(),
+#         (xxxxxxxxxx,yyyyyyyyyy)
+#     ),
+#     pygame.transform.smoothscale(
+#         pygame.image.load("./asset/image/menu/1.png").convert_alpha(),
+#         (xxxxxxxxxx,yyyyyyyyyy)
+#     )
+# ]
 
 
+# =========================================================
+# MENU BACK ANIMATION
+# =========================================================
+
+_menu_back_current_y = None
+_menu_back_target_state = False
 
 
+def reset_menu_back_setters():
 
+    global _menu_back_current_y
+    global _menu_back_target_state
+
+    _menu_back_current_y = None
+    _menu_back_target_state = False
+
+
+# def menu_back_setters(
+#     screen,
+#     menu_bacccccck,
+#     x,
+#     y,
+#     gap=10,
+#     first_x=None,
+#     first_y=None,
+#     show=True
+# ):
+
+#     global _menu_back_current_y
+#     global _menu_back_target_state
+
+#     # -----------------------------------------------------
+#     # ارتفاع کل پنل
+#     # -----------------------------------------------------
+
+#     total_height = 0
+
+#     for i, image in enumerate(menu_bacccccck):
+
+#         total_height += image.get_height()
+
+#         if i < len(menu_bacccccck) - 1:
+#             total_height += gap
+
+#     # -----------------------------------------------------
+#     # موقعیت مخفی
+#     # -----------------------------------------------------
+
+#     hidden_y = -total_height - 50
+
+#     # -----------------------------------------------------
+#     # مقداردهی اولیه
+#     # -----------------------------------------------------
+
+#     if _menu_back_current_y is None:
+
+#         _menu_back_current_y = hidden_y
+#         _menu_back_target_state = False
+
+#     # -----------------------------------------------------
+#     # تغییر وضعیت
+#     # -----------------------------------------------------
+
+#     if show != _menu_back_target_state:
+
+#         _menu_back_target_state = show
+
+#     # -----------------------------------------------------
+#     # مقصد
+#     # -----------------------------------------------------
+
+#     if show:
+#         destination_y = y
+#     else:
+#         destination_y = hidden_y
+
+#     # -----------------------------------------------------
+#     # Animation
+#     # -----------------------------------------------------
+
+#     speed = 35
+
+#     if _menu_back_current_y < destination_y:
+
+#         _menu_back_current_y += speed
+
+#         if _menu_back_current_y >= destination_y:
+#             _menu_back_current_y = destination_y
+
+#     elif _menu_back_current_y > destination_y:
+
+#         _menu_back_current_y -= speed
+
+#         if _menu_back_current_y <= destination_y:
+#             _menu_back_current_y = destination_y
+
+#     # -----------------------------------------------------
+#     # Draw
+#     # -----------------------------------------------------
+
+#     current_y = _menu_back_current_y
+
+#     for i, image in enumerate(menu_bacccccck):
+
+#         if i == 0:
+
+#             pos_x = (
+#                 first_x
+#                 if first_x is not None
+#                 else x
+#             )
+
+#             pos_y = (
+#                 first_y
+#                 if first_y is not None
+#                 else current_y
+#             )
+
+#         else:
+
+#             pos_x = x
+#             pos_y = current_y
+
+#         rect = image.get_rect(
+#             midtop=(pos_x, int(pos_y))
+#         )
+
+#         screen.blit(image, rect)
+
+#         current_y += image.get_height() + gap
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+    
+
+# setting_backkkkkk = [
+#     menu_0,
+#     pygame.transform.smoothscale(
+#         pygame.image.load("./asset/image/menu/1.png").convert_alpha(),
+#         (xxxxxxxxxx,yyyyyyyyyy)
+#     ),
+#     pygame.transform.smoothscale(
+#         pygame.image.load("./asset/image/menu/2.png").convert_alpha(),
+#         (xxxxxxxxxx,yyyyyyyyyy)
+#     ),
+#     pygame.transform.smoothscale(
+#         pygame.image.load("./asset/image/menu/1.png").convert_alpha(),
+#         (xxxxxxxxxx,yyyyyyyyyy)
+#     ),
+#     pygame.transform.smoothscale(
+#         pygame.image.load("./asset/image/menu/2.png").convert_alpha(),
+#         (xxxxxxxxxx,yyyyyyyyyy)
+#     ),
+#     pygame.transform.smoothscale(
+#         pygame.image.load("./asset/image/menu/1.png").convert_alpha(),
+#         (xxxxxxxxxx,yyyyyyyyyy)
+#     ),
+#     pygame.transform.smoothscale(
+#         pygame.image.load("./asset/image/menu/2.png").convert_alpha(),
+#         (xxxxxxxxxx,yyyyyyyyyy)
+#     )
+# ]
+        
+        
+    
+    
+
+# menu_bacccccck1 = [
+#     menu_0,
+#     pygame.transform.smoothscale(
+#         pygame.image.load("./asset/image/menu/1.png").convert_alpha(),
+#         (xxxxxxxxxx,yyyyyyyyyy)
+#     ),
+#     pygame.transform.smoothscale(
+#         pygame.image.load("./asset/image/menu/2.png").convert_alpha(),
+#         (xxxxxxxxxx,yyyyyyyyyy)
+#     ),
+#     pygame.transform.smoothscale(
+#         pygame.image.load("./asset/image/menu/1.png").convert_alpha(),
+#         (xxxxxxxxxx,yyyyyyyyyy)
+#     ),
+#     pygame.transform.smoothscale(
+#         pygame.image.load("./asset/image/menu/2.png").convert_alpha(),
+#         (xxxxxxxxxx,yyyyyyyyyy)
+#     ),
+#     pygame.transform.smoothscale(
+#         pygame.image.load("./asset/image/menu/1.png").convert_alpha(),
+#         (xxxxxxxxxx,yyyyyyyyyy)
+#     ),
+#     pygame.transform.smoothscale(
+#         pygame.image.load("./asset/image/menu/2.png").convert_alpha(),
+#         (xxxxxxxxxx,yyyyyyyyyy)
+#     )
+# ]
+        
+        
+# def setting_back_setters(
+#     screen,
+#     menu_bacccccck1,
+#     x,
+#     y,
+#     gap=10,
+#     first_x=None,
+#     first_y=None
+# ):
+
+#     current_y = y
+
+#     for i, image in enumerate(menu_bacccccck1):
+
+#         if i == 0:
+#             # مختصات جداگانه عکس اول
+#             pos_x = first_x if first_x is not None else x
+#             pos_y = first_y if first_y is not None else current_y
+#         else:
+#             pos_x = x
+#             pos_y = current_y
+
+#         rect = image.get_rect(
+#             midtop=(pos_x, pos_y)
+#         )
+
+#         screen.blit(image, rect)
+
+#         current_y += image.get_height() + gap
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        
+        
+        
 
 
 
@@ -178,174 +467,174 @@ def image_setter_menu_back(screen, path, x, y, speed=40):
 
 
 
-images = [
-    pygame.transform.smoothscale(
-        pygame.image.load("./asset/image/levels/plus.png").convert_alpha(),
-        (350,350)
-    ),
-    pygame.transform.smoothscale(
-        pygame.image.load("./asset/image/levels/minus.png").convert_alpha(),
-        (350,350)
-    ),
-    pygame.transform.smoothscale(
-        pygame.image.load("./asset/image/levels/multiply.png").convert_alpha(),
-        (350,350)
-    ),
-    pygame.transform.smoothscale(
-        pygame.image.load("./asset/image/levels/divide.png").convert_alpha(),
-        (350,350)
-    ),
-    pygame.transform.smoothscale(
-        pygame.image.load("./asset/image/levels/plus.png").convert_alpha(),
-        (350,350)
-    ),
-    pygame.transform.smoothscale(
-        pygame.image.load("./asset/image/levels/multiply.png").convert_alpha(),
-        (350,350)
-    )
-]
+# images = [
+#     pygame.transform.smoothscale(
+#         pygame.image.load("./asset/image/levels/plus.png").convert_alpha(),
+#         (350,350)
+#     ),
+#     pygame.transform.smoothscale(
+#         pygame.image.load("./asset/image/levels/minus.png").convert_alpha(),
+#         (350,350)
+#     ),
+#     pygame.transform.smoothscale(
+#         pygame.image.load("./asset/image/levels/multiply.png").convert_alpha(),
+#         (350,350)
+#     ),
+#     pygame.transform.smoothscale(
+#         pygame.image.load("./asset/image/levels/divide.png").convert_alpha(),
+#         (350,350)
+#     ),
+#     pygame.transform.smoothscale(
+#         pygame.image.load("./asset/image/levels/plus.png").convert_alpha(),
+#         (350,350)
+#     ),
+#     pygame.transform.smoothscale(
+#         pygame.image.load("./asset/image/levels/multiply.png").convert_alpha(),
+#         (350,350)
+#     )
+# ]
 
 
 
 
 
 
-image_game_mode = []
+# image_game_mode = []
 
 
 
-image_sizes = [350,350,350,350,350,350]
+# image_sizes = [350,350,350,350,350,350]
 
 
-def draw_six_images(
-    screen,
-    gap_x,
-    gap_y
-):
+# def draw_six_images(
+#     screen,
+#     gap_x,
+#     gap_y
+# ):
 
-    global image_sizes
+#     global image_sizes
 
-    mouse_pos = pygame.mouse.get_pos()
+#     mouse_pos = pygame.mouse.get_pos()
 
-    rects = []
+#     rects = []
 
-    # اندازه کل گروه
-    total_width = (3 - 1) * gap_x
-    total_height = (2 - 1) * gap_y
+#     # اندازه کل گروه
+#     total_width = (3 - 1) * gap_x
+#     total_height = (2 - 1) * gap_y
 
 
-    # مرکز صفحه
-    center_x = screen.get_width() // 2
-    center_y = screen.get_height() // 2
+#     # مرکز صفحه
+#     center_x = screen.get_width() // 2
+#     center_y = screen.get_height() // 2
 
 
-    # شروع رسم از بالا-چپ گروه
-    start_x = center_x - total_width // 2
-    start_y = center_y - total_height // 2
+#     # شروع رسم از بالا-چپ گروه
+#     start_x = center_x - total_width // 2
+#     start_y = center_y - total_height // 2
 
 
-    for i, img in enumerate(images):
+#     for i, img in enumerate(images):
 
-        row = i // 3
-        col = i % 3
+#         row = i // 3
+#         col = i % 3
 
 
-        x = start_x + col * gap_x
-        y = start_y + row * gap_y
+#         x = start_x + col * gap_x
+#         y = start_y + row * gap_y
 
 
-        rect = img.get_rect(
-            center=(x, y)
-        )
+#         rect = img.get_rect(
+#             center=(x, y)
+#         )
 
 
-        new_img, new_rect, image_sizes[i] = hover_image_level(
-            img,
-            rect,
-            mouse_pos,
-            image_sizes[i]
-        )
+#         new_img, new_rect, image_sizes[i] = hover_image_level(
+#             img,
+#             rect,
+#             mouse_pos,
+#             image_sizes[i]
+#         )
 
 
-        screen.blit(
-            new_img,
-            new_rect
-        )
+#         screen.blit(
+#             new_img,
+#             new_rect
+#         )
 
 
-        rects.append(new_rect)
+#         rects.append(new_rect)
 
 
-    return rects
+#     return rects
 
 
 
 
 
-image_sizes = [350,350,350,350,350,350,350,350,350,350]
+# image_sizes = [350,350,350,350,350,350,350,350,350,350]
 
 
-def draw_ten_images(
-    screen,
-    gap_x,
-    gap_y
-):
+# def draw_ten_images(
+#     screen,
+#     gap_x,
+#     gap_y
+# ):
 
-    global image_sizes
+#     global image_sizes
 
-    mouse_pos = pygame.mouse.get_pos()
+#     mouse_pos = pygame.mouse.get_pos()
 
-    rects = []
+#     rects = []
 
-    cols = 5
-    rows = 2
+#     cols = 5
+#     rows = 2
 
 
-    total_width = (cols - 1) * gap_x
-    total_height = (rows - 1) * gap_y
+#     total_width = (cols - 1) * gap_x
+#     total_height = (rows - 1) * gap_y
 
 
-    center_x = screen.get_width() // 2
-    center_y = screen.get_height() // 2
+#     center_x = screen.get_width() // 2
+#     center_y = screen.get_height() // 2
 
 
-    start_x = center_x - total_width // 2
-    start_y = center_y - total_height // 2
+#     start_x = center_x - total_width // 2
+#     start_y = center_y - total_height // 2
 
 
-    for i, img in enumerate(images):
+#     for i, img in enumerate(images):
 
-        row = i // cols
-        col = i % cols
+#         row = i // cols
+#         col = i % cols
 
 
-        x = start_x + col * gap_x
-        y = start_y + row * gap_y
+#         x = start_x + col * gap_x
+#         y = start_y + row * gap_y
 
 
-        rect = img.get_rect(
-            center=(x, y)
-        )
+#         rect = img.get_rect(
+#             center=(x, y)
+#         )
 
 
-        new_img, new_rect, image_sizes[i] = hover_image_level(
-            img,
-            rect,
-            mouse_pos,
-            image_sizes[i]
-        )
+#         new_img, new_rect, image_sizes[i] = hover_image_level(
+#             img,
+#             rect,
+#             mouse_pos,
+#             image_sizes[i]
+#         )
 
 
-        screen.blit(
-            new_img,
-            new_rect
-        )
+#         screen.blit(
+#             new_img,
+#             new_rect
+#         )
 
 
-        rects.append(new_rect)
+#         rects.append(new_rect)
 
 
-    return rects
+#     return rects
 
 
 
@@ -410,7 +699,33 @@ def UP_DOWN(
 
 
 
+#----------------------------------------- معجون 
+R_excir=pygame.transform.smoothscale(pygame.image.load("./asset/image/in_game/addsave_1.png").convert_alpha(),(140,140))
 
+def R_excir_(screen):
+    current_width, current_height = screen.get_size()
+    screen.blit(
+        R_excir,
+        (current_width//2 - 970,current_height//2 + 20)
+    )
+    
+    
+G_excir=pygame.transform.smoothscale(pygame.image.load("./asset/image/in_game/turn_1.png").convert_alpha(),(140,140))
+
+def G_excir_(screen):
+    current_width, current_height = screen.get_size()
+    screen.blit(
+        G_excir,
+        (current_width//2 - 970,current_height//2 - 140 )
+    )
+B_excir=pygame.transform.smoothscale(pygame.image.load("./asset/image/in_game/fast_1.png").convert_alpha(),(140,140))
+
+def B_excir_(screen):
+    current_width, current_height = screen.get_size()
+    screen.blit(
+        B_excir,
+        (current_width//2 - 970,current_height//2 - 300)
+    )
 
  
 
@@ -430,15 +745,15 @@ def UP_DOWN(
 #----------------------------------------------------------------------------------
 
 
-# حلقه دوره دایره تایم 
-tospack=pygame.transform.smoothscale(pygame.image.load("./asset/image/in_game/alarm1.png").convert_alpha(),(250,250))
+# # حلقه دوره دایره تایم 
+# tospack=pygame.transform.smoothscale(pygame.image.load("./asset/image/in_game/alarm1.png").convert_alpha(),(250,250))
 
-def in_game_alarm(screen):
-    current_width, current_height = screen.get_size()
-    screen.blit(
-        tospack,
-        (30 , 30)
-    )
+# def in_game_alarm(screen):
+#     current_width, current_height = screen.get_size()
+#     screen.blit(
+#         tospack,
+#         (30 , 30)
+#     )
 
 
 
@@ -469,8 +784,8 @@ def hint(screen):
     # Rect فقط برای تصویر
     hint_rect = _hint.get_rect(
         midright=(
-            current_width - 50,
-            current_height//2 - 30
+            1985,
+            current_height//2 + 40
         )
     )
 
@@ -490,6 +805,17 @@ def hint(screen):
     )
     hint_rect_=hint_rect
     # فقط Rect تصویر
+
+
+hint_11=pygame.transform.smoothscale(pygame.image.load("./asset/image/in_game/hint_1.png").convert_alpha(),(140,140))
+
+def hint_1(screen):
+    current_width, current_height = screen.get_size()
+    screen.blit(
+        hint_11,
+        (            1860,
+            current_height//2 - 30)
+    )
 
 
 #----------------------------------------------------------------------------------
@@ -513,7 +839,11 @@ from modules.font import fonts
 
 
 
+G=pygame.transform.smoothscale(pygame.image.load("./asset/image/in_game/G.png").convert_alpha(),(120,120))
+R=pygame.transform.smoothscale(pygame.image.load("./asset/image/in_game/R.png").convert_alpha(),(120,120))
+B=pygame.transform.smoothscale(pygame.image.load("./asset/image/in_game/B.png").convert_alpha(),(120,120))
 save_=pygame.transform.smoothscale(pygame.image.load("./asset/image/in_game/save.png").convert_alpha(),(100,100))
+save_11=pygame.transform.smoothscale(pygame.image.load("./asset/image/in_game/save_1.png").convert_alpha(),(140,140))
 note_text = fonts["icon2"].render(
     "3",
     True,
@@ -522,9 +852,11 @@ note_text = fonts["icon2"].render(
 
 def save(screen):
     current_width, current_height = screen.get_size()
+    
+    
     screen.blit(
         save_,
-        (right ,current_height//2 - 280)
+        (1990 ,current_height//2 - 50)
     )
 
     screen.blit(
@@ -534,20 +866,34 @@ def save(screen):
 
 
 
+def save_1(screen):
+    current_width, current_height = screen.get_size()
+    screen.blit(
+        save_11,
+        (1860,current_height//2 - 280)
+    )
+
+
+
+
 #----------------------------------------------------------------------------------
 
 
 
 
 
-exit_=pygame.transform.smoothscale(pygame.image.load("./asset/image/in_game/exit.png").convert_alpha(),(100,100))
-
+exit_=pygame.transform.smoothscale(pygame.image.load("./asset/image/in_game/exit.png").convert_alpha(),(150,150))
+exit_rect=None
 def exit__(screen):
+    global exit_rect
     current_width, current_height = screen.get_size()
+    exit_rect=exit_.get_rect(center=(current_width//2 - 985,current_height//2 +470))
+
     screen.blit(
         exit_,
-        (current_width//2 - 980,current_height//2 +480)
+        exit_rect
     )
+    return exit_rect
 
 
 
@@ -567,13 +913,13 @@ def exit__(screen):
 from modules.font import fonts
 
 
-menuu1=pygame.transform.smoothscale(pygame.image.load("./asset/image/in_game/menuu.png").convert_alpha(),(120,120))
+menuu1=pygame.transform.smoothscale(pygame.image.load("./asset/image/in_game/menuu.png").convert_alpha(),(150,150))
 
 def menuu(screen):
     current_width, current_height = screen.get_size()
     screen.blit(
         menuu1,
-        (right - 10,current_height//2 +480)
+        (right - 30 ,current_height//2 +460)
     )
 
 
@@ -585,36 +931,76 @@ def menuu(screen):
 
 #----------------------------------------------------------------------------------
 
-# برای برای ریستارت است است 
-from modules.font import fonts
+# # برای برای ریستارت است است 
+# from modules.font import fonts
 
 
-res=pygame.transform.smoothscale(pygame.image.load("./asset/image/in_game/restart.png").convert_alpha(),(90,90))
+# res=pygame.transform.smoothscale(pygame.image.load("./asset/image/in_game/reset.png").convert_alpha(),(150,150))
+# restart_rec=None
+# def restart(screen):
+#     global restart_rec
+#     current_width, current_height = screen.get_size()
+#     restart_rec=res.get_rect(center=(current_width//2 - 985,current_height//2 + 280))
+
+#     screen.blit(
+#         res,
+#         (current_width//2 - 985,current_height//2 + 280)
+#     )
+#     return restart_rec
+
+
+
+# # برای برای ریستارت است است 
+# from modules.font import fonts
+
+res = pygame.transform.smoothscale(
+    pygame.image.load(
+        "./asset/image/in_game/reset.png"
+    ).convert_alpha(),
+    (150, 150)
+)
+
+restart_rec = None
+
 
 def restart(screen):
+
+    global restart_rec
+
     current_width, current_height = screen.get_size()
-    screen.blit(
-        res,
-        (current_width//2 - 970,current_height//2 + 280)
+
+    restart_rec = res.get_rect(
+        center=(current_width//2 - 985,current_height//2 + 280)
+        
     )
 
+    screen.blit(
+        res,
+        restart_rec
+    )
 
-
-
+    return restart_rec
 
 
 #---------------------------------------------------------------------------------- بریا سکه امتیاز 
 
-# برای برای ریستارت است است 
 from modules.font import fonts
 
 
-scoreee=pygame.transform.smoothscale(pygame.image.load("./asset/image/score.png").convert_alpha(),(100,100))
+scoreee=pygame.transform.smoothscale(pygame.image.load("./asset/image/score.png").convert_alpha(),(120,120))
 
-def scoreee1(screen):
+def scoreee11(screen):
     current_width, current_height = screen.get_size()
     screen.blit(
         scoreee,
+        (current_width//2  - 240,current_height//2 - 607)
+    )
+scoreee1=pygame.transform.smoothscale(pygame.image.load("./asset/image/in_game/score_1.png").convert_alpha(),(140,140))
+
+def score_base(screen):
+    current_width, current_height = screen.get_size()
+    screen.blit(
+        scoreee1,
         (current_width//2  - 240,current_height//2 - 607)
     )
 
@@ -640,33 +1026,24 @@ def scoreee1(screen):
 
 
 import pygame
+# ============================================================
+# FLAG ANIMATION
+# ============================================================
 
-
-
-# موقعیت‌ها
-screen_height = 1080
-
-start_y = screen_height   # خارج از صفحه
-
-flag_x = 500
+start_y = -200          # بالای صفحه، خارج از صفحه
 flag_y = start_y
 
-
-# وضعیت پرچم
 flag_active = False
 flag_finished = False
 
-
-# زمان‌ها
-move_duration = 500     # زمان حرکت بالا و پایین (میلی ثانیه)
-stay_duration_ = 2000   # ماندن بالا (۱۰ ثانیه)
+move_duration = 500
+stay_duration_ = 2000
 
 move_start_time = 0
 stay_start_time = 0
 
 
-
-def move_flage(image,screen, x, show_flag,target_y):
+def move_flage(image, screen, x, show_flag, target_y):
 
     global flag_y
     global flag_active
@@ -674,76 +1051,83 @@ def move_flage(image,screen, x, show_flag,target_y):
     global move_start_time
     global stay_start_time
 
-
     current_time = pygame.time.get_ticks()
 
+    # شروع انیمیشن
+    if show_flag and not flag_finished and flag_active is False:
 
-    # شروع فقط یک بار
-    if show_flag and not flag_finished and not flag_active:
+        # حتماً از بالا شروع کن
+        flag_y = start_y
 
-        flag_active = "up"
+        flag_active = "down"
         move_start_time = current_time
 
 
+    # ========================================================
+    # بالا → پایین
+    # ========================================================
 
-    # حرکت به بالا
-    if flag_active == "up":
+    if flag_active == "down":
 
         progress = (current_time - move_start_time) / move_duration
-
 
         if progress >= 1:
 
             flag_y = target_y
+
             flag_active = "stay"
             stay_start_time = current_time
 
-
         else:
 
-            flag_y = start_y + (target_y - start_y) * progress
+            flag_y = start_y + (
+                target_y - start_y
+            ) * progress
 
 
+    # ========================================================
+    # ماندن پایین
+    # ========================================================
 
-    # ماندن بالا
     elif flag_active == "stay":
 
         flag_y = target_y
 
-
         if current_time - stay_start_time >= stay_duration_:
 
-            flag_active = "down"
+            flag_active = "up"
             move_start_time = current_time
 
 
+    # ========================================================
+    # پایین → بالا
+    # ========================================================
 
-    # حرکت پایین
-    elif flag_active == "down":
+    elif flag_active == "up":
 
         progress = (current_time - move_start_time) / move_duration
-
 
         if progress >= 1:
 
             flag_y = start_y
+
             flag_active = False
             flag_finished = True
 
-
         else:
 
-            flag_y = target_y + (start_y - target_y) * progress
+            flag_y = target_y + (
+                start_y - target_y
+            ) * progress
 
 
+    # ========================================================
+    # DRAW
+    # ========================================================
 
-    # رسم
     if not flag_finished:
 
         screen.blit(image, (x, flag_y))
-        
-        
-        
         
         
         
@@ -804,7 +1188,7 @@ import pygame
 # ============================================================
 
 image_coming_soon = pygame.image.load(
-    "./asset/image/CS.png"
+    "./asset/image/back1.png"
 ).convert_alpha()
 
 
