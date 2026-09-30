@@ -1,11 +1,11 @@
 import pygame
-from modules.hover import hover_image_for_time_screen
+from modules.EFFECT.hover import hover_image_for_time_screen
 
 time_images = {
-    3: pygame.image.load("./asset/image/time/3.png"),
-    5: pygame.image.load("./asset/image/time/5.png"),
-    10: pygame.image.load("./asset/image/time/10.png"),
-    15: pygame.image.load("./asset/image/time/15.png")
+    3: pygame.image.load("./asset/image/time/3.png").convert_alpha(),
+    5: pygame.image.load("./asset/image/time/5.png").convert_alpha(),
+    10: pygame.image.load("./asset/image/time/10.png").convert_alpha(),
+    15: pygame.image.load("./asset/image/time/15.png").convert_alpha()
 
 }
 # text_sizes = {
@@ -17,10 +17,10 @@ time_images = {
 
 current_sizes = {}
 time_sizes = {
-    3: 200,
-    5: 200,
-    10: 200,
-    15: 200
+    3: 400,
+    5: 400,
+    10: 400,
+    15: 400
 }
 
 def draw_time_screen(
@@ -35,10 +35,10 @@ def draw_time_screen(
 
     times = [3, 5, 10, 15]
 
-    image_size = 200
-    hover_size = 220
+    image_size = 400
+    hover_size = 420
 
-    gap = 35
+    gap = 50
 
     total_width = (
         len(times) * image_size

@@ -5,11 +5,13 @@ import pygame
 
 
 operator_size = {
-    "+":230,
-    "-":230,
-    "*":230,
-    "/":230
+    "+": 400,
+    "-": 400,
+    "*": 400,
+    "/": 400
 }
+
+
 def draw_operation_screen(
     screen,
     fonts,
@@ -32,13 +34,13 @@ def draw_operation_screen(
     )
 
 
-    # ---------------- Operators ----------------
+    spacing = 450
 
     x_positions = [
-        operator_box.centerx - 323,
-        operator_box.centerx - 110,
-        operator_box.centerx + 110,
-        operator_box.centerx + 330
+        operator_box.centerx - spacing * 1.5,
+        operator_box.centerx - spacing * 0.5,
+        operator_box.centerx + spacing * 0.5,
+        operator_box.centerx + spacing * 1.5
     ]
 
     operators = ["+", "-", "*", "/"]
@@ -50,7 +52,7 @@ def draw_operation_screen(
         rect = image.get_rect(
             center=(
                 x_positions[i],
-                current_height // 1.5
+                current_height // 1.7
             )
         )
 
@@ -72,11 +74,6 @@ def draw_operation_screen(
         
         
         
-        
-        
-        
-        
-import pygame
 def hover_image(
     image,
     rect,
@@ -84,21 +81,30 @@ def hover_image(
     current_size
 ):
 
-    NORMAL_SIZE = 200
-    HOVER_SIZE = 230
+    NORMAL_SIZE = 400
+    HOVER_SIZE = 430
     SPEED = 2
 
 
-    if rect.collidepoint(mouse_pos):
+    # محدوده ثابت برای تشخیص موس
+    hit_rect = pygame.Rect(
+        rect.centerx - NORMAL_SIZE // 2,
+        rect.centery - NORMAL_SIZE // 2,
+        NORMAL_SIZE,
+        NORMAL_SIZE
+    )
+
+    if hit_rect.collidepoint(mouse_pos):
 
         if current_size < HOVER_SIZE:
+            current_size = int(current_size)
             current_size += SPEED
 
     else:
 
         if current_size > NORMAL_SIZE:
+            current_size = int(current_size)
             current_size -= SPEED
-
 
     new_image = pygame.transform.smoothscale(
         image,
@@ -115,4 +121,7 @@ def hover_image(
 
 
     return new_image, new_rect, current_size
+
+
+
 

@@ -1,51 +1,106 @@
+
+
 import pygame
-
-original_background = pygame.image.load(
-    "./asset/image/background_moving/1.jpg"
-)
-
-background = None
-
-bg_x = 0
-speed = 2
+import os
+import random
 
 
-def load_background(screen):
+def draw_moving_map(screen, width, height, dt):
 
-    global background
+    # -------------------------
+    # Initialize position
+    # -------------------------
 
-    screen_height = screen.get_height()
+    if not hasattr(draw_moving_map, "map_x"):
+        draw_moving_map.map_x = 0
 
-    ratio = screen_height / original_background.get_height()
 
-    new_width = int(
-        original_background.get_width() * ratio
-    )
+    # -------------------------
+    # Load image ONLY ONCE
+    # -------------------------
 
-    background = pygame.transform.smoothscale(
-        original_background,
-        (
-            new_width,
-            screen_height
+    if not hasattr(draw_moving_map, "map_image"):
+
+        folder = "asset/image/background_moving"
+
+        images = [
+            file for file in os.listdir(folder)
+            if file.lower().endswith(
+                (".jpg", ".jpeg", ".png")
+            )
+        ]
+
+        random_image = random.choice(images)
+
+        image = pygame.image.load(
+            os.path.join(folder, random_image)
+        ).convert()
+
+
+        # -------------------------
+        # Scale ONLY ONCE
+        # -------------------------
+
+        scale_width = int(
+            image.get_width()
+            * height
+            / image.get_height()
         )
+
+        draw_moving_map.map_image = pygame.transform.smoothscale(
+            image,
+            (scale_width, height)
+        )
+
+
+    # -------------------------
+    # Get image
+    # -------------------------
+
+    image = draw_moving_map.map_image
+
+    scale_width = image.get_width()
+
+
+    # -------------------------
+    # Move
+    # -------------------------
+
+    speed = 0.5
+
+    draw_moving_map.map_x -= speed * dt
+
+
+    # -------------------------
+    # Stop at end
+    # -------------------------
+
+    minimum_x = width - scale_width
+
+    if draw_moving_map.map_x <= minimum_x:
+        draw_moving_map.map_x = minimum_x
+
+
+    # -------------------------
+    # Visible area
+    # -------------------------
+
+    source_x = int(-draw_moving_map.map_x)
+
+    source_rect = pygame.Rect(
+        source_x,
+        0,
+        width,
+        height
     )
 
-    print(background.get_size())
-    print(screen.get_size())
 
-
-def draw_background(screen):
-
-    global bg_x
-
-    bg_x -= speed
-
-
-    if bg_x <= -(original_background.get_width() - screen.get_width()):
-        bg_x = 0
-
+    # -------------------------
+    # Draw ONLY visible part
+    # -------------------------
 
     screen.blit(
-        background,
-        (bg_x, 0)
+        image,
+        (0, 0),
+        source_rect
     )
