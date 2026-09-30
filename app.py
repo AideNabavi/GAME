@@ -1263,9 +1263,9 @@ dt = clock.tick(60) / 1000
 
 
 
-game_mode_panel = pygame.transform.smoothscale(
+gamemode_panel = pygame.transform.smoothscale(
     pygame.image.load("./asset/image/panel/gamemode.png").convert_alpha(),
-    (400, 1000)
+    (300, 846)
 )
 
 menu_panel = pygame.transform.smoothscale(
@@ -1480,7 +1480,7 @@ saved_player = SAVE.load_player()
 if saved_player is not None:
 
 
-    game_state = "START"#start
+    game_state = "MENU"#start
     DASHBOARD=False
 
 else:
@@ -1819,12 +1819,12 @@ while running:
 
         gamemode_menu_setting_panel(
             screen,
-            menu_panel,
             menu_icons,
             menu_positions,
             "menu",
             "menu",
-            current_width // 2  - 810 ,current_height // 2 - 4.5
+            current_width // 2  - 810 ,current_height // 2 - 4.5,image=menu_panel
+
         )  
 
         #for menu
@@ -2469,20 +2469,24 @@ while running:
         update_vertical_scroll()
         draw_vertical_scroll_grid(
             screen,
-            game_list.center_image_game_mode_logic,
+            game_list.count_down_image[0:12],"logic",
             12,
+            current_width,
+            current_height,
+            game_name=count_down_game_name[0:12],
+
             card_gap_x=490,
-            card_gap_y=490
+            card_gap_y=570
         )    
         gamemode_menu_setting_panel(
             screen,
-            game_mode_panel,
             game_list.gamemode_icons,
             game_mode_positions_,
             "gamemode",
             "gamemode",
-            current_width // 2  - 842 ,current_height // 2 - 4.5
+            current_width // 2  - 900 ,current_height // 2 + 10,image=gamemode_panel
         )  
+
         draw_back_button(
             screen,
             back_button_rect)
@@ -2503,20 +2507,23 @@ while running:
         update_vertical_scroll()
         draw_vertical_scroll_grid(
             screen,
-            game_list.center_image_game_mode_memory,
+            game_list.count_down_image[24:32],"memory",
             8,
+            current_width,
+            current_height,
+            game_name=count_down_game_name[24:32],
             card_gap_x=490,
-            card_gap_y=490
+            card_gap_y=570
         )    
         gamemode_menu_setting_panel(
             screen,
-            game_mode_panel,
             game_list.gamemode_icons,
             game_mode_positions_,
             "gamemode",
             "gamemode",
-            current_width // 2  - 842 ,current_height // 2 - 4.5
+            current_width // 2  - 900 ,current_height // 2 + 10,image=gamemode_panel
         )  
+
         draw_back_button(
             screen,
             back_button_rect)
@@ -2537,20 +2544,23 @@ while running:
         update_vertical_scroll()
         draw_vertical_scroll_grid(
             screen,
-            game_list.center_image_game_mode_math,
+            game_list.count_down_image[32:37],"math",
             5,
+            current_width,
+            current_height,
+            game_name=count_down_game_name[32:37],
             card_gap_x=490,
-            card_gap_y=490
+            card_gap_y=570
         )    
         gamemode_menu_setting_panel(
             screen,
-            game_mode_panel,
             game_list.gamemode_icons,
             game_mode_positions_,
             "gamemode",
             "gamemode",
-            current_width // 2  - 842 ,current_height // 2 - 4.5
+            current_width // 2  - 900 ,current_height // 2 + 10,image=gamemode_panel
         )  
+
         draw_back_button(
             screen,
             back_button_rect)
@@ -2571,20 +2581,23 @@ while running:
         update_vertical_scroll()
         draw_vertical_scroll_grid(
             screen,
-            game_list.center_image_game_mode_detection,
+            game_list.count_down_image[12:24],"detection",
             12,
+            current_width,
+            current_height,
+            game_name=count_down_game_name[12:24],
             card_gap_x=490,
-            card_gap_y=490
+            card_gap_y=570
         )    
         gamemode_menu_setting_panel(
             screen,
-            game_mode_panel,
             game_list.gamemode_icons,
             game_mode_positions_,
             "gamemode",
             "gamemode",
-            current_width // 2  - 842 ,current_height // 2 - 4.5
+            current_width // 2  - 900 ,current_height // 2 + 10,image=gamemode_panel
         )  
+
         draw_back_button(
             screen,
             back_button_rect)
@@ -2605,32 +2618,31 @@ while running:
         update_vertical_scroll()
         draw_vertical_scroll_grid(
             screen,
-            game_list.center_image_game_mode_fast,
-            4,
+            game_list.count_down_image[37:40],"fast",
+            3,
+            current_width,
+            current_height,
+            game_name=count_down_game_name[37:40],
             card_gap_x=490,
-            card_gap_y=490
+            card_gap_y=570
         )    
         gamemode_menu_setting_panel(
             screen,
-            game_mode_panel,
             game_list.gamemode_icons,
             game_mode_positions_,
             "gamemode",
             "gamemode",
-            current_width // 2  - 842 ,current_height // 2 - 4.5
+            current_width // 2  - 900 ,current_height // 2 + 10,image=gamemode_panel
         )  
+
         draw_back_button(
             screen,
             back_button_rect)
 
 
-#-------------------------------------------------------------------------------------- GAME MODE 
 
-    
-
-
-        
-
+            
+#-----------------------------------این قسمت برای گیم مود اسلایدی است حذف نشود --------------------------------------------------- GAME MODE
 
         
         # # آپدیت اسلاید
@@ -3159,125 +3171,6 @@ while running:
         
         
         
-        # # if TYPER.typing_start_time is not None:
-        # if MO.page1_active:
-        #     # print("page1")
-        #     finished_type = TYPER.draw_typing_text(
-        #     screen,
-        #     "MATH",
-        #     fonts["heart"],
-        #     (255, 140, 30),
-        #     (current_width // 2, current_height // 2 - 530),
-        #     TYPER.typing_start_time,
-        #     80
-        # )
-        # if MO.page2_active:
-        #     # print("page2")
-        #     finished_type = TYPER.draw_typing_text(
-        #     screen,
-        #     "MEMORY",
-        #     fonts["heart"],
-        #     (255, 140, 30),
-        #     (current_width // 2, current_height // 2 - 530),
-        #     TYPER.typing_start_time,
-        #     80
-        # )
-        # if MO.page3_active:
-        #     # print("page3")
-        #     finished_type = TYPER.draw_typing_text(
-        #     screen,
-        #     "GET PREMIUM",
-        #     fonts["heart"],
-        #     (255, 140, 30),
-        #     (current_width // 2, current_height // 2 - 530),
-        #     TYPER.typing_start_time,
-        #     80
-        # )
-        # if MO.page4_active:
-        #     # print("page4")
-        #     finished_type = TYPER.draw_typing_text(
-        #     screen,
-        #     "GET PREMIUM",
-        #     fonts["heart"],
-        #     (255, 140, 30),
-        #     (current_width // 2, current_height // 2 - 530),
-        #     TYPER.typing_start_time,
-        #     80
-        # )
-        # if MO.page5_active:
-        #     # print("page5")
-        #     finished_type = TYPER.draw_typing_text(
-        #     screen,
-        #     "GET PREMIUM",
-        #     fonts["heart"],
-        #     (255, 140, 30),
-        #     (current_width // 2, current_height // 2 - 530),
-        #     TYPER.typing_start_time,
-        #     80
-        # )
-        # if MO.page6_active:
-        #     # print("page6")
-        #     finished_type = TYPER.draw_typing_text(
-        #     screen,
-        #     "GET PREMIUM",
-        #     fonts["heart"],
-        #     (255, 140, 30),
-        #     (current_width // 2, current_height // 2 - 530),
-        #     TYPER.typing_start_time,
-        #     80
-        # )
-
-        # if MO.page7_active:
-        #     # print("page6")
-        #     finished_type = TYPER.draw_typing_text(
-        #     screen,
-        #     "GET PREMIUM",
-        #     fonts["heart"],
-        #     (255, 140, 30),
-        #     (current_width // 2, current_height // 2 - 530),
-        #     TYPER.typing_start_time,
-        #     80
-        # )
-
-        # if MO.page8_active:
-        #     # print("page6")
-        #     finished_type = TYPER.draw_typing_text(
-        #     screen,
-        #     "COMING SOON...",
-        #     fonts["heart"],
-        #     (255, 140, 30),
-        #     (current_width // 2, current_height // 2 - 530),
-        #     TYPER.typing_start_time,
-        #     80
-        # )
-        # if MO.page9_active:
-        #     # print("page6")
-        #     finished_type = TYPER.draw_typing_text(
-        #     screen,
-        #     "COMING SOON...",
-        #     fonts["heart"],
-        #     (255, 140, 30),
-        #     (current_width // 2, current_height // 2 - 530),
-        #     TYPER.typing_start_time,
-        #     80
-        # )
-        # if MO.page10_active:
-        #     # print("page6")
-        #     finished_type = TYPER.draw_typing_text(
-        #     screen,
-        #     "COMING SOON...",
-        #     fonts["heart"],
-        #     (255, 140, 30),
-        #     (current_width // 2, current_height // 2 - 530),
-        #     TYPER.typing_start_time,
-        #     80
-        # )
-
-
-
-  
-        
-        
         # draw_page_indicator(
         #     screen,
         #     MO.current_page_GAME_MODE,
@@ -3448,12 +3341,12 @@ while running:
         
         gamemode_menu_setting_panel(
             screen,
-            setting_panel,
             setting_icons,
             setting_positions,
             "setting",
             "setting",
-            current_width // 2  - 804 ,current_height // 2 ,
+            current_width // 2  - 804 ,current_height // 2 ,image=setting_panel
+
         )
 
         # donate_base(
