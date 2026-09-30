@@ -2,7 +2,7 @@ import random
 import pygame
 
 from modules.setting import draw_text_stroke
-from modules.player_profile import draw_profile_circle
+from modules.ACCOUNT.player_profile import draw_profile_circle
 
 
 # ---------------- Generate Answers ----------------
@@ -28,17 +28,18 @@ def generate_answers(result):
 
 
 # ---------------- Generate Question ----------------
-
 def generate_question(ceill, operator):
+
+    if not operator:
+        operator = "+"
+
+    ceill = int(ceill)
 
     x = random.randint(1, ceill)
     y = random.randint(1, ceill)
 
-
     if operator == "+":
-
         result = x + y
-
 
     elif operator == "-":
 
@@ -47,11 +48,8 @@ def generate_question(ceill, operator):
 
         result = x - y
 
-
     elif operator == "*":
-
         result = x * y
-
 
     elif operator == "/":
 
@@ -64,24 +62,16 @@ def generate_question(ceill, operator):
         result = x / y
 
         if result.is_integer():
-
             result = int(result)
-
         else:
+            result = round(result, 2)
 
-            result = round(result,2)
-
-
+    else:
+        raise ValueError(f"Invalid operator: {operator!r}")
 
     question_text = f"{x} {operator} {y} = ?"
 
-
     return question_text, result
-
-
-
-
-
 # ---------------- Game Engine ----------------
 
 def run_game(
@@ -121,7 +111,6 @@ def run_game(
 
 
     # ---------------- New Question ----------------
-
     if not question_started:
 
 
@@ -478,3 +467,11 @@ def run_game(
         answer_selected
 
     )
+    
+    
+    
+    
+    
+    
+    
+    
