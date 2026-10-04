@@ -9,7 +9,8 @@ from modules.MORE import more as MORE
 # from modules.levels import handle_level_slider_event,update_level_slider
 from event_helper import event_click_game
 from modules.GAMES import FOLLOW_THAT as FOTHAT
-from modules import mode as MO
+from modules import language
+from modules import ceill_screen
 from modules.GAMES import MATCH3 
 from modules import operation_screen as OP 
 from modules.GAMES import SNAKE 
@@ -19,6 +20,9 @@ from modules.GAMES import GO
 from modules.SUPPORT import report_bug 
 from modules.GAMES import FIND_NUMBER 
 from modules.GAMES import FOLLOW_FREE 
+from modules import game_mode_scroll 
+from modules.EFFECT import side_effect_window  as S_E_W
+from modules.IN_GAME import difficulty_selection_menu
 from modules.GAMES import PUZZLE 
 from modules.GAMES import DOTS_BOX 
 from modules.GAMES import MOVE_ARROW as M_ARR
@@ -54,6 +58,7 @@ from modules.GAMES import  MORE_LESS_EQUAL as MLE
 from modules.GAMES import  MATH_GO as MGO
 from modules.GAMES import IMAGE_SELECT as IMSE
 from modules.GAMES  import THOOZ as TOZ
+from modules.GAMES  import HOW_MANY 
 from modules.GAMES  import MINESWEEPER 
 from modules import before_game 
 from modules.GAMES import CHOOSE_IMAGE
@@ -98,9 +103,13 @@ from modules.GAMES import UNBLOCK_CAR
 from modules import button_menu_setting_gamemode
 from modules.game_list import *
 from modules.mouse import *
-from modules import menu_window as MENU_WINDOW
+from modules.IN_GAME import menu_window as MENU_WINDOW
 
-
+from modules.game_mode_scroll import (GAME_MODE_60_IMAGE_RECT_FAST,
+    GAME_MODE_60_IMAGE_RECT_MATH,
+    GAME_MODE_60_IMAGE_RECT_LOGIC,
+    GAME_MODE_60_IMAGE_RECT_MEMORY,
+    GAME_MODE_60_IMAGE_RECT_DETECTION)
 from modules import menu__ as MENU__
 from modules.SUPPORT import contact_us as CONTACT
 
@@ -118,14 +127,10 @@ def handle_events(
     profile_rects,
     operator,
     operator_rects,
-    ceill,
-    ceill_text,
-    ceill_entered,
     time_limit,
     time_text,
     time_entered,
     time_button_rects,
-    ceill_button_rects,
     answer_rects,
     answer_selected,
     game_state,
@@ -134,22 +139,9 @@ def handle_events(
     small_window,
     clicked_button,
     language_rects,
-    load_language,
     selected_profile_image,
     dragging,
-    # rect_for_music,
-    # music_state,
-    # sound_state,
-    # rect_for_sound,
-    # home_button_rect,
-    # askus_button_rect,
-    # share_button_rect,
-    # sound_bar,
-    # music_bar,
     option_rects,
-    
-
-    start_time,
     current_question,
     correct_count,
     wrong_count,
@@ -158,14 +150,6 @@ def handle_events(
     dragging_GAME_MODE,
     drag_start_x_GAME_MODE,
     target_offset_GAME_MODE,
-    game_mode_slide,
-    image_game_mode_page2,
-    image_game_mode_page3,
-    image_game_mode_page1,
-    image_game_mode_page4,
-    image_game_mode_page5,
-    image_game_mode_page6,
-    image_game_mode_page7,
     support_face,
     SUPPORT_MENU,
     SUPPORT_window,
@@ -176,7 +160,6 @@ def handle_events(
     DAILY_GAME,
     menu_state,
     DAILY_BUTTON,
-    reset_side_effect_language,
     setting_menu,
     control_every_button_in_setting_on_or_off,
     DASHBOARD,
@@ -186,8 +169,10 @@ def handle_events(
     call_button_rect,
     support__button_rect,
     sms_button_rect,
-    FOUR_ICON_FOR_SCREEN,
-    DONT_LET_CLICK_GAMES_BUTTON_BEFORE_THAT,game_mode_feature
+    THREE_ICONS,
+    DONT_LET_CLICK_GAMES_BUTTON_BEFORE_THAT,
+    game_mode_feature,
+    buy_premium
 ):
     running = True
     # global fullscreen_
@@ -517,7 +502,7 @@ def handle_events(
         # MEMORY GAME EVENTS
         # -----------------------------
 
-        if game_state == "MEMORY":
+        if game_state == "MEMORY MATCH":
 
 
             if event.type == pygame.KEYDOWN:
@@ -635,7 +620,7 @@ def handle_events(
 
 
 
-        if game_state == "ACTION":
+        if game_state == "REACTION":
 
 
             if event.type == pygame.KEYDOWN:
@@ -697,7 +682,7 @@ def handle_events(
 
 
 
-        if game_state == "MIRROR":
+        if game_state == "MIRROR PATTERN":
 
             if event.type == pygame.KEYDOWN:
 
@@ -822,43 +807,57 @@ def handle_events(
                         
                         
                         
-                        
-                        
+ 
         if game_state == "GAME MODE":
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos=event.pos
                 for i,rect in enumerate(button_menu_setting_gamemode.select_buttons_setting):
                     if rect.collidepoint(mouse_pos):
                         if  i == 0:
-                            game_mode_feature="logic"
+                            game_mode_feature="math"
                             print("logic")
+                            TYPER.reset_typing_timer()
+                            game_mode_scroll.reset_grid_for_game_mode_zoom_in_effect_zoom()
 
                         if  i == 1:
-                            game_mode_feature="memory"
+                            game_mode_feature="logic"
                             print("memory")
+                            TYPER.reset_typing_timer()
+                            game_mode_scroll.reset_grid_for_game_mode_zoom_in_effect_zoom()
 
                         if  i == 2:
-                            game_mode_feature="math"
-                            print("math")
+                            game_mode_feature="memory"
+                            # print("math")
+                            TYPER.reset_typing_timer()
+                            game_mode_scroll.reset_grid_for_game_mode_zoom_in_effect_zoom()
 
                         if  i == 3:
                             game_mode_feature="detection"
+                            TYPER.reset_typing_timer()
                             print("detection")
+                            game_mode_scroll.reset_grid_for_game_mode_zoom_in_effect_zoom()
 
                         if  i == 4:
                             game_mode_feature="fast"
                             print("fast")
+                            TYPER.reset_typing_timer()
+                            game_mode_scroll.reset_grid_for_game_mode_zoom_in_effect_zoom()
+                            
+                        if  i == 5:
+                            game_mode_feature="entertainment"
+                            print("fast")
+                            TYPER.reset_typing_timer()
+                            game_mode_scroll.reset_grid_for_game_mode_zoom_in_effect_zoom()
 
-                        
                         
             # MODE GAME -------------------->    
                         
                         
 
-        if game_state == "FAST":     
+        if game_state == "MATH RUSH":     
             FF.event_FAST_MODE(event)                      
                         
-        if game_state == "DETECT":     
+        if game_state ==  "IMAGE RECALL":     
 
             if event.type == pygame.KEYDOWN:
 
@@ -921,11 +920,11 @@ def handle_events(
                                 DET.start_time = time.time()
                                 DET.animation_start = time.time()                      
                                 
-        if game_state == "MORE_LESS_EQUAL":     
+        if game_state == "COMPARE NUMBERS":     
             MLE.event_MORE_LESS_EQUAL(event,MLE.option_rects)
             
                                     
-        if game_state == "TRUE_FALSE":     
+        if game_state == "TRUE OR FALSE":     
             
                 if event.type == pygame.MOUSEBUTTONDOWN:
 
@@ -975,7 +974,7 @@ def handle_events(
 
         # ---------------- FIND OPERATOR ----------------
 
-        if game_state == "FIND_OPERATOR":
+        if game_state == "RIGHT SIGN":
 
             if event.type == pygame.MOUSEBUTTONDOWN:
 
@@ -1086,35 +1085,14 @@ def handle_events(
                             
 #--------------------------------------- HOW_MANY page 3 games👾
         # dt = clock.tick(60) / 1000
-        if game_state == "HOW_MANY":
-            if event.type == pygame.KEYDOWN:
-
-                if event.key == pygame.K_r and HOW.lives <= 0:
-                        HOW.reset_game()
-
-            if event.type == pygame.MOUSEBUTTONDOWN:
-
-                if event.button == 1 and HOW.state == "game":
-
-                    for i, option in enumerate(HOW.options):
-
-                        if HOW.get_option_rect(i,current_width).collidepoint(event.pos):
-
-                            if option == HOW.answer:
-                                HOW.score += 100
-                            else:
-                                HOW.lives -= 1
-
-                            if HOW.lives <= 0:
-                                HOW.state = "gameover"
-                            else:
-                                HOW.new_round()
-                            
-                        
+        if game_state == "COUNT ITEM":
+            HOW.HOW_MANY_EVENT(
+                event
+            )
 
 
 #---------------------- HARD 
-        if game_state == "HARD":
+        if game_state == "MEMORY CALC":
             if event.type == pygame.KEYDOWN:
 
                 if event.key == pygame.K_ESCAPE:
@@ -1156,7 +1134,7 @@ def handle_events(
                             break
 
 #-------------------- DETECT_PRO
-        if game_state == "DETECT_PRO":
+        if game_state == "QUICK DETECT":
             if event.type == pygame.KEYDOWN:
 
                 if event.key == pygame.K_ESCAPE:
@@ -1187,7 +1165,7 @@ def handle_events(
                             break
 
 #--------------------------- MEMORY_GO
-        if game_state == "MEMORY_GO":
+        if game_state == "NUMBER ORDER":
             if event.type == pygame.KEYDOWN:
 
                 if event.key == pygame.K_ESCAPE:
@@ -1247,7 +1225,7 @@ def handle_events(
         # ----------------------------------------
         # MOVE_ARROW
         # ----------------------------------------
-        if game_state == "MOVE_ARROW":
+        if game_state == "DIRECTION DETECT":
                 if event.type == pygame.KEYDOWN:
 
                     if event.key == pygame.K_ESCAPE:
@@ -1293,8 +1271,8 @@ def handle_events(
 
 
 
-    #--------------------------- MATH_GO
-        if game_state == "MATH_GO":
+    #--------------------------- MATH CHAIN
+        if game_state == "MATH CHAIN":
                 if event.type == pygame.KEYDOWN:
 
                     if MATHGO.state == "PLAY":
@@ -1341,9 +1319,9 @@ def handle_events(
 
 
 
-    #--------------------------- FAST_ADD_SUB
+    #--------------------------- MATH RECALL
 
-        if game_state == "FAST_ADD_SUB":
+        if game_state == "MATH RECALL":
                 if event.type == pygame.KEYDOWN:
 
                     # فقط در Game Over
@@ -1405,7 +1383,7 @@ def handle_events(
 
 
 #---------------------------------------- FOLLOW THAT
-        if game_state == "FOLLOW_THAT":
+        if game_state == "MEMORY PATH":
             if event.type == pygame.MOUSEBUTTONDOWN:
 
                 if event.button == 1:
@@ -1430,7 +1408,7 @@ def handle_events(
         # ----------------------------------------------------
         # MOUSE
         # ----------------------------------------------------
-        if game_state == "IMAGE_SELECT":
+        if game_state == "IMAGE SEQUENCE":
             if event.type == pygame.MOUSEBUTTONDOWN:
 
                 if event.button == 1:
@@ -1449,7 +1427,7 @@ def handle_events(
                 CHESS.event_CHESS(event)
 
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if game_state == "SORT_NUMBER":
+            if game_state == "NUMBER SLIDE":
                 SORT_NUMBER.event_SORT_NUM(event)
 
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -1457,7 +1435,7 @@ def handle_events(
                 SUDOKU.event_sudoku(event)
 
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if game_state == "WORD":
+            if game_state == "HIDDEN WORD":
                 WORD.event_WORD(event)
                 
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -1465,25 +1443,25 @@ def handle_events(
                 
                 MINESWEEPER.event_MINESWEEPER(event)
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if game_state == "CHOOSE_IMAGE":
+            if game_state == "FIND THE NEW":
                 CHOOSE_IMAGE.event_CHOOSE_IMAGE(event)
                 
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if game_state == "MEMORY_HARD":
+            if game_state == "MEMORY RECALL":
                 MEMORY_HARD.event(event)
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if game_state == "MATCH3":
+            if game_state == "MATCH":
                 MATCH3.event_MATCH(event)
                 
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if game_state == "CONNECT_FOUR":
+            if game_state == "CONNECT 4":
                 CONNECT_FOUR.handle_event(event)
                 
         if game_state == "SNAKE":
             SNAKE.event_SNAKE(event)
             
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if game_state == "UNBLOCK_CAR":
+            if game_state == "UNBLOCK CAR":
                 UNBLOCK_CAR.handle_event(event)
                 
                 
@@ -1496,10 +1474,10 @@ def handle_events(
                 CHECKERS.event_checkers(event)
                 
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if game_state == "DOTS_BOX":
+            if game_state == "DOTS BOXS":
                 DOTS_BOX.event_DOT_BOX(event)
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if game_state == "FOLLOW_FREE":
+            if game_state == "COLOR FLOW":
                 FOLLOW_FREE.event_FOLLOW_FREE(event)
                 
                 
@@ -1733,7 +1711,7 @@ def handle_events(
 
 
 
-        if game_state == "FIND_NUMBER":
+        if game_state == "MISSING NUMBER":
 
             if event.type == pygame.MOUSEBUTTONDOWN:
 
@@ -1768,7 +1746,7 @@ def handle_events(
 
 
 #---------------------------------- این برای یان مد بازی است که تکرار بعد از من بکن
-        if game_state == "REPEAT_AFTER_ME":
+        if game_state == "MEMORY PATTERN":
             # print("CURRENT STATE:", game_state)
             if event.type == pygame.KEYDOWN:
 
@@ -1861,7 +1839,7 @@ def handle_events(
                 for lang, rect in language_rects:
                     if rect.collidepoint(mouse_pos):
                         play_click()
-                        policy.now_language_is_this=load_language(lang)
+                        policy.now_language_is_this=language.load_language(lang)
                         # print(policy.now_language_is_this)
 
 
@@ -1946,7 +1924,7 @@ def handle_events(
                     
         
         
-        if game_state == "MENU" and menu_state == "P_GAME_MODE":
+        if game_state == "MENU" and menu_state == "GAMES_OR_MATH":
         # for window CUSTOM_MATH
             if event.type == pygame.MOUSEBUTTONDOWN:
 
@@ -1961,12 +1939,14 @@ def handle_events(
 
                     elif CUS.punch1_rect.collidepoint(event.pos):
                         game_state = "GAME MODE"
-                        game_mode_feature="logic"
+                        game_mode_feature="math"
+                        TYPER.reset_typing_timer()
+                        game_mode_scroll.reset_grid_for_game_mode_zoom_in_effect_zoom()
                         menu_state ="االلکی "
                         CUS.reset_punch_images_animation()
                         # CUSTOM_MATH=False
                         S_E_W.reset_menu_setting_panel()
-                        FOUR_ICON_FOR_SCREEN=True
+                        THREE_ICONS=True
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         DONT_LET_CLICK_GAMES_BUTTON_BEFORE_THAT=True
@@ -1978,7 +1958,7 @@ def handle_events(
         # for window DAILY GAME
         if event.type == pygame.MOUSEBUTTONDOWN:
 
-            if game_state == "MENU" and menu_state == "DAILY GAME":
+            if game_state == "MENU" and menu_state == "DAILYGAME_STATUS_PROGRESS_ACHIEVEMENT":
 
                 if CUS.IMG1_REC1.collidepoint(event.pos):
 
@@ -2104,11 +2084,12 @@ def handle_events(
                             SUP.reset_punch_scale_animation_one_image()
 
                         if SUP.back_page_rec.collidepoint(event.pos):
+                            
                             SUP.reset_window_side_effect()
                             SUP.reset_punch_scale_animation_one_image()
 
                             game_state = "MENU"  
-                            menu_state = "DAILY GAME"
+                            menu_state = "DAILYGAME_STATUS_PROGRESS_ACHIEVEMENT"
                 # # ---------------- PAGE 2 → GAME ----------------
 
                 # if DAILY_BUTTON == "page_2":
@@ -2159,7 +2140,7 @@ def handle_events(
 
 
 #--------------------------------------------SHAPE_COLOR_NAME
-        if game_state == "SHAPE_COLOR_NAME":
+        if game_state == "COLOR MATCH":
 
             if event.type == pygame.MOUSEBUTTONDOWN:
 
@@ -2245,62 +2226,7 @@ def handle_events(
                     
             event_vertical_scroll(
                 event,
-                screen            )
-            # if event.type == pygame.MOUSEBUTTONDOWN:
-
-            #     if event.button == 1:
-
-            #         drag_start_x_GAME_MODE = event.pos[0]
-            #         dragging_GAME_MODE = True
-
-
-            # elif event.type == pygame.MOUSEBUTTONUP:
-
-            #     if event.button == 1 and dragging_GAME_MODE:
-
-            #         drag_end_x_GAME_MODE = event.pos[0]
-            #         # print(drag_end_x_GAME_MODE)
-            #         # print(drag_start_x_GAME_MODE)
-            #         distance = (
-            #             drag_end_x_GAME_MODE
-            #             - drag_start_x_GAME_MODE
-            #         )
-
-
-            #         # -------------------------
-            #         # رفتن صفحه بعد
-            #         # Swipe Left
-            #         # -------------------------
-
-            #         if distance < -100:
-
-            #             if MOD.current_page_GAME_MODE < 9:
-
-            #                 MOD.current_page_GAME_MODE += 1
-
-            #                 game_mode_slide.next()
-
-            #                 # فقط صفحه فعلی Active باشد
-            #                 MOD.update_game_mode_pages()
-            #                 TYPER.typing_start_time = pygame.time.get_ticks()
-            #         # -------------------------
-            #         # برگشت صفحه قبل
-            #         # Swipe Right
-            #         # -------------------------
-
-            #         elif distance > 100:
-
-            #             if MOD.current_page_GAME_MODE > 0:
-
-            #                 MOD.current_page_GAME_MODE -= 1
-
-            #                 game_mode_slide.back()
-            #                 # فقط صفحه فعلی Active باشد
-            #                 MOD.update_game_mode_pages()
-            #                 TYPER.typing_start_time = pygame.time.get_ticks()
-
-            #         dragging_GAME_MODE = False
-
+                screen,game_mode_feature            )
 
 
 
@@ -2361,37 +2287,156 @@ def handle_events(
                             
                             
                             
-                            
-                            
-                            
-        if game_state == "BEFORE_GAMES":
-            FOUR_ICON_FOR_SCREEN=False
-
+        if game_state in (
+            "GAME MODE",
+            "MENU",
+            "SETTING",
+            "Donate",
+            "INFO",
+            "FAQ",
+            "Contact Us",
+            "Feed Back",
+            "Report Bug",
+            "Privacy Policy",
+        ):
             if event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_pos = event.pos
-                if SUP.next_page_rec2 and SUP.back_page_rec and SUP.how_to_play_next_button_rec is not None:
-                    if SUP.back_page_rec.collidepoint(event.pos):
-                        game_state = "GAME MODE"
-                        SUP.reset_window_side_effect()
-                        SUP.reset_punch_scale_animation_one_image()
-                        DES.reset_menu_back_setters()
+                mouse_pos=event.pos
+                if store__button_rect.collidepoint(mouse_pos):
+                    game_state="STORE"
+                    THREE_ICONS = False
+
+                    print("Store")
+                if  call_button_rect.collidepoint(mouse_pos):
+                    game_state="DONATE_"
+                    THREE_ICONS = False
+
+                    print("donate")
+                if  sms_button_rect.collidepoint(mouse_pos):
+                    game_state="MESSAGE"
+                    THREE_ICONS = False
+                    print("message")
+           
+           
+        if game_state == "GAME GUID": 
+            THREE_ICONS = False                  
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if SUP.next_page_rec2 is not None:
                     if SUP.next_page_rec2.collidepoint(event.pos):
                         SUP.reset_window_side_effect()
                         SUP.reset_punch_scale_animation_one_image()
-                        # SUP.now_game_start = False
-                        game_state = "BEFORE_GAMES_COUNT_DOWN"
+
+                        game_state = "DIFFICULTY SELECTION"
+
                         DES.reset_menu_back_setters()
                         button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
 
+                        print("PLAY")
+
+
+                if SUP.how_to_play_next_button_rec is not None:
                     if SUP.how_to_play_next_button_rec.collidepoint(event.pos):
                         SUP.reset_window_side_effect()
                         SUP.reset_punch_scale_animation_one_image()
+
                         DES.reset_menu_back_setters()
-                        game_state = "NEXT_PAGE_BEFORE_GAME"
+
+                        game_state = "NEXT GAME GUID"
+
                         before_game.reset_window_before_each_game()
 
+                        print("NEXT")
+
+
+                if SUP.pro_rec is not None:
+                    if SUP.pro_rec.collidepoint(event.pos):
+                        game_state = "BUY_PREMIUM"
+
+                        S_E_W.reset_window_side_effect_MULLTI_WINDOW()
+
+                        print("PRO")
+
+
+                if SUP.back_page_rec_ is not None:
+                    if SUP.back_page_rec_.collidepoint(event.pos):
+                        game_state = "GAME MODE"
+                        SUP.reset_window_side_effect()
+                        SUP.reset_punch_scale_animation_one_image()
+
+                        DES.reset_menu_back_setters()
+
+                        print("BACK")
+                                    
+                                    
+
+    
+        if game_state == "NEXT GAME GUID": 
+            THREE_ICONS = False                  
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if SUP.next_page_rec2 is not None:
+                    if SUP.next_page_rec2.collidepoint(event.pos):
+                        SUP.reset_window_side_effect()
+                        SUP.reset_punch_scale_animation_one_image()
+
+                        game_state = "DIFFICULTY SELECTION"
+
+                        DES.reset_menu_back_setters()
+                        button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
+
+                        print("PLAY")
                         
+                if SUP.pro_rec is not None:
+                    if SUP.pro_rec.collidepoint(event.pos):
+                        game_state = "BUY_PREMIUM"
+
+                        S_E_W.reset_window_side_effect_MULLTI_WINDOW()
+
+                        print("PRO")
+
+            
+            
                         
+        if game_state == "DIFFICULTY SELECTION": 
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                for i,rect in enumerate(difficulty_selection_menu.bottom_rects):
+                    if rect.collidepoint(mouse_pos):
+                        if i == 0:
+                            game_state ="GAME GUID"
+                        if i == 1:
+                            if difficulty_selection_menu.sound_on:
+                                on_off_sound_effect(0)
+                                difficulty_selection_menu.sound_on = False
+                                difficulty_selection_menu.sound__line_for_off=True
+
+                            else:
+                                on_off_sound_effect(1)
+                                difficulty_selection_menu.sound_on = True
+                                difficulty_selection_menu.sound__line_for_off=False
+
+                        if i == 2:
+                            if difficulty_selection_menu.music_on:
+                                pygame.mixer.music.stop()
+                                difficulty_selection_menu.music_on = False
+                                difficulty_selection_menu.music__line_for_off=True
+
+                            else:
+                                pygame.mixer.music.play()
+                                difficulty_selection_menu.music_on = True
+                                difficulty_selection_menu.music__line_for_off=False
+                                
+                for i,rect in enumerate(difficulty_selection_menu.difficulty_rects):
+                    if rect.collidepoint(mouse_pos):
+                        if i == 0:
+                            print(before_game.previous_game_state_F)
+                            HOW_MANY.HOW_MANY_difficulty("EASY")
+                            game_state =before_game.previous_game_state_F
+                        if i == 1:
+                            HOW_MANY.HOW_MANY_difficulty("MEDIUM")
+                            game_state =before_game.previous_game_state_F
+
+                        if i == 2:
+                            HOW_MANY.HOW_MANY_difficulty("MEMORY CALC")
+                            game_state =before_game.previous_game_state_F
+
                         
                         
                         
@@ -2420,7 +2465,7 @@ def handle_events(
 
                 if  call_button_rect.collidepoint(mouse_pos):
                     # STOR_IS = True
-                    game_state="DONATE_button"
+                    game_state="DONATE_"
                     DASHBOARD=False
 
                 if  sms_button_rect.collidepoint(mouse_pos):
@@ -2535,7 +2580,7 @@ def handle_events(
                         DES.menu_slide_active = False
                         CUS.reset_punch_images_animation()
                         MUS.reset_music_side_effect()
-                        reset_side_effect_language()
+                        language.reset_side_effect_language()
                         control_every_button_in_setting_on_or_off="menu"
                         DASHBOARD=True
                         game_state="MENU"
@@ -2565,7 +2610,7 @@ def handle_events(
                         
                         DASHBOARD=False
                         game_state = "MENU" 
-                        menu_state = "P_GAME_MODE"
+                        menu_state = "GAMES_OR_MATH"
                         CUSTOM_MATH = True
                         CUS.reset_punch_images_animation()
                         DONT_LET_CLICK_GAMES_BUTTON_BEFORE_THAT=False
@@ -2579,6 +2624,10 @@ def handle_events(
                         #--------------------
                     elif game_state == "MORE":
                         game_state = "SETTING"
+                        DASHBOARD=True
+                        
+                    elif game_state == "BUY_PREMIUM":
+                        game_state = "MENU"
                         DASHBOARD=True
 
                         
@@ -2597,15 +2646,15 @@ def handle_events(
                         SUP.reset_window_side_effect()
 
                         
-                    elif game_state == "FIND_NUMBER":
-                        game_state = "BEFORE_GAMES"
+                    elif game_state == "MISSING NUMBER":
+                        game_state = "GAME GUID"
                         
                         #------------------ for before game start
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
 
 
-                    elif game_state == "BEFORE_GAMES":
+                    elif game_state == "GAME GUID":
                         game_state = "GAME MODE"
 
 
@@ -2618,7 +2667,7 @@ def handle_events(
                         DASHBOARD=True
 
                     elif game_state == "LANGUAGE":
-                        reset_side_effect_language()
+                        language.reset_side_effect_language()
                         game_state = "SETTING"
                         DASHBOARD=True
                         
@@ -2633,27 +2682,27 @@ def handle_events(
                         
                         
                         
-                    elif game_state == "DETECT":
+                    elif game_state ==  "IMAGE RECALL":
                         game_state = "GAME MODE"
                         #------------------ for before game start
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         
                         
-                    elif game_state == "ACTION":
+                    elif game_state == "REACTION":
                         game_state = "GAME MODE"
                         #------------------ for before game start
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         
 
-                    elif game_state == "MIRROR":
+                    elif game_state == "MIRROR PATTERN":
                         game_state = "GAME MODE"
                         #------------------ for before game start
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         
-                    elif game_state == "MEMORY":
+                    elif game_state == "MEMORY MATCH":
                         game_state = "GAME MODE"
                         #------------------ for before game start
                         before_game.before_game_start = True
@@ -2665,25 +2714,25 @@ def handle_events(
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         
-                    elif game_state == "REPEAT_AFTER_ME":
+                    elif game_state == "MEMORY PATTERN":
                         game_state = "GAME MODE"
                         #------------------ for before game start
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         
-                    elif game_state == "SHAPE_COLOR_NAME":
+                    elif game_state == "COLOR MATCH":
                         game_state = "GAME MODE"
                         #------------------ for before game start
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         
-                    elif game_state == "FAST":
+                    elif game_state == "MATH RUSH":
                         game_state = "GAME MODE"
                         #------------------ for before game start
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         
-                    elif game_state == "FIND_NUMBER":
+                    elif game_state == "MISSING NUMBER":
                         game_state = "GAME MODE"
                         #------------------ for before game start
                         before_game.before_game_start = True
@@ -2701,24 +2750,27 @@ def handle_events(
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         
-                    elif game_state == "TRUE_FALSE":
+                    elif game_state == "TRUE OR FALSE":
+                        game_state = "GAME MODE"
+                        #------------------ for before game start
+                        before_game.before_game_start = True
+                        before_game.previous_game_state_F = "NONE"
+                    
+                        
+                        
+                        
+                    elif game_state == "RIGHT SIGN":
                         game_state = "GAME MODE"
                         #------------------ for before game start
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         
-                    elif game_state == "FIND_OPERATOR":
+                    elif game_state == "COMPARE NUMBERS":
                         game_state = "GAME MODE"
                         #------------------ for before game start
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
-                        
-                    elif game_state == "MORE_LESS_EQUAL":
-                        game_state = "GAME MODE"
-                        #------------------ for before game start
-                        before_game.before_game_start = True
-                        before_game.previous_game_state_F = "NONE"
-                    elif game_state == "MATCH3":
+                    elif game_state == "MATCH":
                         game_state = "GAME MODE"
                         #------------------ for before game start
                         before_game.before_game_start = True
@@ -2730,7 +2782,7 @@ def handle_events(
                         game_state = "MENU"
                         
                         
-                    elif game_state == "HOW_MANY":
+                    elif game_state == "COUNT ITEM":
                         game_state = "GAME MODE"
                         
                     elif game_state == "Privacy Policy":
@@ -2774,7 +2826,7 @@ def handle_events(
                     elif game_state == "OPERATION":
                         # game_state = "GAME MODE"
                         game_state = "MENU" 
-                        menu_state = "P_GAME_MODE"
+                        menu_state = "GAMES_OR_MATH"
                         CUSTOM_MATH = True
                         CUS.reset_punch_images_animation()
                     # elif game_state == "GAME MODE":
@@ -2788,10 +2840,7 @@ def handle_events(
                     elif game_state == "SUPPORT_CALL":
                         game_state = "MENU"
                         SUP.reset_window_side_effect()
-                    elif game_state == "STORE":
-                        game_state = "MENU"
-                        SUP.reset_window_side_effect()
-                        
+
                         
                         
                     elif game_state == "Feed Back":
@@ -2838,31 +2887,31 @@ def handle_events(
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         
-                    elif game_state == "MATH_GO":
+                    elif game_state == "MATH CHAIN":
                         game_state = "GAME MODE"
                         #------------------ for before game start
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         
-                    elif game_state == "IMAGE_SELECT":
+                    elif game_state == "IMAGE SEQUENCE":
                         game_state = "GAME MODE"
                         #------------------ for before game start
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         
-                    elif game_state == "MIRROR":
+                    elif game_state == "MIRROR PATTERN":
                         game_state = "GAME MODE"
                         #------------------ for before game start
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         
-                    elif game_state == "FAST_ADD_SUB":
+                    elif game_state == "MATH RECALL":
                         game_state = "GAME MODE"
                         #------------------ for before game start
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         
-                    elif game_state == "ACTION":
+                    elif game_state == "REACTION":
                         game_state = "GAME MODE"
                         #------------------ for before game start
                         before_game.before_game_start = True
@@ -2874,56 +2923,56 @@ def handle_events(
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         
-                    elif game_state == "REPEAT_AFTER_ME":
+                    elif game_state == "MEMORY PATTERN":
                         game_state = "GAME MODE"
                         #------------------ for before game start
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         
-                    elif game_state == "SHAPE_COLOR_NAME":
+                    elif game_state == "COLOR MATCH":
                         game_state = "GAME MODE"
                         #------------------ for before game start
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         
-                    elif game_state == "HARD":
+                    elif game_state == "MEMORY CALC":
                         game_state = "GAME MODE"
                         #------------------ for before game start
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         
-                    elif game_state == "DETECT_PRO":
+                    elif game_state == "QUICK DETECT":
                         game_state = "GAME MODE"
                         #------------------ for before game start
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         
-                    elif game_state == "MOVE_ARROW":
+                    elif game_state == "DIRECTION DETECT":
                         game_state = "GAME MODE"
                         #------------------ for before game start
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         
-                    elif game_state == "MEMORY_GO":
+                    elif game_state == "NUMBER ORDER":
                         game_state = "GAME MODE"
                         #------------------ for before game start
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         
-                    elif game_state == "MATH_GO":
+                    elif game_state == "MATH CHAIN":
                         game_state = "GAME MODE"
                         #------------------ for before game start
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         
-                    elif game_state == "FOLLOW_THAT":
+                    elif game_state == "MEMORY PATH":
                         game_state = "GAME MODE"
                         #------------------ for before game start
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         
                     elif game_state == "OPERATION":
-                        menu_state= "P_GAME_MODE"
+                        menu_state= "GAMES_OR_MATH"
                         game_state = "MENU"
                         
                     elif game_state == "THOOZ":
@@ -2932,13 +2981,13 @@ def handle_events(
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         
-                    elif game_state == "UNBLOCK_CAR":
+                    elif game_state == "UNBLOCK CAR":
                         game_state = "GAME MODE"
                         #------------------ for before game start
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         
-                    elif game_state == "WORD":
+                    elif game_state == "HIDDEN WORD":
                         game_state = "GAME MODE"
                         #------------------ for before game start
                         before_game.before_game_start = True
@@ -2951,8 +3000,8 @@ def handle_events(
                         before_game.previous_game_state_F = "NONE"
                         
                         
-                    elif game_state == "NEXT_PAGE_BEFORE_GAME":
-                        game_state = "BEFORE_GAMES"
+                    elif game_state == "NEXT GAME GUID":
+                        game_state = "GAME GUID"
                         before_game.reset_window_before_each_game()
 
                     elif game_state == "Contact Us":
@@ -2971,19 +3020,23 @@ def handle_events(
                         menu_state = "SUPPORT"
 
 
-                    elif game_state == "DONATE_button":
+                    elif game_state == "DONATE_":
                         game_state = "MENU"
                         menu_state = "MENU"
                         DASHBOARD=True
+                        S_E_W.reset_window_side_effect()
 
                     elif game_state == "STORE":
                         game_state = "MENU"
                         menu_state = "MENU"
                         DASHBOARD=True
+                        S_E_W.reset_window_side_effect()
+
                     elif game_state == "MESSAGE":
                         game_state = "MENU"
                         menu_state = "MENU"
                         DASHBOARD=True
+                        S_E_W.reset_window_side_effect()
 
 
 
@@ -2991,8 +3044,7 @@ def handle_events(
 
 
 
-
-                    elif game_state == "DOTS_BOX":
+                    elif game_state == "DOTS BOXS":
                         game_state = "GAME MODE"
                         #------------------ for before game start
                         before_game.before_game_start = True
@@ -3016,20 +3068,20 @@ def handle_events(
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         
-                    elif game_state == "FOLLOW_FREE":
+                    elif game_state == "COLOR FLOW":
                         game_state = "GAME MODE"
                         #------------------ for before game start
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         
-                    elif game_state == "CHOOSE_IMAGE":
+                    elif game_state == "FIND THE NEW":
                         game_state = "GAME MODE"
                         #------------------ for before game start
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         
                         
-                    elif game_state == "MEMORY_HARD":
+                    elif game_state == "MEMORY RECALL":
                         game_state = "GAME MODE"
                         #------------------ for before game start
                         before_game.before_game_start = True
@@ -3059,13 +3111,13 @@ def handle_events(
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         
-                    elif game_state == "SORT_NUMBER":
+                    elif game_state == "NUMBER SLIDE":
                         game_state = "GAME MODE"
                         #------------------ for before game start
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         
-                    elif game_state == "WORD":
+                    elif game_state == "HIDDEN WORD":
                         game_state = "GAME MODE"
                         #------------------ for before game start
                         before_game.before_game_start = True
@@ -3114,7 +3166,7 @@ def handle_events(
 
                             if i == 0:
                                 menu_state = "MENU"
-                                game_state = "MENU" # نکته در این جا کلا گیم استیت رو دیگه با چیزی نباید قراد بخاطر   -----------> FOUR_ICON_FOR_SCREEN
+                                game_state = "MENU" # نکته در این جا کلا گیم استیت رو دیگه با چیزی نباید قراد بخاطر   -----------> THREE_ICONS
                                 DASHBOARD=True
                                 # game_state = "LEVELS"
                                 # DAILY_GAME = True
@@ -3125,30 +3177,30 @@ def handle_events(
                                 reset_punch_images_animation()
                                 SUP.reset_window_side_effect()
                                 CUSTOM_MATH = False
-                                FOUR_ICON_FOR_SCREEN=True
+                                THREE_ICONS=True
                                 button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
                             elif i == 1:
-                                menu_state = "DAILY GAME"
+                                menu_state = "DAILYGAME_STATUS_PROGRESS_ACHIEVEMENT"
                                 DASHBOARD=False
                                 SUP.reset_window_side_effect()
                                 CUSTOM_MATH = False
-                                FOUR_ICON_FOR_SCREEN=True
+                                THREE_ICONS=True
 
                             elif i == 2:
-                                menu_state = "P_GAME_MODE"
+                                menu_state = "GAMES_OR_MATH"
                                 game_state ="MENU"
                                 DASHBOARD=False
                                 CUSTOM_MATH=True
                                 CUS.reset_punch_images_animation()
                                 SUP.reset_window_side_effect()
-                                FOUR_ICON_FOR_SCREEN=True
+                                THREE_ICONS=True
 
                             elif i == 3:
                                 coming_soon_notification(screen, trigger=True)
                                 # game_state = "ONLINE"
                                 # DASHBOARD=False
                                 CUSTOM_MATH = False
-                                FOUR_ICON_FOR_SCREEN=True
+                                THREE_ICONS=True
 
 
                             elif i == 4:
@@ -3157,7 +3209,7 @@ def handle_events(
                                 # DASHBOARD=False
                                 # CUS.reset_punch_images_animation()
                                 CUSTOM_MATH = False
-                                FOUR_ICON_FOR_SCREEN=True
+                                THREE_ICONS=True
 
                             elif i == 5:
                                 menu_state = "SETTING"
@@ -3171,7 +3223,7 @@ def handle_events(
                                 SUP.reset_punch_scale_animation_one_image()
                                 SUP.reset_window_side_effect()
                                 CUSTOM_MATH = False
-                                FOUR_ICON_FOR_SCREEN=True
+                                THREE_ICONS=True
                                 DES.reset_menu_back_setters()
                                 button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
 
@@ -3187,7 +3239,7 @@ def handle_events(
                                 CUS.reset_punch_images_animation()
                                 SUP.reset_window_side_effect()
                                 CUSTOM_MATH = False
-                                FOUR_ICON_FOR_SCREEN=True
+                                THREE_ICONS=True
 
                             elif i == 7:
                                 menu_state = "EXIT"
@@ -3201,7 +3253,7 @@ def handle_events(
                                 # ONLINE_FLAG = False
                                 # SUPPORT_MENU = False
                                 reset_exit_animation()
-                                FOUR_ICON_FOR_SCREEN=False
+                                THREE_ICONS=False
 
                 # ==========================================
                 # Settings Menu
@@ -3218,7 +3270,7 @@ def handle_events(
                                 setting_menu = "MUSIC"
                                 # game_state ="SETTING"
                                 # menu_state ="SETTING"
-                                reset_side_effect_language()
+                                language.reset_side_effect_language()
                                 DASHBOARD=False
                                 control_every_button_in_setting_on_or_off="music"
                                 SUP.reset_window_side_effect()
@@ -3231,7 +3283,7 @@ def handle_events(
                                 setting_menu = "SOUND"
                                 control_every_button_in_setting_on_or_off="sound"
                                 reset_music_side_effect()
-                                reset_side_effect_language()
+                                language.reset_side_effect_language()
                                 SUP.reset_window_side_effect()
                                 CUS.reset_punch_images_animation()
                                 ACC.reset_profile_account_side_effect()
@@ -3242,7 +3294,7 @@ def handle_events(
                                 setting_menu = "ACCOUNT"
                                 control_every_button_in_setting_on_or_off="account"
                                 reset_music_side_effect()
-                                reset_side_effect_language()
+                                language.reset_side_effect_language()
                                 SUP.reset_window_side_effect()
                                 CUS.reset_punch_images_animation()
 
@@ -3262,7 +3314,7 @@ def handle_events(
 
                                 setting_menu = "MORE"
                                 reset_music_side_effect()
-                                reset_side_effect_language()
+                                language.reset_side_effect_language()
                                 control_every_button_in_setting_on_or_off="more"
                                 ACC.reset_profile_account_side_effect()
 
@@ -3344,14 +3396,13 @@ def handle_events(
                 elif game_state == "CEILL":
 
 
-                    for value, rect in ceill_button_rects.items():
+                    for value, rect in ceill_screen.ceill_button_rects.items():
 
                         if rect.collidepoint(mouse_pos):
                             play_click()
 
                             ceill = value
 
-                            # ceill_entered = True
 
                             game_state = "TIME"
 
@@ -3398,294 +3449,210 @@ def handle_events(
                             play_click()
 
                             answer_selected = answer
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
                 # ==========================================
                 # GAME MODE
                 # ==========================================
 
+                elif game_state == "GAME MODE" and game_mode_feature == "math":
 
-
-                            
-                elif game_state == "GAME MODE":
-                    
                     if DONT_LET_CLICK_GAMES_BUTTON_BEFORE_THAT == True:
                         CUSTOM_MATH = False
 
-                        if MOD.current_page_GAME_MODE == 0:
+                    for i, rect in enumerate(GAME_MODE_60_IMAGE_RECT_MATH):
 
-                            for i, rect in enumerate(image_game_mode_page1):
+                        if rect.collidepoint(mouse_pos):
 
-                                if rect.collidepoint(mouse_pos):
+                            play_click()
 
-                                    play_click()
-                                    # print(DONT_LET_CLICK_GAMES_BUTTON_BEFORE_THAT)
+                            if i < 7:
 
-                                    if i == 0:
-                                        game_state = game_1_1
-                                        event_click_game(game_state,is_guest)
-                                        
-                                    elif i == 1:
-                                        game_state = game_1_2
-                                        event_click_game(game_state,is_guest)
-                                    elif i == 2:
-                                        game_state = game_1_3
-                                        event_click_game(game_state,is_guest)
-                                    elif i == 3:
-                                        game_state = game_1_4
-                                        event_click_game(game_state,is_guest)
-                                    elif i == 4:
-                                        game_state = game_1_5
-                                        event_click_game(game_state,is_guest)
-                                    elif i == 5:
-                                        game_state = game_1_6
-                                        event_click_game(game_state,is_guest) 
-                                        
+                                before_game.previous_game_state_F =game_list.math_games[i]
+                                game_state = "GAME GUID"
+                                
+                            else:
+                                coming_soon_notification(
+                                    screen,
+                                    trigger=True
+                                )
+                                
+                elif game_state == "GAME MODE" and game_mode_feature == "logic":
 
+                    if DONT_LET_CLICK_GAMES_BUTTON_BEFORE_THAT == True:
+                        CUSTOM_MATH = False
 
+                    for i, rect in enumerate(GAME_MODE_60_IMAGE_RECT_LOGIC):
 
-                        elif MOD.current_page_GAME_MODE == 1:
+                        if rect.collidepoint(mouse_pos):
 
-                            for i, rect in enumerate(image_game_mode_page2):
+                            play_click()
 
-                                if rect.collidepoint(mouse_pos):
+                            if i < 12:
 
-                                    play_click()
+                                before_game.previous_game_state_F =game_list.logic_games[i]
+                                game_state = "GAME GUID"
+                                
+                            else:
+                                coming_soon_notification(
+                                    screen,
+                                    trigger=True
+                                )
+                                
+                                
+                                
+                elif game_state == "GAME MODE" and game_mode_feature == "memory":
 
-                                    if i == 0:
-                                        game_state =game_2_1
-                                        event_click_game(game_state,is_guest) 
-                                    elif i == 1:
-                                        game_state =game_2_2
-                                        event_click_game(game_state,is_guest) 
-                                    elif i == 2:
-                                        game_state =game_2_3
-                                        event_click_game(game_state,is_guest) 
-                                    elif i == 3:
-                                        game_state =game_2_4
-                                        event_click_game(game_state,is_guest) 
-                                    elif i == 4:
-                                        game_state =game_2_5
-                                        event_click_game(game_state,is_guest) 
-                                    elif i == 5:
-                                        game_state =game_2_6
-                                        event_click_game(game_state,is_guest) 
+                    if DONT_LET_CLICK_GAMES_BUTTON_BEFORE_THAT == True:
+                        CUSTOM_MATH = False
 
-                                        
-                        elif MOD.current_page_GAME_MODE == 2:
+                    for i, rect in enumerate(GAME_MODE_60_IMAGE_RECT_MEMORY):
 
-                            for i, rect in enumerate(image_game_mode_page3):
+                        if rect.collidepoint(mouse_pos):
 
-                                if rect.collidepoint(mouse_pos):
+                            play_click()
 
-                                    play_click()
+                            if i < 6:
 
-                                    if i == 0:
-                                        game_state =game_3_1
-                                        event_click_game(game_state,is_guest) 
-                                    elif i == 1:
-                                        game_state =game_3_2
-                                        event_click_game(game_state,is_guest) 
-                                    elif i == 2:
-                                        game_state =game_3_3
-                                        event_click_game(game_state,is_guest) 
-                                    elif i == 3:
-                                        game_state =game_3_4
-                                        event_click_game(game_state,is_guest) 
-                                    elif i == 4:
-                                        game_state =game_3_5
-                                        event_click_game(game_state,is_guest) 
-                                    elif i == 5:
-                                        game_state =game_3_6
-                                        event_click_game(game_state,is_guest) 
+                                before_game.previous_game_state_F =game_list.memory_games[i]
+                                game_state = "GAME GUID"
 
-                        elif MOD.current_page_GAME_MODE == 3:
+                            else:
+                                coming_soon_notification(
+                                    screen,
+                                    trigger=True
+                                )
+                                
+                elif game_state == "GAME MODE" and game_mode_feature == "detection":
 
-                            for i, rect in enumerate(image_game_mode_page4):
+                    if DONT_LET_CLICK_GAMES_BUTTON_BEFORE_THAT == True:
+                        CUSTOM_MATH = False
 
-                                if rect.collidepoint(mouse_pos):
+                    for i, rect in enumerate(GAME_MODE_60_IMAGE_RECT_DETECTION):
 
-                                    play_click()
+                        if rect.collidepoint(mouse_pos):
 
-                                    if i == 0:
-                                        game_state =game_4_1
-                                        event_click_game(game_state,is_guest) 
-                                    if i == 1:
-                                        game_state =game_4_2
-                                        event_click_game(game_state,is_guest) 
-                                    if i == 2:
-                                        game_state =game_4_3                                    
-                                        event_click_game(game_state,is_guest) 
-                                    if i == 3:                                    
-                                        game_state =game_4_4
-                                        event_click_game(game_state,is_guest) 
-                                    if i == 4:
-                                        game_state =game_4_5
-                                        event_click_game(game_state,is_guest) 
-                                    if i == 5:
-                                        game_state =game_4_6
-                                        event_click_game(game_state,is_guest) 
-                        elif MOD.current_page_GAME_MODE == 4:
+                            play_click()
 
-                            for i, rect in enumerate(image_game_mode_page5):
+                            if i < 11:
 
-                                if rect.collidepoint(mouse_pos):
+                                before_game.previous_game_state_F =game_list.detection_games[i]
+                                game_state = "GAME GUID"
 
-                                    play_click()
+                            else:
+                                coming_soon_notification(
+                                    screen,
+                                    trigger=True
+                                )
+                                
+                elif game_state == "GAME MODE" and game_mode_feature == "fast":
 
-                                    if i == 0:
-                                        game_state =game_5_1
-                                        event_click_game(game_state,is_guest) 
-                                    if i == 1:
-                                        game_state =game_5_2
-                                        event_click_game(game_state,is_guest) 
-                                    if i == 2:
-                                        game_state =game_5_3
-                                        event_click_game(game_state,is_guest) 
-                                    if i == 3:
-                                        game_state =game_5_4
-                                        event_click_game(game_state,is_guest) 
-                                    if i == 4:
-                                        game_state =game_5_5
-                                        event_click_game(game_state,is_guest) 
-                                    if i == 5:
-                                        game_state =game_5_6
-                                        event_click_game(game_state,is_guest) 
-                        elif MOD.current_page_GAME_MODE == 5:
+                    if DONT_LET_CLICK_GAMES_BUTTON_BEFORE_THAT == True:
+                        CUSTOM_MATH = False
 
-                            for i, rect in enumerate(image_game_mode_page6):
+                    for i, rect in enumerate(GAME_MODE_60_IMAGE_RECT_FAST):
 
-                                if rect.collidepoint(mouse_pos):
-                    
-                                        
-                                    if i == 0:
-                                        game_state =game_6_1
-                                        event_click_game(game_state,is_guest) 
-                                    if i == 1:
-                                        game_state =game_6_2
-                                        event_click_game(game_state,is_guest) 
-                                    if i == 2:
-                                        game_state =game_6_3
-                                        event_click_game(game_state,is_guest) 
-                                    if i == 3:
-                                        game_state =game_6_4
-                                        event_click_game(game_state,is_guest) 
-                                    if i == 4:
-                                        game_state =game_6_5
-                                        event_click_game(game_state,is_guest) 
-                                    if i == 5:
-                                        game_state =game_6_6
-                                        event_click_game(game_state,is_guest) 
+                        if rect.collidepoint(mouse_pos):
 
-                        elif MOD.current_page_GAME_MODE == 6:
+                            play_click()
 
-                            for i, rect in enumerate(image_game_mode_page7):
+                            if i < 3:
 
-                                if rect.collidepoint(mouse_pos):
-                    
-                                        
-                                    if i == 0:
-                                        game_state =game_7_1
-                                        event_click_game(game_state,is_guest) 
-                                    if i == 1:
-                                        game_state =game_7_2
-                                        event_click_game(game_state,is_guest) 
+                                before_game.previous_game_state_F =game_list.fast_games[i]
+                                game_state = "GAME GUID"
 
-                                    if i == 2:
-                                        game_state =game_7_3
-                                        event_click_game(game_state,is_guest) 
+                            else:
+                                coming_soon_notification(
+                                    screen,
+                                    trigger=True
+                                )
+                                
+                elif game_state == "GAME MODE" and game_mode_feature == "entertainment":
 
-                                    if i == 3:
-                                        game_state =game_7_4
-                                        event_click_game(game_state,is_guest) 
+                    if DONT_LET_CLICK_GAMES_BUTTON_BEFORE_THAT == True:
+                        CUSTOM_MATH = False
 
-                                    # if i == 4:
-                                    #     game_state =game_7_5
-                                    # if i == 5:
-                                    #     game_state =game_7_6
+                    for i, rect in enumerate(GAME_MODE_60_IMAGE_RECT_ENTERTAINMENT):
 
+                        if rect.collidepoint(mouse_pos):
+
+                            play_click()
+
+                            if i == 1:
+
+                                before_game.previous_game_state_F =game_list.entertainment_games[i]
+                                game_state = "GAME GUID"
+
+                            else:
+                                coming_soon_notification(
+                                    screen,
+                                    trigger=True
+                                )
+                                
+                                
+                                
+                                
 
     return (
         running,
         screen,
-
         player_name,
         name_entered,
-
         selected_profile,
         player_image,
         selected_image,
-
         operator,
-
-        ceill,
-        ceill_text,
-        ceill_entered,
-
         time_limit,
         time_text,
         time_entered,
-
         answer_selected,
         game_state,
         select_buttons,
         back_button_rect,
-
         small_window,
         clicked_button,
-
         language_rects,
         selected_profile_image,
-
         dragging,
-
-        # rect_for_music,
-        # music_state,
-
-        # sound_state,
-        # rect_for_sound,
-
-        # home_button_rect,
-        # askus_button_rect,
-        # share_button_rect,
-        # sound_bar,
-        # music_bar,
         option_rects,
-
-        start_time,
         current_question,
         correct_count,
         wrong_count,
         question_number,
-
         dragging_GAME_MODE,
         drag_start_x_GAME_MODE,
         target_offset_GAME_MODE,
-
         support_face,
         SUPPORT_MENU,
         SUPPORT_window,
-
         EXIT_OK,
         CUSTOM_MATH,
         ONLINE_FLAG,
         DAILY_GAME,
-
         menu_state,
         DAILY_BUTTON,
-
         setting_menu,
         control_every_button_in_setting_on_or_off,
-
         DASHBOARD,
         is_guest,
         restart_OFF_ON_game,
-        
-        
         store__button_rect,
         call_button_rect,
        support__button_rect,
        sms_button_rect,
-        FOUR_ICON_FOR_SCREEN,
-        DONT_LET_CLICK_GAMES_BUTTON_BEFORE_THAT,game_mode_feature
+        THREE_ICONS,
+        DONT_LET_CLICK_GAMES_BUTTON_BEFORE_THAT,
+        game_mode_feature,
+        buy_premium
 
     )
     
