@@ -7,7 +7,7 @@
 <h1 align="center">Mental Math Game</h1>
 
 <p align="center">
-  <strong>Train your brain. Improve your speed. Master the numbers.</strong>
+  <strong>Train your brain. Improve your speed. Master  the numbers.</strong>
 </p>
 
 <p align="center">
