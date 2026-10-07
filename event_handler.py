@@ -10,7 +10,14 @@ from modules.MORE import more as MORE
 from event_helper import event_click_game
 from modules.GAMES import FOLLOW_THAT as FOTHAT
 from modules import language
+from modules.IN_GAME import menu_window
+from modules.IN_GAME import utils
+from modules.EFFECT import TRANSI
+from modules.RECT import rec as recc
+from modules import how_to_play
+from modules.DAILY import achievement
 from modules import ceill_screen
+from modules.DAILY import progress
 from modules.GAMES import MATCH3 
 from modules import operation_screen as OP 
 from modules.GAMES import SNAKE 
@@ -68,6 +75,7 @@ from modules.ACCOUNT import account as ACC
 from modules import  custom_math as CUS
 from modules import  design as DES
 from modules.music  import  *
+from modules  import  menu
 from modules.ACCOUNT import  player_profile as PLAYER
 from modules import  typer as TYPER
 from modules.GAMES import  FAST as RESE
@@ -88,6 +96,7 @@ import modules.ACCOUNT.country as CON
 import modules.exit as EX
 from  modules.MORE.policy import privacy_event
 from  modules.MORE.INFO import INFO_event
+from  modules import game_overview
 from modules import music as MUS
 from modules.SAVE import save as SAVE
 from modules import start_screen as STS
@@ -172,7 +181,10 @@ def handle_events(
     THREE_ICONS,
     DONT_LET_CLICK_GAMES_BUTTON_BEFORE_THAT,
     game_mode_feature,
-    buy_premium
+    buy_premium,
+    in_game_is_menu_on,
+    stop_loop,
+    menu_hidden_rect
 ):
     running = True
     # global fullscreen_
@@ -806,8 +818,7 @@ def handle_events(
         
                         
                         
-                        
- 
+
         if game_state == "GAME MODE":
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos=event.pos
@@ -1271,6 +1282,98 @@ def handle_events(
 
 
 
+
+
+
+        if game_state == "STATUS":
+            print("df")
+
+        if game_state == "PROGRESS":
+
+            # -----------------------------------------
+            # CAROUSEL CLICK
+            # -----------------------------------------
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+
+                menu_state = progress.handle_carousel_click(
+                    event,
+                    game_list.gamemode_icons,
+                    960,
+                    100,
+                    menu_state
+                )
+
+            # -----------------------------------------
+            # MATH
+            # -----------------------------------------
+
+            if menu_state == "math_progress":
+                print("fdsfsd")
+
+
+            # -----------------------------------------
+            # LOGIC
+            # -----------------------------------------
+
+            if menu_state == "logic_progress":
+                print("fdsfsd")
+
+            # -----------------------------------------
+            # MEMORY
+            # -----------------------------------------
+
+            if menu_state == "memory_progress":
+                print("fdsfsd")
+
+            # -----------------------------------------
+            # DETECTION
+            # -----------------------------------------
+
+            if menu_state == "detection_progress":
+                print("fdsfsd")
+
+            # -----------------------------------------
+            # FAST
+            # -----------------------------------------
+
+            if menu_state == "fast_progress":
+                print("fdsfsd")
+
+            # -----------------------------------------
+            # ENTERTAINMENT
+            # -----------------------------------------
+
+            if menu_state == "entertainment_progress":
+                print("fdsfsd")
+
+
+
+
+
+
+
+
+
+
+    #---------------------------ACHIEVEMENT
+
+        if game_state == "ACHIEVEMENT":
+
+            if event.type == pygame.MOUSEWHEEL:
+
+                achievement.achievement_target_scroll_y -= event.y * 200
+
+                MIN_SCROLL = - 190
+                MAX_SCROLL = 2000
+
+                achievement.achievement_target_scroll_y = max(
+                    MIN_SCROLL,
+                    min(
+                        achievement.achievement_target_scroll_y,
+                        MAX_SCROLL
+                    )
+                )
     #--------------------------- MATH CHAIN
         if game_state == "MATH CHAIN":
                 if event.type == pygame.KEYDOWN:
@@ -1512,24 +1615,24 @@ def handle_events(
 
 
 
-        # ----------------------------------------------------
-        # Mouse
-        # ----------------------------------------------------
-        elif event.type == pygame.MOUSEBUTTONDOWN:
+        # # ----------------------------------------------------
+        # # Mouse
+        # # ----------------------------------------------------
+        # elif event.type == pygame.MOUSEBUTTONDOWN:
 
-            if event.button == 1:
+        #     if event.button == 1:
 
-                for direction, rect in M_ARR.buttons.items():
+        #         for direction, rect in M_ARR.buttons.items():
 
-                    if rect.collidepoint(event.pos):
+        #             if rect.collidepoint(event.pos):
 
-                        M_ARR.answer(
-                            direction,
-                            current_width,
-                            current_height
-                        )
+        #                 M_ARR.answer(
+        #                     direction,
+        #                     current_width,
+        #                     current_height
+        #                 )
 
-                        break    
+        #                 break    
                                 
                         
                         
@@ -1861,7 +1964,6 @@ def handle_events(
                     game_state = "MENU"
                     is_guest=False
                     DASHBOARD=True
-
                 elif result_22 == "GUEST":
                     STS.current_player_type = "GUEST"
                     is_guest=True
@@ -1950,7 +2052,7 @@ def handle_events(
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         DONT_LET_CLICK_GAMES_BUTTON_BEFORE_THAT=True
-                        button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
+                        ##button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
 
                         continue
         #--------------------DAILY GAME این مال 
@@ -1972,6 +2074,23 @@ def handle_events(
                 if CUS.IMG1_REC2.collidepoint(event.pos):
 
                     game_state = "STATUS"
+                    DES.reset_menu_back_setters()
+                    SUP.reset_window_side_effect()
+                    S_E_W.reset_menu_setting_panel()
+
+                if CUS.IMG1_REC4.collidepoint(event.pos):
+
+                    game_state = "ACHIEVEMENT"
+                    DES.reset_menu_back_setters()
+                    SUP.reset_window_side_effect()
+                    S_E_W.reset_menu_setting_panel()
+                    # achievement.achievement_trigger=True
+
+                if CUS.IMG1_REC3.collidepoint(event.pos):
+                    TRANSI.start_transition()
+
+                    game_state = "PROGRESS"
+                    menu_state = "math_progress"
                     DES.reset_menu_back_setters()
                     SUP.reset_window_side_effect()
                     S_E_W.reset_menu_setting_panel()
@@ -2011,17 +2130,17 @@ def handle_events(
                 if CUS.rec_more_image0.collidepoint(mouse_pos):
                     game_state = "FAQ"
                     DES.reset_menu_back_setters()
-                    button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
+                    ##button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
 
                 elif CUS.rec_more_image1.collidepoint(mouse_pos):
                     game_state = "INFO"
                     DES.reset_menu_back_setters()
-                    button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
+                    ##button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
 
                 elif CUS.rec_more_image2.collidepoint(mouse_pos):
                     game_state = "Privacy Policy"
                     DES.reset_menu_back_setters()
-                    button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
+                    ##button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
 
                 elif CUS.rec_more_image3.collidepoint(mouse_pos):
 
@@ -2222,6 +2341,56 @@ def handle_events(
 
         # ---------------- GAME MODE EVENT ----------------
 
+        if game_state == "MENU":
+                    
+            recc.right_card_event(event, recc.right_card_state)
+            # rec.reset_down_card(state)
+            recc.start_card_event(
+                event,
+                recc.start_card_state,
+                recc.other_card_state
+            )
+            menu.target_scroll_y = menu.handle_six_scroll_event(
+                event,
+                menu_hidden_rect,
+                menu.scroll_y,
+                370
+            )
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                # if rec.other_card_state_.collidepoint(event.pos):
+                #     print("sdsd")
+                #     menu_state = "DAILYGAME_STATUS_PROGRESS_ACHIEVEMENT"
+                for i , rec in enumerate(recc.rect_S_P_A):
+                    if rec.collidepoint(event.pos):
+                        if i == 0 :
+                            game_state ="STATUS"
+                        if i == 2 :
+                            game_state ="PROGRESS"
+                            print("yes")
+
+                        if i == 3 :
+                            game_state ="ACHIEVEMENT"
+                        
+                        
+        if game_state == "SETTING":
+
+            recc.right_card_event(event, recc.right_card_state)
+            # rec.reset_down_card(state)
+            recc.start_card_event(
+                event,
+                recc.start_card_state,
+                recc.other_card_state
+
+            )
+            menu.target_scroll_y = menu.handle_six_scroll_event(
+                event,
+                menu_hidden_rect,
+                menu.scroll_y,
+                370
+            )
+
+        # ---------------- GAME MODE EVENT ----------------
+
         if game_state == "GAME MODE":
                     
             event_vertical_scroll(
@@ -2317,18 +2486,21 @@ def handle_events(
                     print("message")
            
            
-        if game_state == "GAME GUID": 
-            THREE_ICONS = False                  
+        if game_state == "GAME OVERVIEW": 
+            THREE_ICONS = False
+            # INFO_event(event)    
+            game_overview.GAME_OVERVIEW_event(event)              
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if SUP.next_page_rec2 is not None:
                     if SUP.next_page_rec2.collidepoint(event.pos):
                         SUP.reset_window_side_effect()
                         SUP.reset_punch_scale_animation_one_image()
 
-                        game_state = "DIFFICULTY SELECTION"
+                        game_state = "COUNT_DOWN"
 
                         DES.reset_menu_back_setters()
-                        button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
+                        ##button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
+                        before_game.reset_window_before_each_game()
 
                         print("PLAY")
 
@@ -2340,7 +2512,7 @@ def handle_events(
 
                         DES.reset_menu_back_setters()
 
-                        game_state = "NEXT GAME GUID"
+                        game_state = "HOW TO PLAY"
 
                         before_game.reset_window_before_each_game()
 
@@ -2369,7 +2541,7 @@ def handle_events(
                                     
 
     
-        if game_state == "NEXT GAME GUID": 
+        if game_state == "HOW TO PLAY": 
             THREE_ICONS = False                  
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if SUP.next_page_rec2 is not None:
@@ -2377,10 +2549,10 @@ def handle_events(
                         SUP.reset_window_side_effect()
                         SUP.reset_punch_scale_animation_one_image()
 
-                        game_state = "DIFFICULTY SELECTION"
+                        game_state = "COUNT_DOWN"
 
                         DES.reset_menu_back_setters()
-                        button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
+                        ##button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
 
                         print("PLAY")
                         
@@ -2395,12 +2567,12 @@ def handle_events(
             
             
                         
-        if game_state == "DIFFICULTY SELECTION": 
+        if game_state == "COUNT_DOWN": 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 for i,rect in enumerate(difficulty_selection_menu.bottom_rects):
                     if rect.collidepoint(mouse_pos):
                         if i == 0:
-                            game_state ="GAME GUID"
+                            game_state ="GAME OVERVIEW"
                         if i == 1:
                             if difficulty_selection_menu.sound_on:
                                 on_off_sound_effect(0)
@@ -2570,6 +2742,16 @@ def handle_events(
                 # ==========================================
                 # back
                 # ==========================================
+                elif utils.setting_button_rect.collidepoint(mouse_pos):
+                    play_click()
+                    if game_state == "DIRECTION DETECT":
+                        in_game_is_menu_on=True
+                        stop_loop=True
+                        before_game.previous_game_state_F = "NONE"
+
+
+
+
                 elif back_button_rect.collidepoint(mouse_pos):
                     play_click()
 
@@ -2585,7 +2767,7 @@ def handle_events(
                         DASHBOARD=True
                         game_state="MENU"
                         S_E_W.reset_menu_setting_panel()
-                        button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
+                        ##button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
 
                     elif game_state == "MUSIC":
                         reset_music_side_effect()
@@ -2619,7 +2801,7 @@ def handle_events(
                         DES.menu_slide_active = True
                         DES.menu_slide_x = None
                         S_E_W.reset_menu_setting_panel()
-                        button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
+                        ##button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
 
                         #--------------------
                     elif game_state == "MORE":
@@ -2647,14 +2829,14 @@ def handle_events(
 
                         
                     elif game_state == "MISSING NUMBER":
-                        game_state = "GAME GUID"
+                        game_state = "GAME OVERVIEW"
                         
                         #------------------ for before game start
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
 
 
-                    elif game_state == "GAME GUID":
+                    elif game_state == "GAME OVERVIEW":
                         game_state = "GAME MODE"
 
 
@@ -2781,6 +2963,12 @@ def handle_events(
                     elif game_state == "STATUS":
                         game_state = "MENU"
                         
+                    elif game_state == "ACHIEVEMENT":
+                        game_state = "MENU"
+                        
+                    elif game_state == "PROGRESS":
+                        game_state = "MENU"
+                        menu_state = "DAILYGAME_STATUS_PROGRESS_ACHIEVEMENT"
                         
                     elif game_state == "COUNT ITEM":
                         game_state = "GAME MODE"
@@ -2850,7 +3038,7 @@ def handle_events(
                         CUS.reset_punch_images_animation()
                         S_E_W.reset_window_side_effect_MULLTI_WINDOW()
                         S_E_W.reset_menu_setting_panel()
-                        button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
+                        ##button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
 
                     elif game_state == "Report Bug":
                         game_state = "MENU"
@@ -2859,7 +3047,7 @@ def handle_events(
                         CUS.reset_punch_images_animation()
                         S_E_W.reset_window_side_effect_MULLTI_WINDOW()
                         S_E_W.reset_menu_setting_panel()
-                        button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
+                        ##button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
 
                     elif game_state == "Donate":
                         game_state = "MENU"
@@ -2868,7 +3056,7 @@ def handle_events(
                         CUS.reset_punch_images_animation()
                         S_E_W.reset_window_side_effect_MULLTI_WINDOW()
                         S_E_W.reset_menu_setting_panel()
-                        button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
+                        ##button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
 
                     elif game_state == "Contact Us":
                         game_state = "MENU"
@@ -2877,7 +3065,7 @@ def handle_events(
                         CUS.reset_punch_images_animation()
                         S_E_W.reset_window_side_effect_MULLTI_WINDOW()
                         S_E_W.reset_menu_setting_panel()
-                        button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
+                        ##button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
 
                         
                         
@@ -2947,11 +3135,7 @@ def handle_events(
                         before_game.before_game_start = True
                         before_game.previous_game_state_F = "NONE"
                         
-                    elif game_state == "DIRECTION DETECT":
-                        game_state = "GAME MODE"
-                        #------------------ for before game start
-                        before_game.before_game_start = True
-                        before_game.previous_game_state_F = "NONE"
+
                         
                     elif game_state == "NUMBER ORDER":
                         game_state = "GAME MODE"
@@ -3000,14 +3184,14 @@ def handle_events(
                         before_game.previous_game_state_F = "NONE"
                         
                         
-                    elif game_state == "NEXT GAME GUID":
-                        game_state = "GAME GUID"
+                    elif game_state == "HOW TO PLAY":
+                        game_state = "GAME OVERVIEW"
                         before_game.reset_window_before_each_game()
 
                     elif game_state == "Contact Us":
                         game_state = "MENU"
                         menu_state = "SUPPORT"
-                        button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
+                        ##button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
 
                     elif game_state == "Feed Back":
                         game_state = "MENU"
@@ -3159,7 +3343,8 @@ def handle_events(
                 # Select Menu
                 # ==========================================
                 elif game_state == "MENU":# menu
-                    for i, rect in enumerate(button_menu_setting_gamemode.select_buttons_setting):
+
+                    for i, rect in enumerate(menu.item_rects):
 
                         if rect.collidepoint(mouse_pos):
                             play_click()
@@ -3178,7 +3363,7 @@ def handle_events(
                                 SUP.reset_window_side_effect()
                                 CUSTOM_MATH = False
                                 THREE_ICONS=True
-                                button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
+                                #button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
                             elif i == 1:
                                 menu_state = "DAILYGAME_STATUS_PROGRESS_ACHIEVEMENT"
                                 DASHBOARD=False
@@ -3213,6 +3398,7 @@ def handle_events(
 
                             elif i == 5:
                                 menu_state = "SETTING"
+                                recc.reset_down_card(recc.down_card_state)
                                 game_state= "SETTING"
                                 DES.menu_slide_back = False
                                 DES.menu_slide_active = True
@@ -3225,7 +3411,7 @@ def handle_events(
                                 CUSTOM_MATH = False
                                 THREE_ICONS=True
                                 DES.reset_menu_back_setters()
-                                button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
+                                #button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
 
                             elif i == 6:                            
                                 menu_state = "SUPPORT"
@@ -3261,7 +3447,7 @@ def handle_events(
 
                 elif game_state == "SETTING":
 
-                    for i, rect in enumerate(button_menu_setting_gamemode.select_buttons_setting):
+                    for i, rect in enumerate(menu.item_rects_setting):
 
                         if rect.collidepoint(mouse_pos):
                             play_click()
@@ -3476,10 +3662,13 @@ def handle_events(
                             play_click()
 
                             if i < 7:
+                                # print(before_game.previous_game_state_F)
 
                                 before_game.previous_game_state_F =game_list.math_games[i]
-                                game_state = "GAME GUID"
-                                
+                                before_game.guid_icon_setter_for_eatch_game(before_game.previous_game_state_F)
+                                game_state = "GAME OVERVIEW"
+                                before_game.reset_window_before_each_game()
+
                             else:
                                 coming_soon_notification(
                                     screen,
@@ -3498,10 +3687,11 @@ def handle_events(
                             play_click()
 
                             if i < 12:
-
                                 before_game.previous_game_state_F =game_list.logic_games[i]
-                                game_state = "GAME GUID"
-                                
+                                before_game.guid_icon_setter_for_eatch_game(before_game.previous_game_state_F)
+                                game_state = "GAME OVERVIEW"
+                                before_game.reset_window_before_each_game()
+
                             else:
                                 coming_soon_notification(
                                     screen,
@@ -3524,7 +3714,10 @@ def handle_events(
                             if i < 6:
 
                                 before_game.previous_game_state_F =game_list.memory_games[i]
-                                game_state = "GAME GUID"
+                                before_game.guid_icon_setter_for_eatch_game(before_game.previous_game_state_F)
+
+                                game_state = "GAME OVERVIEW"
+                                before_game.reset_window_before_each_game()
 
                             else:
                                 coming_soon_notification(
@@ -3546,7 +3739,10 @@ def handle_events(
                             if i < 11:
 
                                 before_game.previous_game_state_F =game_list.detection_games[i]
-                                game_state = "GAME GUID"
+                                before_game.guid_icon_setter_for_eatch_game(before_game.previous_game_state_F)
+
+                                game_state = "GAME OVERVIEW"
+                                before_game.reset_window_before_each_game()
 
                             else:
                                 coming_soon_notification(
@@ -3568,7 +3764,10 @@ def handle_events(
                             if i < 3:
 
                                 before_game.previous_game_state_F =game_list.fast_games[i]
-                                game_state = "GAME GUID"
+                                before_game.guid_icon_setter_for_eatch_game(before_game.previous_game_state_F)
+
+                                game_state = "GAME OVERVIEW"
+                                before_game.reset_window_before_each_game()
 
                             else:
                                 coming_soon_notification(
@@ -3587,10 +3786,13 @@ def handle_events(
 
                             play_click()
 
-                            if i == 1:
+                            if i == 0:
 
                                 before_game.previous_game_state_F =game_list.entertainment_games[i]
-                                game_state = "GAME GUID"
+                                before_game.guid_icon_setter_for_eatch_game(before_game.previous_game_state_F)
+
+                                game_state = "GAME OVERVIEW"
+                                before_game.reset_window_before_each_game()
 
                             else:
                                 coming_soon_notification(
@@ -3652,7 +3854,9 @@ def handle_events(
         THREE_ICONS,
         DONT_LET_CLICK_GAMES_BUTTON_BEFORE_THAT,
         game_mode_feature,
-        buy_premium
+        buy_premium,
+        in_game_is_menu_on,
+        stop_loop
 
     )
     
