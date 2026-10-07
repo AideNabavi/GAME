@@ -62,8 +62,10 @@ current_width, current_height = screen.get_size()
 input_y = current_height // 2 + 100
 WIDTH, HEIGHT = current_width , current_height
 dt = clock.tick(60) / 1000
-
-
+TRANSITION = pygame.Surface(
+    (WIDTH, HEIGHT),
+    pygame.SRCALPHA
+)
 
 
 
@@ -74,22 +76,32 @@ dt = clock.tick(60) / 1000
 #########################################################################################################
 #########################################################################################################
 import sys
+from modules.RECT import rec
+from modules import how_to_play
 from event_handler import handle_events
 from modules.time_screen import draw_time_screen
 from modules.game_engine import run_game
 from modules import button
 from modules import design
 from modules import language
+from modules import menu
+
 from modules import sound
+from modules.RECT import rect_window
 from modules import screen as screen_
 from modules import ceill_screen
+from modules.IN_GAME import menu_window
 from modules.SUPPORT  import support 
+from modules.MORE import more 
+from modules.DAILY import status 
 from modules.MORE import more 
 from modules.ACCOUNT import  profile_
 from modules import music
+from modules import game_overview
 from modules import operation_screen
 from modules.ACCOUNT import account 
 from modules import before_game
+from modules.EFFECT import popi as pop
 from modules import game_list
 from modules.SUPPORT import report_bug
 from modules.SAVE import save 
@@ -98,6 +110,8 @@ from modules.SAVE import recent_game
 from modules import custom_math
 from modules.MORE import FAQ 
 from modules import mode as MODE
+from modules.DAILY import progress as progress_
+from modules.DAILY import achievement
 from modules.SAVE.save import load_player
 from modules.SUPPORT import  contact_us 
 from modules.SUPPORT import feedback 
@@ -120,6 +134,7 @@ from modules.MORE import policy
 from modules import droping
 from modules.ACCOUNT import player_profile 
 # from modules.ACCOUNT import country as  CON
+from modules.IN_GAME import utils
 
 from modules.state import *
 
@@ -367,7 +382,6 @@ profile_images = player_profile.load_profile_images()
 
 
 
-
 popular_game.load_popular_games()
 recent_game.load_recent_games()
 
@@ -375,6 +389,26 @@ recent_game.load_recent_games()
 
 donate.load_donate_images()
 
+
+menu_hidden_rect = pygame.Rect(
+    25,
+    current_height// 2 - 550,
+    600,
+    1250
+)
+
+progress_area = pygame.Rect(
+    250,
+    250,
+    screen.get_width() - 500,
+    800
+)
+achievement_area = pygame.Rect(
+    250,
+    250,
+    screen.get_width() - 500,
+    800
+)
 
 
 input_box = pygame.Rect(
@@ -494,8 +528,9 @@ recent_game.selected_images = recent_game.choose_three_random_images()
 #--------------- برای انتخاب عکس پاپیولر گیم است
 popular_game.selected_images = popular_game.choose_three_random_images()
 
+from modules.EFFECT import TRANSI
 
-
+utils.WIDTH_HEIGHT_gettter(screen,current_width,current_height)
 language.WIDTH_HEIGHT_gettter(screen,current_width,current_height)
 SORT_NUMBER.WIDTH_HEIGHT_gettter(screen,current_width,current_height)
 SUDOKU.WIDTH_HEIGHT_gettter(screen,current_width,current_height)
@@ -541,6 +576,24 @@ else:
 
 
 
+# SKY_BLUE = (198, 242, 255)# بک گراند 
+# SKY_BLUE = (20, 201, 255)# دکمه
+SKY_BLUE = (255, 135, 40)# بک گراند 
+# SKY_BLUE = (255, 135, 40)# دکمه
+
+
+
+# این برای پیدا صفه ها است 
+punch_frames = rect_window.create_punch_frames(
+    width=1200,
+    height=900,
+    color=(255, 255, 255),
+    radius=50,
+    scale=2,
+    frame_count=30,
+    start_scale=0.65,
+    overshoot=1.12
+)
 
 #############################       ######################################
 ############################        ######################################
@@ -623,7 +676,9 @@ while running:
         THREE_ICONS,
         DONT_LET_CLICK_GAMES_BUTTON_BEFORE_THAT,
         game_mode_feature,
-        buy_premium
+        buy_premium,
+        in_game_is_menu_on,
+        stop_loop
 
     ) = handle_events(
 
@@ -683,7 +738,10 @@ while running:
         THREE_ICONS,
         DONT_LET_CLICK_GAMES_BUTTON_BEFORE_THAT,
         game_mode_feature,
-        buy_premium
+        buy_premium,
+        in_game_is_menu_on,
+        stop_loop,
+        menu_hidden_rect
 
     )
     
@@ -745,7 +803,7 @@ while running:
             
             
         #--------------- name screen
-        screen.draw_name_screen(
+        screen_.draw_name_screen(
             screen,
             fonts,
             player_profile.player_name,
@@ -808,30 +866,129 @@ while running:
 ##########################################################################
     if game_state == "MENU" or menu_state == "MENU":# DASH BOARDاین همون داشبود است 
         
+        
 
         draw_moving_map(
-            screen,
+            TRANSITION,
             WIDTH,
-            HEIGHT,
-            dt    )
-        droping.draw_flying_birds(
-            screen,
-            current_width,
-            current_height
-        )   
+            HEIGHT,    )
+        TRANSITION.blit(rec.menu_card_over, (-120, current_height // 2 - 800))
+        TRANSITION.blit(rec.icon_menu, (193,10))
 
-        menu_setting_mode.gamemode_menu_setting_panel(
-            screen,
-            menu_setting_mode.menu_icons,
-            menu_setting_mode.menu_positions,
-            "menu",
-            "menu",
-            current_width // 2  - 810 ,current_height // 2 - 4.5,image=menu_panel
 
-        )  
-        
-        
-        
+
+
+
+
+
+        menu.scroll_y += (
+            menu.target_scroll_y - menu.scroll_y
+        ) * 0.03
+        menu.draw_six_scroll_items(
+            TRANSITION,
+            menu.images,
+            menu.names,
+            menu_hidden_rect,
+            image_count=7,
+            mode="menu",
+            item_height=340,
+            scroll_y=menu.scroll_y,
+            font=fonts["date"]
+        )
+        # menu_setting_mode.gamemode_menu_setting_panel(
+        #     screen,
+        #     menu_setting_mode.menu_icons,
+        #     menu_setting_mode.menu_positions,
+        #     "menu",
+        #     "menu",
+        #     current_width // 2  - 810 ,current_height // 2 - 4.5,#image=menu_panel
+
+        # )  
+ 
+    # ############################################
+        rec.draw_down_card(
+            TRANSITION,
+            rec.down_card,
+            x=-8,
+            target_y=current_height // 2 - 900,
+            state=rec.down_card_state
+        )
+        rec.draw_down_card(
+            TRANSITION,
+            rec.icon_menu,
+            x=166,
+            target_y=current_height // 2 - 630,
+            state=rec.down_card_state
+        )
+        rec.draw_down_card(
+            TRANSITION,
+            rec.profile_image,
+            189,
+            current_height // 2 - 600,
+            rec.down_card_state,
+            text="alirezanab",
+            text_x=170,
+            text_y_offset=155,
+            font=fonts["date"]
+        )
+                        
+
+                        
+                
+        # rec.draw_right_slide_card(
+        #     screen,
+        #     rec.right_card,
+        #     visible_x=1800,
+        #     hidden_x=2027,
+        #     y=current_height // 2 - 540,
+        #     state=rec.right_card_state,
+        #     mouse_trigger_x=500,
+        #     hide_delay=5.0
+        # )
+        rec.draw_right_slide_card(
+            TRANSITION,
+            rec.right_card,
+            visible_x=1800,
+            hidden_x=2027,
+            y=current_height // 2 - 540,
+            state=rec.right_card_state,
+            images=rec.right_images,
+            texts=rec.right_texts,
+            font=rec.fonts["date"]
+        )
+        rec.draw_jelly_rect(
+            TRANSITION,
+            rec.start_card,
+            x=950,
+            target_y=1100,
+            state=rec.start_card_state,
+            text_is_on=False,
+            screen_height=current_height,
+            rise_time=1.0,
+            stay_time=5.0,
+            down_time=1.0,
+            bottom_wait=1.0
+        )
+        rec.draw_jelly_rect(
+            TRANSITION,
+            rec.start_button_card,
+            x=1050,
+            target_y=1140,
+            state=rec.other_card_state,
+            text_is_on=True,
+            screen_height=current_height,
+            rise_time=1.0,
+            stay_time=5.0,
+            down_time=1.0,
+            bottom_wait=1.0
+        )
+
+
+        screen.blit(TRANSITION, (0, 0))
+        TRANSI.go_transition(
+            screen,
+            TRANSITION
+        )
 ##########################################################################
 #------------------ SUPPORT
 ##########################################################################
@@ -893,11 +1050,7 @@ while running:
  
     if game_state == "Contact Us":
         #----------------- background_and_brids
-        draw_moving_map(
-            screen,
-            WIDTH,
-            HEIGHT,
-            dt    )
+
         droping.draw_flying_birds(
             screen,
             current_width,
@@ -1121,19 +1274,8 @@ while running:
 ##########################################################################
         
     if game_state == "MENU" and menu_state == "DAILYGAME_STATUS_PROGRESS_ACHIEVEMENT":
-        #---- دو عکس چاپ میکنه 
-        custom_math.draw_punch_image_1(
-            screen,
-            custom_math.IMG1,
-            (current_width//2 - 375 + 830, current_height // 2  ),
-            (700, 1050),
-            "DAILY_GAME2",0.351,
-            center_image=custom_math.punch_status,
-            center_image_size=(150, 150),
-            text="status",
-            text_font=fonts["date"],
-            )
-        #---- دو عکس چاپ میکنه 
+        
+                #---- دو عکس چاپ میکنه 
         custom_math.draw_punch_image_1(
             screen,
             custom_math.IMG1,
@@ -1143,6 +1285,43 @@ while running:
             center_image=custom_math.punch_daily,
             center_image_size=(150, 150),
             text="today_workout",
+            text_font=fonts["date"]
+        )
+        
+        
+        #---- دو عکس چاپ میکنه 
+        custom_math.draw_punch_image_1(
+            screen,
+            custom_math.IMG2,
+            (current_width//2 - 375 + 830, current_height // 2 - 400  ),
+            (400, 400),
+            "DAILY_GAME2",0.351,
+            center_image=custom_math.punch_status,
+            center_image_size=(150, 150),
+            text="status",
+            text_font=fonts["date"],
+            )
+
+        custom_math.draw_punch_image_1(
+            screen,
+            custom_math.IMG2,
+            (current_width//2 - 375 + 830, current_height // 2  ),
+            (400, 400),
+            "DAILY_GAME3",0.351,
+            center_image=custom_math.punch_status,
+            center_image_size=(150, 150),
+            text="progress",
+            text_font=fonts["date"]
+        )
+        custom_math.draw_punch_image_1(
+            screen,
+            custom_math.IMG2,
+            (current_width//2 - 375 + 830, current_height // 2 + 400 ),
+            (400, 400),
+            "DAILY_GAME4",0.351,
+            center_image=custom_math.punch_status,
+            center_image_size=(150, 150),
+            text="Achievements",
             text_font=fonts["date"]
         )
         
@@ -1223,6 +1402,169 @@ while running:
             support.daily_window,
             current_width // 2,
             current_height //2
+        )
+        
+        # status.draw_progress(
+        #     screen,
+        #     600,
+        #     250,
+        #     720,
+        #     status.passed,
+        #     status.total,
+        #     fonts["date"]
+        # )
+        # status.draw_score(
+        #     screen,
+        #     current_width // 2  - 400,
+        #     current_height // 2 - 100,
+        #     status.score_icon,
+        #     fonts["date"]
+        # )
+        # status.draw_xp(
+        #     screen,
+        #     current_width // 2 + 400 ,
+        #     current_height // 2 - 100,
+        #     status.xp_icon,
+        #     fonts["date"]
+        # )
+        
+        # status.draw_accuracy_list(
+        #     screen,
+        #     current_width // 2 - 370,
+        #     current_height // 2 -400,
+        #     500,
+        #     16,
+        #     160,
+        #     fonts["date"]
+        # )
+        
+        status.draw_calendar(
+            screen,
+            2026,
+            10,
+            300,
+            150,
+            cell_width=100,
+            cell_height=70,
+            font=fonts["date"],
+            title_font=fonts["DAY"]
+        )
+        screen_.draw_back_button(
+            screen,
+            back_button_rect)
+##########################################################################
+#------------------ PROGRESS
+##########################################################################
+    if game_state == "PROGRESS":
+        draw_moving_map(
+            screen,
+            WIDTH,
+            HEIGHT,
+            dt    )
+        droping.draw_flying_birds(
+            screen,
+            current_width,
+            current_height
+        )   
+        progress_.draw_carousel(
+            screen,
+            game_list.gamemode_icons,
+            960,
+            100
+        )
+        screen_.draw_back_button(
+            screen,
+            back_button_rect)
+        
+        if menu_state == "math_progress":
+            support.open_window_with_side_effect(
+                screen,
+                support.daily_window,
+                current_width // 2,
+                current_height //2
+            )
+            
+
+            progress_.draw_progress(
+                screen,
+                game_list.game_progress_math,
+                fonts["date"],
+                progress_.progress_scroll_y,
+                progress_area
+            )
+            
+
+                    
+        if menu_state == "logic_progress":
+            support.open_window_with_side_effect(
+                screen,
+                support.daily_window,
+                current_width // 2,
+                current_height //2
+            )
+        if menu_state == "memory_progress":
+            support.open_window_with_side_effect(
+                screen,
+                support.daily_window,
+                current_width // 2,
+                current_height //2
+            )
+        if menu_state == "detection_progress":
+            support.open_window_with_side_effect(
+                screen,
+                support.daily_window,
+                current_width // 2,
+                current_height //2
+            )
+        if menu_state == "fast_progress":
+            support.open_window_with_side_effect(
+                screen,
+                support.daily_window,
+                current_width // 2,
+                current_height //2
+            )
+        if menu_state == "entertainment_progress":
+            support.open_window_with_side_effect(
+                screen,
+                support.daily_window,
+                current_width // 2,
+                current_height //2
+            )
+##########################################################################
+#------------------ ACHIEVEMENT
+##########################################################################
+    if game_state == "ACHIEVEMENT":
+
+        draw_moving_map(
+            screen,
+            WIDTH,
+            HEIGHT,
+            dt    )
+        droping.draw_flying_birds(
+            screen,
+            current_width,
+            current_height
+        )   
+        support.open_window_with_side_effect(
+            screen,
+            support.daily_window,
+            current_width // 2,
+            current_height //2
+        )
+        
+        achievement.achievement_scroll_y += (
+            achievement.achievement_target_scroll_y
+            - achievement.achievement_scroll_y
+        ) * 0.12
+        achievement.draw_achievements(
+            screen,
+            achievement.achievement_images,
+            achievement.achievement_unlocked,
+            achievement.achievement_names,
+            achievement.achievement_descriptions,
+            fonts["date"],
+            achievement.achievement_scroll_y,
+            achievement_area
         )
         screen_.draw_back_button(
             screen,
@@ -1575,34 +1917,134 @@ while running:
 ##########################################################################
 
     if game_state == "SETTING":
-        
-        draw_moving_map(
+        TRANSI.go_transition(
             screen,
-            WIDTH,
-            HEIGHT,
-            dt    )
-        droping.draw_flying_birds(
-            screen,
-            current_width,
-            current_height
-        )   
+            TRANSITION
+        )
+        # draw_moving_map(
+        #     screen,
+        #     WIDTH,
+        #     HEIGHT,
+        #     dt    )
+        # droping.draw_flying_birds(
+        #     screen,
+        #     current_width,
+        #     current_height
+        # )   
         
+        TRANSITION.fill(SKY_BLUE)
+        TRANSITION.blit(rec.menu_card_over, (-120, current_height // 2 - 800))
+        TRANSITION.blit(rec.icon_menu, (193,10))        
+        TRANSITION.blit(rec.xp_card, (940,35))
+        TRANSITION.blit(rec.score_card, (1250,35))
 
-        
-        menu_setting_mode.gamemode_menu_setting_panel(
-            screen,
-            menu_setting_mode.setting_icons,
-            menu_setting_mode.setting_positions,
-            "setting",
-            "setting",
-            current_width // 2  - 804 ,current_height // 2 ,image=setting_panel
+        # menu_setting_mode.gamemode_menu_setting_panel(
+        #     screen,
+        #     menu_setting_mode.setting_icons,
+        #     menu_setting_mode.setting_positions,
+        #     "setting",
+        #     "setting",
+        #     current_width // 2  - 804 ,current_height // 2 ,#image=setting_panel
 
+        # )
+        menu.scroll_y += (
+            menu.target_scroll_y - menu.scroll_y
+        ) * 0.03
+        menu.draw_six_scroll_items(
+            TRANSITION,
+            menu.images_setting,
+            menu.names_setting,
+            menu_hidden_rect,
+            image_count=6,
+            mode="setting",
+            item_height=370,
+            scroll_y=menu.scroll_y,
+            font=fonts["date"]
+        )
+
+    # ############################################
+
+    # ############################################
+        rec.draw_down_card(
+            screen,
+            rec.down_card,
+            x=-8,
+            target_y=current_height // 2 - 900,
+            state=rec.down_card_state
+        )
+        rec.draw_down_card(
+            TRANSITION,
+            rec.icon_menu,
+            x=166,
+            target_y=current_height // 2 - 630,
+            state=rec.down_card_state
+        )
+        rec.draw_down_card(
+            TRANSITION,
+            rec.profile_image,
+            189,
+            current_height // 2 - 600,
+            rec.down_card_state,
+            text="alirezanab",
+            text_x=170,
+            text_y_offset=155,
+            font=fonts["date"]
+        )
+                        
+                
+                
+                
+        # rec.draw_right_slide_card(
+        #     screen,
+        #     rec.right_card,
+        #     visible_x=1800,
+        #     hidden_x=2027,
+        #     y=current_height // 2 - 540,
+        #     state=rec.right_card_state,
+        #     mouse_trigger_x=500,
+        #     hide_delay=5.0
+        # )
+        rec.draw_right_slide_card(
+            TRANSITION,
+            rec.right_card,
+            visible_x=1800,
+            hidden_x=2027,
+            y=current_height // 2 - 540,
+            state=rec.right_card_state,
+            images=rec.right_images,
+            texts=rec.right_texts,
+            font=rec.fonts["date"]
+        )
+        rec.draw_jelly_rect(
+            TRANSITION,
+            rec.start_card,
+            x=950,
+            target_y=1100,
+            state=rec.start_card_state,
+            text_is_on=False,
+            screen_height=current_height,
+            rise_time=1.0,
+            stay_time=5.0,
+            down_time=1.0,
+            bottom_wait=1.0
+        )
+        rec.draw_jelly_rect(
+            TRANSITION,
+            rec.start_button_card,
+            x=1050,
+            target_y=1140,
+            state=rec.other_card_state,
+            text_is_on=True,
+            screen_height=current_height,
+            rise_time=1.0,
+            stay_time=5.0,
+            down_time=1.0,
+            bottom_wait=1.0
         )
 
 
 
-
-
+        screen.blit(TRANSITION, (0, 0))
 
 ##########################################################################
 #------------------ DIFFICULTY SELECTION
@@ -1668,7 +2110,7 @@ while running:
 #------------------ GAME GUID
 ##########################################################################
 
-    if game_state == "GAME GUID":
+    if game_state == "GAME OVERVIEW":
         #------------------------for background 
         draw_moving_map(
             screen,
@@ -1681,12 +2123,13 @@ while running:
             current_height
         )   
 
-        guid_sild_effect(
-            screen,
-            support.before_game_window,
-            current_width // 2,
-            current_height //2
-        )
+        # guid_sild_effect(
+        #     screen,
+        #     support.before_game_window,
+        #     current_width // 2,
+        #     current_height //2
+        # )
+
 
         support.punch_scale_animation_one_image(
             screen,
@@ -1704,10 +2147,7 @@ while running:
         )
         support.next_page_rec2 = None
         support.pro_rec = None
-        if (
-            before_game.previous_game_state_F in free_game_list
-            or buy_premium == True
-        ):
+        if (before_game.previous_game_state_F in free_game_list or buy_premium == True):
             support.punch_scale_animation_one_image(
                 screen,
                 support.next_page,
@@ -1724,14 +2164,24 @@ while running:
                 current_width // 2 + 890,
                 current_height // 2 + 540
             )
+        screen.blit(rec.game_guid_card, (current_width // 2 - 850 ,current_height // 2 - 550))#down
+        
+        screen.blit(rec.regtangle_guid_page, (current_width // 2 - 850 ,current_height // 2 - 550))
+        screen.blit(rec.circle_guid_page, (1019 ,188))
+        side_effect_window.open_window_with_side_effect_MULLTI_WINDOW(
+            screen,
+            all_image.info,
+            current_width // 2,
+            current_height // 2,
+            on_draw=game_overview.draw_GAME_OVERVIEW
 
-
+        )
 
 ##########################################################################
 #------------------ NEXT GAME GUID
 ##########################################################################
 
-    if game_state == "NEXT GAME GUID":
+    if game_state == "HOW TO PLAY":
         draw_moving_map(
             screen,
             WIDTH,
@@ -2071,18 +2521,25 @@ while running:
    #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if  game_state == "SETTING" and setting_menu == "MUSIC" and control_every_button_in_setting_on_or_off == "music":
 
-        support.open_window_with_side_effect(
+        # support.open_window_with_side_effect(
+        #     screen,
+        #     all_image.setting,
+        #     current_width // 2 + 150,current_height // 2 
+        # )
+        rect_window.draw_punch_rect(
             screen,
-            all_image.setting,
-            current_width // 2 + 150,current_height // 2 
+            punch_frames,
+            center=(1158, 625),
+            state=rect_window.punch_state,
+            duration=0.55
         )
-        music.draw_music(
-            screen,
-            current_width,
-            current_height,
-            all_image.setting,
-            music_profile_image
-        )
+        # music.draw_music(
+        #     screen,
+        #     current_width,
+        #     current_height,
+        #     all_image.setting,
+        #     music_profile_image
+        # )
         
         
    #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
@@ -2371,7 +2828,7 @@ while running:
         )
     #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if game_state == "MISSING NUMBER":
-        design.design.back_setter(screen,before_game.backgorund_now_for_any_game_mode) 
+        design.back_setter(screen,before_game.backgorund_now_for_any_game_mode) 
              
     #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if game_state == "60S":
@@ -2476,12 +2933,29 @@ while running:
         )
     #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if game_state =="DIRECTION DETECT":
-        design.back_setter(screen,before_game.backgorund_now_for_any_game_mode)
-        MOVE_ARROW.MOVE_ARROW_(screen,current_width,current_height)
-        screen_.draw_back_button(
-            screen,
-            back_button_rect
-        )
+
+        if not stop_loop:
+            design.back_setter(screen, before_game.backgorund_now_for_any_game_mode)
+            MOVE_ARROW.MOVE_ARROW_(screen, current_width, current_height)
+
+            angle += 0.5
+
+            utils.utils_(
+                screen,
+                selected_image,
+                1880,
+                166,
+                angle
+            )
+
+        if in_game_is_menu_on:
+
+            menu_window.SHOW_XP(
+                screen,
+                2,
+                HEIGHT,
+                WIDTH
+            )
     #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if game_state =="MATH CHAIN":
         design.back_setter(screen,before_game.backgorund_now_for_any_game_mode)
@@ -2567,10 +3041,10 @@ while running:
     if game_state =="MAZE":
         design.back_setter(screen,before_game.backgorund_now_for_any_game_mode)
         MAZE.MAZE_()
-        screen_.draw_back_button(
-            screen,
-            back_button_rect
-        )
+        # screen_.draw_back_button(
+        #     screen,
+        #     back_button_rect
+        # )
     #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if game_state =="MEMORY RECALL":  
         design.back_setter(screen,before_game.backgorund_now_for_any_game_mode)
@@ -2665,8 +3139,19 @@ while running:
 
 
 
+##########################################################################
+##########################################################################
+##########################################################################
     coming_soon.coming_soon_notification(screen)
 
+    achievement.show_achievement_popup(
+        screen,
+        achievement.achievement_images[0],
+        "FIRST GAME",
+        achievement.achievement_trigger,
+        fonts["date"],
+    )
+        
 
     #--------------------------------------------------------------------------------------CUSTOM MATH
     if  game_state == "CUSTOM GAME":
