@@ -1,26 +1,47 @@
 import pygame
 import importlib
-from modules.loading import *
 from modules import mouse
 
 pygame.init()
 from modules.font import *
+from modules.loading import *
 
 # ==================================================
 # Loading Window
 # ==================================================
 
 screen = pygame.display.set_mode(
-    (800, 500),
-    pygame.RESIZABLE
+    (1920, 1080),
+    pygame.FULLSCREEN
 )
-pygame.display.set_caption(
-    "PeakyJoy"
+
+pygame.display.set_caption("PeakyJoy")
+
+# تصویر اولیه
+loading_image = pygame.image.load(
+    "asset/image/loadd.png"
+).convert_alpha()
+
+loading_image = pygame.transform.smoothscale(
+    loading_image,
+    (1920, 1080)
 )
+
+screen.blit(
+    loading_image,
+    (0, 0)
+)
+
+pygame.display.flip()
+
+# یک فرصت کوتاه برای اینکه Fullscreen واقعاً فعال شود
+pygame.event.pump()
+pygame.time.delay(100)
 
 icon = pygame.image.load(
     "asset/image/icon.png"
 ).convert_alpha()
+
 pygame.display.set_icon(icon)
 
 
@@ -41,10 +62,10 @@ pygame.mixer.music.play()
 pygame.mixer.music.stop()
 
 
-screen = pygame.display.set_mode(
-    (1920, 1080),
-    pygame.FULLSCREEN
-)
+# screen = pygame.display.set_mode(
+#     (1920, 1080),
+#     pygame.FULLSCREEN
+# )
 
 
 pygame.display.set_caption(
@@ -62,11 +83,15 @@ current_width, current_height = screen.get_size()
 input_y = current_height // 2 + 100
 WIDTH, HEIGHT = current_width , current_height
 dt = clock.tick(60) / 1000
-TRANSITION = pygame.Surface(
+BEFORE_TRANSITION = pygame.Surface(
     (WIDTH, HEIGHT),
     pygame.SRCALPHA
 )
 
+NEXT_TRANSITION = pygame.Surface(
+    (WIDTH, HEIGHT),
+    pygame.SRCALPHA
+)
 
 
 
@@ -85,7 +110,7 @@ from modules import button
 from modules import design
 from modules import language
 from modules import menu
-
+from modules.RECT import corner
 from modules import sound
 from modules.RECT import rect_window
 from modules import screen as screen_
@@ -861,19 +886,19 @@ while running:
 
 
 
+    draw_moving_map(# این بک گرانده 
+        screen,
+        WIDTH,
+        HEIGHT,    )
 ##########################################################################
 #------------------ MENU
 ##########################################################################
     if game_state == "MENU" or menu_state == "MENU":# DASH BOARDاین همون داشبود است 
         
         
-
-        draw_moving_map(
-            TRANSITION,
-            WIDTH,
-            HEIGHT,    )
-        TRANSITION.blit(rec.menu_card_over, (-120, current_height // 2 - 800))
-        TRANSITION.blit(rec.icon_menu, (193,10))
+        BEFORE_TRANSITION.fill((0, 0, 0, 0))
+        BEFORE_TRANSITION.blit(rec.menu_card_over, (-120, current_height // 2 - 800))# این ها فیس اند میخام این ها حرکت
+        BEFORE_TRANSITION.blit(rec.icon_menu, (193,10))
 
 
 
@@ -885,7 +910,7 @@ while running:
             menu.target_scroll_y - menu.scroll_y
         ) * 0.03
         menu.draw_six_scroll_items(
-            TRANSITION,
+            BEFORE_TRANSITION,
             menu.images,
             menu.names,
             menu_hidden_rect,
@@ -907,21 +932,21 @@ while running:
  
     # ############################################
         rec.draw_down_card(
-            TRANSITION,
+            BEFORE_TRANSITION,
             rec.down_card,
             x=-8,
             target_y=current_height // 2 - 900,
             state=rec.down_card_state
         )
         rec.draw_down_card(
-            TRANSITION,
+            BEFORE_TRANSITION,
             rec.icon_menu,
             x=166,
             target_y=current_height // 2 - 630,
             state=rec.down_card_state
         )
         rec.draw_down_card(
-            TRANSITION,
+            BEFORE_TRANSITION,
             rec.profile_image,
             189,
             current_height // 2 - 600,
@@ -935,29 +960,78 @@ while running:
 
                         
                 
-        # rec.draw_right_slide_card(
-        #     screen,
-        #     rec.right_card,
-        #     visible_x=1800,
-        #     hidden_x=2027,
-        #     y=current_height // 2 - 540,
-        #     state=rec.right_card_state,
-        #     mouse_trigger_x=500,
-        #     hide_delay=5.0
+        # corner.darw_corner_face(
+        #     BEFORE_TRANSITION,
+        #     corner.right_card,
+        #     visible_x=2000,  # مبدأ افقی: بیرون سمت راست
+        #     hidden_x=1800,   # مقصد افقی
+        #     y=0,
+        #     state=corner.right_card_state,
+        #     images=[corner.corner],
+        #     texts=[],
+        #     font=fonts["date"],
+        #     visible_y=1200,  # مبدأ عمودی: بیرون پایین صفحه
+        #     target_y=1150    # مقصد عمودی
         # )
+        corner.darw_corner_face(
+            BEFORE_TRANSITION,
+            corner.right_card,
+
+            # X: سه مقدار افقی
+            visible_x=1985,  # مبدأ: خارج صفحه از سمت راست
+            target_x=1800,   # مقصد: محل ورود کارت
+            hidden_x=1945,   # محل مخفی شدن از سمت راست
+
+            # Y: سه مقدار عمودی
+            visible_y=1262,  # مبدأ: خارج صفحه از پایین
+            target_y=1120,   # مقصد: محل ورود کارت
+            hidden_y=1250,   # محل مخفی شدن از پایین
+
+            state=corner.right_card_state,
+            images=[corner.corner],
+            texts=[],
+            font=fonts["date"]
+        )
+        
+        
+        
+        
+        
+        
+        
+        
+        corner.darw_corner_face_top(
+            BEFORE_TRANSITION,
+            corner.right_card_1,
+
+            # X: همان مختصات افقی
+            visible_x=2005,
+            target_x=1795,
+            hidden_x=1945,
+
+            # Y: قرینه برای گوشه بالا
+            visible_y=-219,  # مبدأ: خارج صفحه از بالا
+            target_y=-70,     # مقصد: پایین‌تر از لبه بالا
+            hidden_y=-200,   # محل مخفی شدن از بالا
+
+            state=corner.top_right_card_state,
+            images=[corner.top],
+            texts=[],
+            font=fonts["date"]
+        )
         rec.draw_right_slide_card(
-            TRANSITION,
+            BEFORE_TRANSITION,
             rec.right_card,
             visible_x=1800,
             hidden_x=2027,
-            y=current_height // 2 - 540,
+            y=current_height // 2 - 415,
             state=rec.right_card_state,
             images=rec.right_images,
             texts=rec.right_texts,
             font=rec.fonts["date"]
         )
         rec.draw_jelly_rect(
-            TRANSITION,
+            BEFORE_TRANSITION,
             rec.start_card,
             x=950,
             target_y=1100,
@@ -970,7 +1044,7 @@ while running:
             bottom_wait=1.0
         )
         rec.draw_jelly_rect(
-            TRANSITION,
+            BEFORE_TRANSITION,
             rec.start_button_card,
             x=1050,
             target_y=1140,
@@ -984,11 +1058,7 @@ while running:
         )
 
 
-        screen.blit(TRANSITION, (0, 0))
-        TRANSI.go_transition(
-            screen,
-            TRANSITION
-        )
+
 ##########################################################################
 #------------------ SUPPORT
 ##########################################################################
@@ -1456,29 +1526,27 @@ while running:
 #------------------ PROGRESS
 ##########################################################################
     if game_state == "PROGRESS":
-        draw_moving_map(
-            screen,
-            WIDTH,
-            HEIGHT,
-            dt    )
-        droping.draw_flying_birds(
-            screen,
-            current_width,
-            current_height
-        )   
+        
+        NEXT_TRANSITION.fill((0, 0, 0, 0))
         progress_.draw_carousel(
-            screen,
-            game_list.gamemode_icons,
-            960,
-            100
+                NEXT_TRANSITION,
+                game_list.gamemode_icons,
+                960,
+                100
+            )
+        support.open_window_with_side_effect(
+            NEXT_TRANSITION,
+            support.daily_window,
+            current_width // 2,
+            current_height //2
         )
         screen_.draw_back_button(
-            screen,
+            NEXT_TRANSITION,
             back_button_rect)
         
         if menu_state == "math_progress":
             support.open_window_with_side_effect(
-                screen,
+                NEXT_TRANSITION,
                 support.daily_window,
                 current_width // 2,
                 current_height //2
@@ -1486,7 +1554,7 @@ while running:
             
 
             progress_.draw_progress(
-                screen,
+                NEXT_TRANSITION,
                 game_list.game_progress_math,
                 fonts["date"],
                 progress_.progress_scroll_y,
@@ -1497,39 +1565,41 @@ while running:
                     
         if menu_state == "logic_progress":
             support.open_window_with_side_effect(
-                screen,
+                NEXT_TRANSITION,
                 support.daily_window,
                 current_width // 2,
                 current_height //2
             )
         if menu_state == "memory_progress":
             support.open_window_with_side_effect(
-                screen,
+                NEXT_TRANSITION,
                 support.daily_window,
                 current_width // 2,
                 current_height //2
             )
         if menu_state == "detection_progress":
             support.open_window_with_side_effect(
-                screen,
+                NEXT_TRANSITION,
                 support.daily_window,
                 current_width // 2,
                 current_height //2
             )
         if menu_state == "fast_progress":
             support.open_window_with_side_effect(
-                screen,
+                NEXT_TRANSITION,
                 support.daily_window,
                 current_width // 2,
                 current_height //2
             )
         if menu_state == "entertainment_progress":
             support.open_window_with_side_effect(
-                screen,
+                NEXT_TRANSITION,
                 support.daily_window,
                 current_width // 2,
                 current_height //2
             )
+            
+
 ##########################################################################
 #------------------ ACHIEVEMENT
 ##########################################################################
@@ -1919,7 +1989,7 @@ while running:
     if game_state == "SETTING":
         TRANSI.go_transition(
             screen,
-            TRANSITION
+            BEFORE_TRANSITION
         )
         # draw_moving_map(
         #     screen,
@@ -1932,11 +2002,11 @@ while running:
         #     current_height
         # )   
         
-        TRANSITION.fill(SKY_BLUE)
-        TRANSITION.blit(rec.menu_card_over, (-120, current_height // 2 - 800))
-        TRANSITION.blit(rec.icon_menu, (193,10))        
-        TRANSITION.blit(rec.xp_card, (940,35))
-        TRANSITION.blit(rec.score_card, (1250,35))
+        BEFORE_TRANSITION.fill(SKY_BLUE)
+        BEFORE_TRANSITION.blit(rec.menu_card_over, (-120, current_height // 2 - 800))
+        BEFORE_TRANSITION.blit(rec.icon_menu, (193,10))        
+        BEFORE_TRANSITION.blit(rec.xp_card, (940,35))
+        BEFORE_TRANSITION.blit(rec.score_card, (1250,35))
 
         # menu_setting_mode.gamemode_menu_setting_panel(
         #     screen,
@@ -1951,7 +2021,7 @@ while running:
             menu.target_scroll_y - menu.scroll_y
         ) * 0.03
         menu.draw_six_scroll_items(
-            TRANSITION,
+            BEFORE_TRANSITION,
             menu.images_setting,
             menu.names_setting,
             menu_hidden_rect,
@@ -1973,14 +2043,14 @@ while running:
             state=rec.down_card_state
         )
         rec.draw_down_card(
-            TRANSITION,
+            BEFORE_TRANSITION,
             rec.icon_menu,
             x=166,
             target_y=current_height // 2 - 630,
             state=rec.down_card_state
         )
         rec.draw_down_card(
-            TRANSITION,
+            BEFORE_TRANSITION,
             rec.profile_image,
             189,
             current_height // 2 - 600,
@@ -2005,7 +2075,7 @@ while running:
         #     hide_delay=5.0
         # )
         rec.draw_right_slide_card(
-            TRANSITION,
+            BEFORE_TRANSITION,
             rec.right_card,
             visible_x=1800,
             hidden_x=2027,
@@ -2016,7 +2086,7 @@ while running:
             font=rec.fonts["date"]
         )
         rec.draw_jelly_rect(
-            TRANSITION,
+            BEFORE_TRANSITION,
             rec.start_card,
             x=950,
             target_y=1100,
@@ -2029,7 +2099,7 @@ while running:
             bottom_wait=1.0
         )
         rec.draw_jelly_rect(
-            TRANSITION,
+            BEFORE_TRANSITION,
             rec.start_button_card,
             x=1050,
             target_y=1140,
@@ -2044,7 +2114,7 @@ while running:
 
 
 
-        screen.blit(TRANSITION, (0, 0))
+        screen.blit(BEFORE_TRANSITION, (0, 0))
 
 ##########################################################################
 #------------------ DIFFICULTY SELECTION
@@ -3267,7 +3337,17 @@ while running:
         answer_rects,
         answer_selected
     )
-    
+    finished_TRANSI=TRANSI.go_transition(
+        screen,
+        BEFORE_TRANSITION,
+        NEXT_TRANSITION
+    )
+
+    if finished_TRANSI:
+        BEFORE_TRANSITION, NEXT_TRANSITION = (
+            NEXT_TRANSITION,
+            BEFORE_TRANSITION
+        )
     
 #-------------------------------- FPS SETTING    
     fps = clock.get_fps()
@@ -3276,8 +3356,7 @@ while running:
 
     screen.blit(fps_text, (20,20))
     
-    
-    
+
 #-------------------------------- MOUSE EFFECT    
     mouse.draw_click_effect(screen)
     
