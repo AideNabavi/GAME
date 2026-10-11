@@ -83,16 +83,6 @@ current_width, current_height = screen.get_size()
 input_y = current_height // 2 + 100
 WIDTH, HEIGHT = current_width , current_height
 dt = clock.tick(60) / 1000
-BEFORE_TRANSITION = pygame.Surface(
-    (WIDTH, HEIGHT),
-    pygame.SRCALPHA
-)
-
-NEXT_TRANSITION = pygame.Surface(
-    (WIDTH, HEIGHT),
-    pygame.SRCALPHA
-)
-
 
 
 #########################################################################################################
@@ -103,14 +93,17 @@ NEXT_TRANSITION = pygame.Surface(
 import sys
 from modules.RECT import rec
 from modules import how_to_play
+from modules.RECT import rec_window
 from event_handler import handle_events
 from modules.time_screen import draw_time_screen
 from modules.game_engine import run_game
 from modules import button
+from modules.RECT import rec_support
 from modules import design
 from modules import language
 from modules import menu
 from modules.RECT import corner
+from modules.RECT import score_xp
 from modules import sound
 from modules.RECT import rect_window
 from modules import screen as screen_
@@ -351,7 +344,16 @@ CUSTOM__GAME=pygame.image.load("./asset/image/background/CUSTOM__GAME.png").conv
 #########################################################################################################
 #########################################################################################################
 
+# برای چهار تا پنجره ساپورت است
 
+
+
+
+
+
+
+
+blur_surface = rec_window.create_blur_surface(screen, blur=3, alpha=0)
 ############################################## این برای دکمه یها ساپورت است گرفتن رک برای اون ۴ تا 
 custom_math.current_width_current_height(current_width,current_height)
 center_x = current_width // 2
@@ -553,7 +555,6 @@ recent_game.selected_images = recent_game.choose_three_random_images()
 #--------------- برای انتخاب عکس پاپیولر گیم است
 popular_game.selected_images = popular_game.choose_three_random_images()
 
-from modules.EFFECT import TRANSI
 
 utils.WIDTH_HEIGHT_gettter(screen,current_width,current_height)
 language.WIDTH_HEIGHT_gettter(screen,current_width,current_height)
@@ -896,10 +897,8 @@ while running:
     if game_state == "MENU" or menu_state == "MENU":# DASH BOARDاین همون داشبود است 
         
         
-        BEFORE_TRANSITION.fill((0, 0, 0, 0))
-        BEFORE_TRANSITION.blit(rec.menu_card_over, (-120, current_height // 2 - 800))# این ها فیس اند میخام این ها حرکت
-        BEFORE_TRANSITION.blit(rec.icon_menu, (193,10))
-
+        screen.blit(rec.menu_card_over, (-120, current_height // 2 - 800))# این ها فیس اند میخام این ها حرکت
+        screen.blit(rec.icon_menu, (193,10))
 
 
 
@@ -910,7 +909,7 @@ while running:
             menu.target_scroll_y - menu.scroll_y
         ) * 0.03
         menu.draw_six_scroll_items(
-            BEFORE_TRANSITION,
+            screen,
             menu.images,
             menu.names,
             menu_hidden_rect,
@@ -929,24 +928,26 @@ while running:
         #     current_width // 2  - 810 ,current_height // 2 - 4.5,#image=menu_panel
 
         # )  
- 
+        
+        
+        
     # ############################################
         rec.draw_down_card(
-            BEFORE_TRANSITION,
+            screen,
             rec.down_card,
             x=-8,
             target_y=current_height // 2 - 900,
             state=rec.down_card_state
         )
         rec.draw_down_card(
-            BEFORE_TRANSITION,
+            screen,
             rec.icon_menu,
             x=166,
             target_y=current_height // 2 - 630,
             state=rec.down_card_state
         )
         rec.draw_down_card(
-            BEFORE_TRANSITION,
+            screen,
             rec.profile_image,
             189,
             current_height // 2 - 600,
@@ -961,7 +962,7 @@ while running:
                         
                 
         # corner.darw_corner_face(
-        #     BEFORE_TRANSITION,
+        #     screen,
         #     corner.right_card,
         #     visible_x=2000,  # مبدأ افقی: بیرون سمت راست
         #     hidden_x=1800,   # مقصد افقی
@@ -973,89 +974,106 @@ while running:
         #     visible_y=1200,  # مبدأ عمودی: بیرون پایین صفحه
         #     target_y=1150    # مقصد عمودی
         # )
-        corner.darw_corner_face(
-            BEFORE_TRANSITION,
-            corner.right_card,
 
-            # X: سه مقدار افقی
-            visible_x=1985,  # مبدأ: خارج صفحه از سمت راست
-            target_x=1800,   # مقصد: محل ورود کارت
-            hidden_x=1945,   # محل مخفی شدن از سمت راست
+        
+        
+        
+        
+        
+        
+        
 
-            # Y: سه مقدار عمودی
-            visible_y=1262,  # مبدأ: خارج صفحه از پایین
-            target_y=1120,   # مقصد: محل ورود کارت
-            hidden_y=1250,   # محل مخفی شدن از پایین
-
-            state=corner.right_card_state,
-            images=[corner.corner],
-            texts=[],
-            font=fonts["date"]
+    ##########################################################################
+    #------------------ PROGRESS
+    ##########################################################################
+    if (game_state == "MENU" or game_state == "SETTING") and menu_state == "PROGRESS":
+        # screen.blit(blur_surface, (0, 0))
+        rec_window.draw_dark_overlay(screen, alpha=130)
+        rec_window.draw_slide_rect(
+            screen,
+            rec_window.PROGRESS,
+            target_x=screen.get_width() - rec_window.PROGRESS.get_width() - (-450),
+            target_y=current_height // 2 - 660,
+            mode=3,
+            duration=1,
+            state=rec_window.PROGRESS_state
         )
-        
-        
-        
-        
-        
-        
-        
-        
-        corner.darw_corner_face_top(
-            BEFORE_TRANSITION,
-            corner.right_card_1,
+        # rec_window.draw_slide_rect(
+        #         screen,
+        #         rec_window.PROGRESS,
+        #         target_x=-450,
+        #         target_y=current_height // 2 - 660,
+        #         mode=2,
+        #         duration=1,
+        #         state=rec_window.PROGRESS_state
+        #     )
 
-            # X: همان مختصات افقی
-            visible_x=2005,
-            target_x=1795,
-            hidden_x=1945,
+        progress_.draw_carousel(
+                screen,
+                game_list.gamemode_icons,
+                960,
+                100
+            )
 
-            # Y: قرینه برای گوشه بالا
-            visible_y=-219,  # مبدأ: خارج صفحه از بالا
-            target_y=-70,     # مقصد: پایین‌تر از لبه بالا
-            hidden_y=-200,   # محل مخفی شدن از بالا
+        screen_.draw_back_button(
+            screen,
+            back_button_rect)
+        
+        if menu_state == "math_progress":
+            support.open_window_with_side_effect(
+                screen,
+                support.daily_window,
+                current_width // 2,
+                current_height //2
+            )
+            
 
-            state=corner.top_right_card_state,
-            images=[corner.top],
-            texts=[],
-            font=fonts["date"]
-        )
-        rec.draw_right_slide_card(
-            BEFORE_TRANSITION,
-            rec.right_card,
-            visible_x=1800,
-            hidden_x=2027,
-            y=current_height // 2 - 415,
-            state=rec.right_card_state,
-            images=rec.right_images,
-            texts=rec.right_texts,
-            font=rec.fonts["date"]
-        )
-        rec.draw_jelly_rect(
-            BEFORE_TRANSITION,
-            rec.start_card,
-            x=950,
-            target_y=1100,
-            state=rec.start_card_state,
-            text_is_on=False,
-            screen_height=current_height,
-            rise_time=1.0,
-            stay_time=5.0,
-            down_time=1.0,
-            bottom_wait=1.0
-        )
-        rec.draw_jelly_rect(
-            BEFORE_TRANSITION,
-            rec.start_button_card,
-            x=1050,
-            target_y=1140,
-            state=rec.other_card_state,
-            text_is_on=True,
-            screen_height=current_height,
-            rise_time=1.0,
-            stay_time=5.0,
-            down_time=1.0,
-            bottom_wait=1.0
-        )
+            progress_.draw_progress(
+                screen,
+                game_list.game_progress_math,
+                fonts["date"],
+                progress_.progress_scroll_y,
+                progress_area
+            )
+            
+
+                    
+        if menu_state == "logic_progress":
+            support.open_window_with_side_effect(
+                screen,
+                support.daily_window,
+                current_width // 2,
+                current_height //2
+            )
+        if menu_state == "memory_progress":
+            support.open_window_with_side_effect(
+                screen,
+                support.daily_window,
+                current_width // 2,
+                current_height //2
+            )
+        if menu_state == "detection_progress":
+            support.open_window_with_side_effect(
+                screen,
+                support.daily_window,
+                current_width // 2,
+                current_height //2
+            )
+        if menu_state == "fast_progress":
+            support.open_window_with_side_effect(
+                screen,
+                support.daily_window,
+                current_width // 2,
+                current_height //2
+            )
+        if menu_state == "entertainment_progress":
+            support.open_window_with_side_effect(
+                screen,
+                support.daily_window,
+                current_width // 2,
+                current_height //2
+            )
+                
 
 
 
@@ -1064,56 +1082,100 @@ while running:
 ##########################################################################
     if menu_state == "SUPPORT":
 
-        # draw_4_images_SUPPORT(screen)
-        custom_math.draw_punch_image2(
+        # # draw_4_images_SUPPORT(screen)
+        # custom_math.draw_punch_image2(
+        #     screen,
+        #     custom_math.new_window_for_more_support,
+        #     custom_math.positions_____1[0],
+        #     (500, 500),#      (400, 400)
+        #     "SUPPORT1",
+        #     center_image=support.images_support[0],
+        #     center_image_size=(300, 300),
+        #     text="contact_us",
+        #     text_font=fonts["date"]
+        # )
+        
+        # custom_math.draw_punch_image2(
+        #     screen,
+        #     custom_math.new_window_for_more_support,
+        #     custom_math.positions_____1[1],
+        #     (500, 500),#      (400, 400)
+        #     "SUPPORT2",
+        #     center_image=support.images_support[1],
+        #     center_image_size=(300, 300),
+        #     text="feedback",
+        #     text_font=fonts["date"]
+        # )
+        # custom_math.draw_punch_image2(
+        #     screen,
+        #     custom_math.new_window_for_more_support,
+        #     custom_math.positions_____1[2],
+        #     (500, 500),#      (400, 400)
+        #     "SUPPORT3",
+        #     center_image=support.images_support[2],
+        #     center_image_size=(300, 300),
+        #     text="donate",
+        #     text_font=fonts["date"]
+        # )
+        # custom_math.draw_punch_image2(
+        #     screen,
+        #     custom_math.new_window_for_more_support,
+        #     custom_math.positions_____1[3],
+        #     (500, 500),#      (400, 400)
+        #     "SUPPORT4",
+        #     center_image=support.images_support[3],
+        #     center_image_size=(300, 300),
+        #     text="report_bug",
+        #     text_font=fonts["date"]
+        # )
+                
+        c_x, c_y = custom_math.positions_____1[3]
+
+        rec_support.res_support(
             screen,
-            custom_math.new_window_for_more_support,
-            custom_math.positions_____1[0],
-            (500, 500),#      (400, 400)
-            "SUPPORT1",
-            center_image=support.images_support[0],
-            center_image_size=(300, 300),
-            text="contact_us",
-            text_font=fonts["date"]
+
+            # IMAGE: بالا سمت چپ MAIN
+            rec_support.image,
+            (c_x - 170, c_y - 175),
+
+            # FRAME 2: وسط، کمی بالاتر از MAIN
+            rec_support.frame2,
+            (c_x, c_y - 170),
+
+            # FRAME 3: وسط، کمی پایین‌تر از MAIN
+            rec_support.frame3,
+            (c_x, c_y + 180),
+
+            # FRAME 4: مرکز MAIN
+            rec_support.frame4,
+            (c_x, c_y+70),
+
+            # MAIN
+            rec_support.main,
+            (c_x, c_y+15),
+
+            # MAIN TEXT
+            rec_support.text_main,
+            (c_x, c_y - 165),
+
+            # TITLE
+            rec_support.text_titile,
+            (c_x, c_y - 20),
+
+            # DESCRIPTION
+            rec_support.text_description,
+            (c_x, c_y +100 ),
+
+            fonts["DAY"],
+            fonts["heart"],
+            fonts["date"],
+
+            rec_support.punch_state,
+
+            duration=0.55,
+            delay=200
         )
-        
-        custom_math.draw_punch_image2(
-            screen,
-            custom_math.new_window_for_more_support,
-            custom_math.positions_____1[1],
-            (500, 500),#      (400, 400)
-            "SUPPORT2",
-            center_image=support.images_support[1],
-            center_image_size=(300, 300),
-            text="feedback",
-            text_font=fonts["date"]
-        )
-        custom_math.draw_punch_image2(
-            screen,
-            custom_math.new_window_for_more_support,
-            custom_math.positions_____1[2],
-            (500, 500),#      (400, 400)
-            "SUPPORT3",
-            center_image=support.images_support[2],
-            center_image_size=(300, 300),
-            text="donate",
-            text_font=fonts["date"]
-        )
-        custom_math.draw_punch_image2(
-            screen,
-            custom_math.new_window_for_more_support,
-            custom_math.positions_____1[3],
-            (500, 500),#      (400, 400)
-            "SUPPORT4",
-            center_image=support.images_support[3],
-            center_image_size=(300, 300),
-            text="report_bug",
-            text_font=fonts["date"]
-        )
-        
-        
-        
-        
+            
 ##########################################################################
 #------------------ Contact Us
 ##########################################################################
@@ -1522,83 +1584,7 @@ while running:
         screen_.draw_back_button(
             screen,
             back_button_rect)
-##########################################################################
-#------------------ PROGRESS
-##########################################################################
-    if game_state == "PROGRESS":
-        
-        NEXT_TRANSITION.fill((0, 0, 0, 0))
-        progress_.draw_carousel(
-                NEXT_TRANSITION,
-                game_list.gamemode_icons,
-                960,
-                100
-            )
-        support.open_window_with_side_effect(
-            NEXT_TRANSITION,
-            support.daily_window,
-            current_width // 2,
-            current_height //2
-        )
-        screen_.draw_back_button(
-            NEXT_TRANSITION,
-            back_button_rect)
-        
-        if menu_state == "math_progress":
-            support.open_window_with_side_effect(
-                NEXT_TRANSITION,
-                support.daily_window,
-                current_width // 2,
-                current_height //2
-            )
-            
 
-            progress_.draw_progress(
-                NEXT_TRANSITION,
-                game_list.game_progress_math,
-                fonts["date"],
-                progress_.progress_scroll_y,
-                progress_area
-            )
-            
-
-                    
-        if menu_state == "logic_progress":
-            support.open_window_with_side_effect(
-                NEXT_TRANSITION,
-                support.daily_window,
-                current_width // 2,
-                current_height //2
-            )
-        if menu_state == "memory_progress":
-            support.open_window_with_side_effect(
-                NEXT_TRANSITION,
-                support.daily_window,
-                current_width // 2,
-                current_height //2
-            )
-        if menu_state == "detection_progress":
-            support.open_window_with_side_effect(
-                NEXT_TRANSITION,
-                support.daily_window,
-                current_width // 2,
-                current_height //2
-            )
-        if menu_state == "fast_progress":
-            support.open_window_with_side_effect(
-                NEXT_TRANSITION,
-                support.daily_window,
-                current_width // 2,
-                current_height //2
-            )
-        if menu_state == "entertainment_progress":
-            support.open_window_with_side_effect(
-                NEXT_TRANSITION,
-                support.daily_window,
-                current_width // 2,
-                current_height //2
-            )
-            
 
 ##########################################################################
 #------------------ ACHIEVEMENT
@@ -1987,26 +1973,11 @@ while running:
 ##########################################################################
 
     if game_state == "SETTING":
-        TRANSI.go_transition(
-            screen,
-            BEFORE_TRANSITION
-        )
-        # draw_moving_map(
-        #     screen,
-        #     WIDTH,
-        #     HEIGHT,
-        #     dt    )
-        # droping.draw_flying_birds(
-        #     screen,
-        #     current_width,
-        #     current_height
-        # )   
-        
-        BEFORE_TRANSITION.fill(SKY_BLUE)
-        BEFORE_TRANSITION.blit(rec.menu_card_over, (-120, current_height // 2 - 800))
-        BEFORE_TRANSITION.blit(rec.icon_menu, (193,10))        
-        BEFORE_TRANSITION.blit(rec.xp_card, (940,35))
-        BEFORE_TRANSITION.blit(rec.score_card, (1250,35))
+
+
+        screen.blit(rec.menu_card_over, (-120, current_height // 2 - 800))
+        screen.blit(rec.icon_menu, (193,10))        
+
 
         # menu_setting_mode.gamemode_menu_setting_panel(
         #     screen,
@@ -2021,7 +1992,7 @@ while running:
             menu.target_scroll_y - menu.scroll_y
         ) * 0.03
         menu.draw_six_scroll_items(
-            BEFORE_TRANSITION,
+            screen,
             menu.images_setting,
             menu.names_setting,
             menu_hidden_rect,
@@ -2035,32 +2006,7 @@ while running:
     # ############################################
 
     # ############################################
-        rec.draw_down_card(
-            screen,
-            rec.down_card,
-            x=-8,
-            target_y=current_height // 2 - 900,
-            state=rec.down_card_state
-        )
-        rec.draw_down_card(
-            BEFORE_TRANSITION,
-            rec.icon_menu,
-            x=166,
-            target_y=current_height // 2 - 630,
-            state=rec.down_card_state
-        )
-        rec.draw_down_card(
-            BEFORE_TRANSITION,
-            rec.profile_image,
-            189,
-            current_height // 2 - 600,
-            rec.down_card_state,
-            text="alirezanab",
-            text_x=170,
-            text_y_offset=155,
-            font=fonts["date"]
-        )
-                        
+
                 
                 
                 
@@ -2074,47 +2020,7 @@ while running:
         #     mouse_trigger_x=500,
         #     hide_delay=5.0
         # )
-        rec.draw_right_slide_card(
-            BEFORE_TRANSITION,
-            rec.right_card,
-            visible_x=1800,
-            hidden_x=2027,
-            y=current_height // 2 - 540,
-            state=rec.right_card_state,
-            images=rec.right_images,
-            texts=rec.right_texts,
-            font=rec.fonts["date"]
-        )
-        rec.draw_jelly_rect(
-            BEFORE_TRANSITION,
-            rec.start_card,
-            x=950,
-            target_y=1100,
-            state=rec.start_card_state,
-            text_is_on=False,
-            screen_height=current_height,
-            rise_time=1.0,
-            stay_time=5.0,
-            down_time=1.0,
-            bottom_wait=1.0
-        )
-        rec.draw_jelly_rect(
-            BEFORE_TRANSITION,
-            rec.start_button_card,
-            x=1050,
-            target_y=1140,
-            state=rec.other_card_state,
-            text_is_on=True,
-            screen_height=current_height,
-            rise_time=1.0,
-            stay_time=5.0,
-            down_time=1.0,
-            bottom_wait=1.0
-        )
 
-
-
-        screen.blit(BEFORE_TRANSITION, (0, 0))
 
 ##########################################################################
 #------------------ DIFFICULTY SELECTION
@@ -2558,8 +2464,235 @@ while running:
                 call_button_rect
             )
         
+        
+        
+        
+        
+        
+        
+        
+        
+        
+##########################################################################
+#------------------ MENU_EFFECT
+##########################################################################
+    
+    if MENU_EFFECT:
+        rec.draw_down_card(
+            screen,
+            rec.down_card,
+            x=-8,
+            target_y=current_height // 2 - 900,
+            state=rec.down_card_state
+        )
 
+        rec.draw_down_card(
+            screen,
+            rec.icon_menu,
+            x=166,
+            target_y=current_height // 2 - 630,
+            state=rec.down_card_state
+        )
+        rec.draw_down_card(
+            screen,
+            rec.profile_image,
+            189,
+            current_height // 2 - 600,
+            rec.down_card_state,
+            text="alirezanab",
+            text_x=170,
+            text_y_offset=155,
+            font=fonts["date"]
+        )
+                        
+                        
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
 
+                    
+        if game_state == "MENU" or game_state == "SETTING":
+            corner.darw_corner_face(
+                screen,
+                corner.right_card,
+                corner.right_card_center,
+
+                # X: سه مقدار افقی
+                visible_x=1985,  # مبدأ: خارج صفحه از سمت راست
+                target_x=1800,   # مقصد: محل ورود کارت
+                hidden_x=1945,   # محل مخفی شدن از سمت راست
+
+                # Y: سه مقدار عمودی
+                visible_y=1262,  # مبدأ: خارج صفحه از پایین
+                target_y=1035,   # مقصد: محل ورود کارت
+                hidden_y=1250,   # محل مخفی شدن از پایین
+
+                state=corner.right_card_state,
+                images=[corner.corner],
+                texts=[],
+                font=fonts["date"]
+            )
+        
+            
+            corner.darw_corner_face_top(
+                screen,
+                corner.right_card_1,
+                corner.right_card_1_center,
+
+                # X: همان مختصات افقی
+                visible_x=2005,
+                target_x=1795,
+                hidden_x=1945,
+
+                # Y: قرینه برای گوشه بالا
+                visible_y=-219,  # مبدأ: خارج صفحه از بالا
+                target_y=15,     # مقصد: پایین‌تر از لبه بالا
+                hidden_y=-200,   # محل مخفی شدن از بالا
+
+                state=corner.top_right_card_state,
+                images=[corner.top],
+                texts=[],
+                font=fonts["date"]
+            )
+            rec.draw_right_slide_card(
+                screen,
+                rec.right_card,
+                rec.right_card_center,
+                visible_x=1800,
+                hidden_x=2027,
+                y=current_height // 2 - 410,
+                state=rec.right_card_state,
+                images=rec.right_images,
+                texts=rec.right_texts,
+                font=rec.fonts["date"]
+            )
+            rec.draw_jelly_rect(
+                screen,
+                rec.start_card,
+                x=900,
+                target_y=1100,
+                state=rec.start_card_state,
+                text_is_on=False,
+                screen_height=current_height,
+                rise_time=1.0,
+                stay_time=5.0,
+                down_time=1.0,
+                bottom_wait=1.0
+            )
+            rec.draw_jelly_rect(
+                screen,
+                rec.start_button_card,
+                x=1000,
+                target_y=1140,
+                state=rec.other_card_state,
+                text_is_on=True,
+                screen_height=current_height,
+                rise_time=1.0,
+                stay_time=5.0,
+                down_time=1.0,
+                bottom_wait=1.0
+            )
+                
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+            
+        if game_state == "MENU" or game_state == "SETTING" or game_state == "GAME MODE" or game_state == "GAME GUID":
+                            
+            rec.draw_down_card(
+                screen,
+                rec.score_xp,
+                x=900,
+                target_y=50,
+                state=rec.down_card_state
+            )
+        
+            rec.draw_down_card(
+                screen,
+                rec.score,
+                x=922,
+                target_y=70,
+                state=rec.down_card_state
+            )
+        
+            rec.draw_down_card(
+                screen,
+                rec.xp,
+                x=1168,
+                target_y=70,
+                state=rec.down_card_state
+            )
+            
+            score_xp.draw_down_card(
+                screen,
+                score_xp.down_card_state,
+                duration=0.8,
+
+                image1=score_xp.xp_im,
+                image2=score_xp.score_im,
+
+                image1_x=922+15,
+                image1_y=79,
+
+                image2_x=1168+2 ,
+                image2_y=79,
+
+                text1=score_xp.xp,
+                text2=score_xp.score,
+
+                text1_x=922 + 100,
+                text1_y=80 + 10 ,
+
+                text2_x=1168 +  80 ,
+                text2_y=80 +10 ,
+
+                font=fonts["date"]
+            )
+
+        if game_state == "MENU" or game_state == "SETTING": 
+            if menu_state == "ACHIEVEMENT":  
+                rec_window.draw_dark_overlay(screen, alpha=130)
+                rec_window.draw_slide_rect(
+                    screen,
+                    rec_window.PROGRESS,
+                    target_x=screen.get_width() - rec_window.PROGRESS.get_width() - (-450),
+                    target_y=current_height // 2 - 660,
+                    mode=3,
+                    duration=1,
+                    state=rec_window.PROGRESS_state
+                )
+            if menu_state == "PROGRESS":  
+                rec_window.draw_dark_overlay(screen, alpha=130)
+                rec_window.draw_slide_rect(
+                    screen,
+                    rec_window.PROGRESS,
+                    target_x=screen.get_width() - rec_window.PROGRESS.get_width() - (-450),
+                    target_y=current_height // 2 - 660,
+                    mode=3,
+                    duration=1,
+                    state=rec_window.PROGRESS_state
+                )
+            if menu_state == "STATUS":  
+                rec_window.draw_dark_overlay(screen, alpha=130)
+                rec_window.draw_slide_rect(
+                    screen,
+                    rec_window.PROGRESS,
+                    target_x=screen.get_width() - rec_window.PROGRESS.get_width() - (-450),
+                    target_y=current_height // 2 - 660,
+                    mode=3,
+                    duration=1,
+                    state=rec_window.PROGRESS_state
+                )
 
 
 
@@ -3337,17 +3470,7 @@ while running:
         answer_rects,
         answer_selected
     )
-    finished_TRANSI=TRANSI.go_transition(
-        screen,
-        BEFORE_TRANSITION,
-        NEXT_TRANSITION
-    )
 
-    if finished_TRANSI:
-        BEFORE_TRANSITION, NEXT_TRANSITION = (
-            NEXT_TRANSITION,
-            BEFORE_TRANSITION
-        )
     
 #-------------------------------- FPS SETTING    
     fps = clock.get_fps()
