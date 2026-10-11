@@ -6,10 +6,13 @@ import modules.screen as  SC
 from modules.design import *
 from modules.SUPPORT import support as SUP
 from modules.MORE import more as MORE
+from modules.RECT import corner
 # from modules.levels import handle_level_slider_event,update_level_slider
 from event_helper import event_click_game
 from modules.GAMES import FOLLOW_THAT as FOTHAT
 from modules import language
+from modules.RECT import score_xp
+from modules.RECT import rec_window
 from modules.IN_GAME import menu_window
 from modules.IN_GAME import utils
 from modules.EFFECT import TRANSI
@@ -1288,13 +1291,14 @@ def handle_events(
         if game_state == "STATUS":
             print("df")
 
-        if game_state == "PROGRESS":
-
+    
+        if game_state == "MENU" or game_state == "SETTING" and menu_state == "PROGRESS":
             # -----------------------------------------
             # CAROUSEL CLICK
             # -----------------------------------------
-
             if event.type == pygame.MOUSEBUTTONDOWN:
+                if utils.setting_button_rect.collidepoint(mouse_pos):
+                    rec_window.reset_slide_rect(rec_window.PROGRESS_state)
 
                 menu_state = progress.handle_carousel_click(
                     event,
@@ -2087,9 +2091,8 @@ def handle_events(
                     # achievement.achievement_trigger=True
 
                 if CUS.IMG1_REC3.collidepoint(event.pos):
-                    TRANSI.start_transition()
 
-                    game_state = "PROGRESS"
+                    menu_state = "PROGRESS"
                     menu_state = "math_progress"
                     DES.reset_menu_back_setters()
                     SUP.reset_window_side_effect()
@@ -2340,10 +2343,14 @@ def handle_events(
 
 
         # ---------------- GAME MODE EVENT ----------------
-
-        if game_state == "MENU":
+        
+        if game_state == "MENU"  or game_state == "SETTING":
                     
             recc.right_card_event(event, recc.right_card_state)
+            
+            corner.corner_card_event(event, corner.right_card_state,1812,1050)
+            corner.corner_top_card_event(event, corner.top_right_card_state,1815,15)
+            
             # rec.reset_down_card(state)
             recc.start_card_event(
                 event,
@@ -2357,24 +2364,26 @@ def handle_events(
                 370
             )
             if event.type == pygame.MOUSEBUTTONDOWN:
-                # if rec.other_card_state_.collidepoint(event.pos):
-                #     print("sdsd")
-                #     menu_state = "DAILYGAME_STATUS_PROGRESS_ACHIEVEMENT"
                 for i , rec in enumerate(recc.rect_S_P_A):
                     if rec.collidepoint(event.pos):
                         if i == 0 :
-                            game_state ="STATUS"
+                            menu_state ="STATUS"
+                        if i == 1 :
+                            menu_state ="PROGRESS"
+                            TRANSI.start_transition()
                         if i == 2 :
-                            game_state ="PROGRESS"
-                            print("yes")
-
-                        if i == 3 :
                             game_state ="ACHIEVEMENT"
-                        
+                if corner.corner_down.collidepoint(event.pos):
+                    menu_state ="DONATE"
+                if corner.corner_top.collidepoint(event.pos):
+                    menu_state ="NOTIFICATION"
+
                         
         if game_state == "SETTING":
 
             recc.right_card_event(event, recc.right_card_state)
+            corner.corner_card_event(event, corner.right_card_state,1812,1050)
+            corner.corner_top_card_event(event, corner.top_right_card_state,1815,15)
             # rec.reset_down_card(state)
             recc.start_card_event(
                 event,
@@ -2966,6 +2975,8 @@ def handle_events(
                     elif game_state == "ACHIEVEMENT":
                         game_state = "MENU"
                         
+                    elif menu_state == "PROGRESS":
+                        game_state = "MENU"
                     elif game_state == "PROGRESS":
                         game_state = "MENU"
                         menu_state = "DAILYGAME_STATUS_PROGRESS_ACHIEVEMENT"
@@ -3365,13 +3376,6 @@ def handle_events(
                                 THREE_ICONS=True
                                 #button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
                             elif i == 1:
-                                menu_state = "DAILYGAME_STATUS_PROGRESS_ACHIEVEMENT"
-                                DASHBOARD=False
-                                SUP.reset_window_side_effect()
-                                CUSTOM_MATH = False
-                                THREE_ICONS=True
-
-                            elif i == 2:
                                 menu_state = "GAMES_OR_MATH"
                                 game_state ="MENU"
                                 DASHBOARD=False
@@ -3380,15 +3384,22 @@ def handle_events(
                                 SUP.reset_window_side_effect()
                                 THREE_ICONS=True
 
-                            elif i == 3:
+
+#این برای این بود در اصل من کامنت کردم 
+                                # menu_state = "DAILYGAME_STATUS_PROGRESS_ACHIEVEMENT"
+                                # DASHBOARD=False
+                                # SUP.reset_window_side_effect()
+                                # CUSTOM_MATH = False
+                                # THREE_ICONS=True
+
+                            elif i == 2:
                                 coming_soon_notification(screen, trigger=True)
                                 # game_state = "ONLINE"
                                 # DASHBOARD=False
                                 CUSTOM_MATH = False
                                 THREE_ICONS=True
 
-
-                            elif i == 4:
+                            elif i == 3:
                                 coming_soon_notification(screen, trigger=True)
                                 # game_state = "LEADERBOARD"
                                 # DASHBOARD=False
@@ -3396,9 +3407,10 @@ def handle_events(
                                 CUSTOM_MATH = False
                                 THREE_ICONS=True
 
-                            elif i == 5:
+                            elif i == 4:
                                 menu_state = "SETTING"
                                 recc.reset_down_card(recc.down_card_state)
+                                score_xp.reset_down_card(score_xp.down_card_state)
                                 game_state= "SETTING"
                                 DES.menu_slide_back = False
                                 DES.menu_slide_active = True
@@ -3413,7 +3425,7 @@ def handle_events(
                                 DES.reset_menu_back_setters()
                                 #button_menu_setting_gamemode.reset_animation_button_in_menu_gamemode_setting()
 
-                            elif i == 6:                            
+                            elif i == 5:
                                 menu_state = "SUPPORT"
                                 DASHBOARD=False
 
@@ -3426,8 +3438,7 @@ def handle_events(
                                 SUP.reset_window_side_effect()
                                 CUSTOM_MATH = False
                                 THREE_ICONS=True
-
-                            elif i == 7:
+                            elif i == 6:                            
                                 menu_state = "EXIT"
                                 DASHBOARD=False
                                 SUP.reset_window_side_effect()
@@ -3440,6 +3451,9 @@ def handle_events(
                                 # SUPPORT_MENU = False
                                 reset_exit_animation()
                                 THREE_ICONS=False
+
+                            # elif i == 7:
+
 
                 # ==========================================
                 # Settings Menu
