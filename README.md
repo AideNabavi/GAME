@@ -1,8 +1,5 @@
 # 🧠 Brain Games Club
 
-<p align="center">
-  <img src="icon.png" alt="Mental Math Game" width="700">
-</p>
 
 <h1 align="center">Mental Math Game</h1>
 
