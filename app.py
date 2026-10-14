@@ -561,7 +561,7 @@ back_button_rect_for_setting= pygame.Rect(
 
 SHAPE_COLOR_NAME.one____(screen,current_width,current_height)
 
-
+before_game.backgorund_now_for_any_game_mode  = pygame.image.load("./asset/image/GAME/THOOZ/THOOZ.png")
 
 
 recent_game.load_recent_games()
@@ -984,129 +984,7 @@ while running:
             mode="menu"
         )
         
-        
-#         menu_rec.side_scroll_effect(
-#             screen,
-#             rects=menu_rec.rects,
-#             images=menu_rec.images,
-#             texts=menu_rec.names,
-#             list_x=240,
-#             list_y=250,
-#             item_spacing=220,
-#             text_font=fonts["date"],
-#             text_color=(255, 255, 255),
-#             text_gap=30,
-#             surface=menu_rec.right_card_center,
-#             surface_x=240,
-#             surface_y=current_height // 2,
-#             image=menu_rec.profile,
-#             text="aiden",
-#             text_font_single=fonts["date"],
-#             duration=1000,
-#             scroll_smoothness=0.18,
-#             mode="menu"
-# )
-        # menu_rec.side_scroll_effect(
-        #     screen,
-
-        #     rects=menu_rec.rects,# ببین بعد میخام  این در از لحاظ xدر وسطmenu_rec.right_card_center, این قرار داشته باشه ارتفاعش رو بشه تغییر داد 
-
-        #     images=menu_rec.images,
-        #     texts=menu_rec.names,
-
-        #     # موقعیت مشترک لیست عکس‌ها
-        #     list_x=240,# تمام   عکس ها در وسط با  همین ۱۵۰ که هست قابل تغغیر باشن در وسط این menu_rec.right_card_center روش قرار داشته باشن ا خب فقط کپ قابل تغییر باشه با ارتفاع
-        #     list_y=250,
-        #     item_spacing=150,
-
-        #     text_font=fonts["date"],
-        #     text_color=(255, 255, 255),
-        #     text_gap=30,
-
-        #     # کارت جداگانه
-        #     surface=menu_rec.right_card_center,
-        #     surface_x=240,
-        #     surface_y=current_height // 2 - 650,
-
-        #     # عکس پروفایل جداگانه
-        #     image=menu_rec.profile,
-        #     image_x=240, # ببین میخام مختصات این دقیقا وسط  rects=menu_rec.rects[0]این باشه یعنی فیس شماره ۲ خب 
-        #     image_y=50,
-
-        #     # متن جداگانه
-        #     text="aiden", # این هم در سمت پایین menu_rec.rects[0] قرارداشته باشه 
-        #     text_font_single=fonts["date"],
-        #     text_color_single=(255, 255, 255),
-        #     text_x=250,
-        #     text_y=150,
-
-        #     # محدوده اسکرول
-        #     scroll_x=240,# محدود اسکرول دقیقا اندازه menu_rec.right_card_center باشه 
-        #     scroll_y=current_height // 2,
-        #     scroll_width=600,
-        #     scroll_height=1000,
-
-        #     duration=1000,
-        #     scroll_smoothness=0.18,
-        #     mode="menu"
-        # )
-
-        # menu_setting_mode.gamemode_menu_setting_panel(
-        #     screen,
-        #     menu_setting_mode.menu_icons,
-        #     menu_setting_mode.menu_positions,
-        #     "menu",
-        #     "menu",
-        #     current_width // 2  - 810 ,current_height // 2 - 4.5,#image=menu_panel
-
-        # )  
-        
-        
-        
-    # ############################################
-        # rec.draw_down_card(
-        #     screen,
-        #     rec.down_card,
-        #     x=-8,
-        #     target_y=current_height // 2 - 900,
-        #     state=rec.down_card_state
-        # )
-        # rec.draw_down_card(
-        #     screen,
-        #     rec.icon_menu,
-        #     x=166,
-        #     target_y=current_height // 2 - 630,
-        #     state=rec.down_card_state
-        # )
-        # rec.draw_down_card(
-        #     screen,
-        #     rec.profile_image,
-        #     189,
-        #     current_height // 2 - 600,
-        #     rec.down_card_state,
-        #     text="alirezanab",
-        #     text_x=170,
-        #     text_y_offset=155,
-        #     font=fonts["date"]
-        # )
-                        
-
-                        
-                
-        # corner.darw_corner_face(
-        #     screen,
-        #     corner.right_card,
-        #     visible_x=2000,  # مبدأ افقی: بیرون سمت راست
-        #     hidden_x=1800,   # مقصد افقی
-        #     y=0,
-        #     state=corner.right_card_state,
-        #     images=[corner.corner],
-        #     texts=[],
-        #     font=fonts["date"],
-        #     visible_y=1200,  # مبدأ عمودی: بیرون پایین صفحه
-        #     target_y=1150    # مقصد عمودی
-        # )
-
+     
         
         
         
@@ -2190,24 +2068,24 @@ while running:
 ##########################################################################
 #------------------ COUNT_DOWN
 ##########################################################################
-    if game_state == "COUNT_DOWN":
-        # countdown(screen, image)
+    # if game_state == "COUNT_DOWN":
+    #     # countdown(screen, image)
 
-        for index, game_name in enumerate(game_list.count_down_game_name):
+    #     for index, game_name in enumerate(game_list.count_down_game_name):
 
-            if before_game.previous_game_state_F == game_name:
+    #         if before_game.previous_game_state_F == game_name:
             
-                image = game_list.count_down_image_background[index]
+    #             image = game_list.count_down_image_background[index]
             
-                countdown(screen, image)
+    #             countdown(screen, image)
                 
-                break
+    #             break
 
-        before_game.before_game_start = False
+    #     before_game.before_game_start = False
         
-        game_state = before_game.previous_game_state_F
+    #     game_state = before_game.previous_game_state_F
         
-        before_game.backgorund_now_for_any_game_mode = image
+    #     before_game.backgorund_now_for_any_game_mode = image
         
         
         
@@ -2268,7 +2146,7 @@ while running:
         game_mode_face.side_effect_from_right(
             screen,
             images=game_mode_face.images,
-            rects=game_mode_face.rects,
+            # rects=game_mode_face.rects,
             texts=game_mode_face.texts
         )
 
@@ -2292,10 +2170,7 @@ while running:
 ##########################################################################
 
     if game_state == "HOW TO PLAY":
-        draw_moving_map(
-            screen,
-            WIDTH,
-            HEIGHT,    )
+        draw_moving_map(screen,WIDTH,HEIGHT,    )
 
         # guid_sild_effect(
         #     screen,
@@ -3211,6 +3086,7 @@ while running:
             screen,
             back_button_rect
         )
+
     #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if game_state == "COMPARE NUMBERS":
         design.back_setter(screen,before_game.backgorund_now_for_any_game_mode)
@@ -3370,7 +3246,8 @@ while running:
         )
     #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if game_state =="CHESS":
-        design.back_setter(screen,before_game.backgorund_now_for_any_game_mode)
+
+        draw_moving_map(screen,WIDTH,HEIGHT,    )
         CHESS.CHESS_()
         screen_.draw_back_button(
             screen,
@@ -3410,12 +3287,16 @@ while running:
         )
     #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if game_state =="MAZE":
+        draw_moving_map(
+            screen,
+            WIDTH,
+            HEIGHT,    )
         # design.back_setter(screen,before_game.backgorund_now_for_any_game_mode)
         MAZE.MAZE_()
-        # screen_.draw_back_button(
-        #     screen,
-        #     back_button_rect
-        # )
+        screen_.draw_back_button(
+            screen,
+            back_button_rect
+        )
     #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
     if game_state =="MEMORY RECALL":  
         design.back_setter(screen,before_game.backgorund_now_for_any_game_mode)
@@ -3604,8 +3485,12 @@ while running:
         )
      #👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾👾
 
-    if game_state =="BALL_TRACKER":
-        design.back_setter(screen,before_game.backgorund_now_for_any_game_mode)
+    if game_state =="BALL TRACKER":
+        draw_moving_map(
+            screen,
+            WIDTH,
+            HEIGHT,    )
+        # design.back_setter(screen,before_game.backgorund_now_for_any_game_mode)
         BALL_TRACKER.BALL_TRACKER_()
         screen_.draw_back_button(
             screen,
