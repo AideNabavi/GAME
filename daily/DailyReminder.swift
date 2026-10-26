@@ -4,7 +4,7 @@ import AppKit
 
 
 
-// این برای کامپایل کردن  این زبان است 
+// این برای کامپایل کردن  این زبان است  
 // swiftc DailyReminder.swift -o DailyReminder
 /*
 killall DailyReminder 
