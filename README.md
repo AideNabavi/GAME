@@ -2,7 +2,7 @@
 
 <p align="center">
   <strong>A practice project for learning game development with Python and Pygame.</strong>
-</p>
+</p> 
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.x-blue?style=for-the-badge&logo=python">
