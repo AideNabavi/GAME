@@ -1,77 +1,65 @@
-# 🧠 Brain Games Club
-
-
-<h1 align="center">Mental Math Game</h1>
+# 🧠 Brain Training Game — Practice Project
 
 <p align="center">
-  <strong>Train your brain. Improve your speed. Master  the numbers.</strong>
-</p>
-
-<p align="center">
-  A fun and interactive mental math game designed to improve
-  calculation speed, accuracy, concentration, and reaction time.
+  <strong>A practice project for learning game development with Python and Pygame.</strong>
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.x-blue?style=for-the-badge&logo=python">
   <img src="https://img.shields.io/badge/Pygame-Game-green?style=for-the-badge">
+  <img src="https://img.shields.io/badge/Status-Practice%20Project-orange?style=for-the-badge">
   <img src="https://img.shields.io/badge/Platform-macOS%20%7C%20Windows-lightgrey?style=for-the-badge">
 </p>
 
 ---
 
-## 🎮 About
+## 📌 About This Repository
 
-**Mental Math Game** is a mental calculation challenge built to make practicing mathematics more fun, fast, and engaging.
+This repository is a **practice project**. It is used to learn, experiment, and improve skills in:
 
-Instead of simply solving math problems on paper, players are challenged to calculate answers **under time pressure**, react quickly, and maintain accuracy.
+* Python programming
+* Game development with Pygame
+* Project structure and code organization
+* Event handling and game state management
+* UI design, animations, and visual effects
+* Working with Git and GitHub
 
-The game is built around the four fundamental mathematical operations:
+It is not a finished product. The code changes often, and some parts are experimental.
 
-* ➕ Addition
-* ➖ Subtraction
-* ✖️ Multiplication
-* ➗ Division
+---
 
-Players can choose different challenges, difficulty levels, and game modes to test and improve their mental calculation skills.
+## 🎮 What Is the Project?
+
+A brain-training game made of many small mini-games. Players practice mental math, memory, logic, detection, and reaction speed through short, timed challenges.
 
 ---
 
 ## ✨ Features
 
-* 🧮 Multiple mathematical operations
-* 🎯 Different game modes and challenges
-* ⏱️ Time-based mental calculations
-* 🏆 Score and progress system
-* ⚙️ Custom difficulty settings
-* 🎨 Interactive game interface
+* 🧮 Math games with the four basic operations
+* 🧩 Logic, memory, detection, and fast-reaction games
+* ⏱️ Time-based challenges
+* 🏆 Score and progress tracking
+* ⚙️ Custom settings (operation, max number, time limit)
 * 🌍 Multi-language support
-* 👤 Player profiles
-* 📊 Leaderboard system
-* 🔊 Sound and visual effects
-* 🧠 Brain-training focused gameplay
+* 👤 Player profiles and guest mode
+* 🔊 Sound effects and background music with volume control
+* 🎨 Animated menus and visual effects
 
 ---
 
-## 🕹️ Game Modes
+## 🕹️ Game Categories
 
-Mental Math Game is designed to include multiple gameplay modes, each focusing on a different mental skill.
+| Category | Focus |
+|---|---|
+| Math | Calculation speed and accuracy |
+| Logic | Puzzles and strategy |
+| Memory | Remembering patterns, numbers, and images |
+| Detection | Noticing differences and recognizing items |
+| Fast | Quick reactions under time pressure |
+| Entertainment | Classic fun games |
 
-### ⚡ Mental Calculation
-
-Solve mathematical problems as quickly and accurately as possible.
-
-### 🧠 Memory Challenges
-
-Train your memory while solving increasingly difficult challenges.
-
-### 🎯 Reaction Challenges
-
-Test how quickly you can recognize and respond to mathematical information.
-
-### 🔥 More Modes Coming Soon
-
-The game is continuously being developed with new challenges and game modes planned for future releases.
+More categories and games are planned.
 
 ---
 
@@ -91,104 +79,82 @@ The game is continuously being developed with new challenges and game modes plan
 
 ---
 
-## 🚀 Platforms
-
-The game is planned to support multiple platforms:
-
-* 🍎 macOS
-* 🪟 Windows
-* 🤖 Android
-* 📱 iOS
-
----
-
 ## 🛠️ Built With
 
-* **Python**
+* **Python 3**
 * **Pygame**
 * **NumPy**
-* Other Python libraries used throughout development
-
 
 ---
 
-## 🧩 Difficulty & Customization
+## 📁 Project Structure
 
-Players can customize their experience by selecting different settings such as:
-
-* Mathematical operation
-* Maximum number
-* Difficulty
-* Time limit
-* Decimal numbers
-* Negative numbers
-* Game mode
-
-This allows the game to be used by beginners as well as players looking for a more challenging mental workout.
+```
+├── main.py              # Entry point and main loop
+├── event_helper.py      # Event handling
+└── modules/
+    ├── GAMES/           # Mini-games
+    ├── ACCOUNT/         # Player profile and country selection
+    ├── SUPPORT/         # Feedback, contact, and bug report pages
+    ├── SAVE/            # Saving player data
+    ├── IN_GAME/         # In-game menus and windows
+    ├── EFFECT/          # Visual effects and transitions
+    └── ...              # Menus, settings, sound, music, language
+```
 
 ---
 
-## 🎯 Goal
+## ▶️ How to Run
 
-The main goal of **Mental Math Game** is simple:
+1. Install Python 3.
+2. Install the requirements:
 
-> **Make mental mathematics fast, challenging, and fun.**
+```bash
+pip install pygame numpy
+```
 
-The game is designed not only for entertainment, but also as a tool for practicing:
+3. Run the game:
 
-* Calculation speed
-* Accuracy
-* Concentration
-* Memory
-* Reaction time
-* Mental arithmetic
+```bash
+python main.py
+```
+
+---
+
+## 🎯 Learning Goals
+
+- [x] Build a menu system with multiple screens
+- [x] Manage game states
+- [x] Add sound, music, and volume control
+- [x] Support multiple languages
+- [x] Save and load player data
+- [ ] Clean up and split large files into smaller modules
+- [ ] Add automated tests
+- [ ] Improve performance
+- [ ] Add more mini-games
 
 ---
 
 ## 🔮 Roadmap
 
-* [x] Main Menu
+* [x] Main menu
 * [x] Settings
-* [x] Mathematical Operations
-* [x] Time-based Challenges
-* [x] Multi-language Support
-* [x] Player Profiles
-* [ ] More Game Modes
-* [ ] Online Multiplayer
-* [ ] Global Leaderboard
-* [ ] Android Version
-* [ ] iOS Version
-* [ ] Windows Release
-* [ ] macOS Release
+* [x] Many mini-games
+* [x] Multi-language support
+* [x] Player profiles
+* [ ] More game modes
+* [ ] Code refactoring
+* [ ] Windows and macOS builds
+* [ ] Mobile version (experimental)
 
 ---
 
-## 🚧 Development
+## 🚧 Development Status
 
-This project is currently **under active development**.
-
-New game modes, visual effects, challenges, and features are being added continuously.
-
-### 🚀 On the way...
-
-More challenges are coming.
-
-More game modes are coming.
-
-And the numbers are getting harder. 🧠🔥
-
----
-
-## ⭐ Support
-
-If you like the project, consider giving it a **⭐ Star** on GitHub.
-
-Your support helps the project grow and motivates further development.
+This project is under active development and is mainly for practice. Features may change, break, or be rewritten at any time.
 
 ---
 
 ## 📜 License
 
-This project is currently under development.
-
-License information will be added in a future release.
+No license has been added yet. The code is shared for learning and practice purposes.
